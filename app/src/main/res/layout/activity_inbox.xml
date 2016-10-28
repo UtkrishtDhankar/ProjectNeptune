@@ -14,44 +14,42 @@
         android:layout_height="wrap_content"
         android:id="@+id/tasksScrollView"
         android:layout_centerHorizontal="true" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/tasksRelativeView" >
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Search"
+                android:id="@+id/searchButton"
+                android:onClick="onSearchButtonPress"
+                android:layout_alignParentEnd="true"
+                android:nestedScrollingEnabled="false" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/searchTextInput"
+                android:inputType="text"
+                android:layout_alignBottom="@+id/searchButton"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@+id/searchButton" />
+
+        </RelativeLayout>
     </ScrollView>
 
-    <EditText
+    <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/addTextInput"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/addButton"
-        android:inputType="text" />
-
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add"
         android:id="@+id/addButton"
+        android:elevation="3sp"
+        android:onClick="onAddButtonPress"
+        android:src="@drawable/ic_add_white_48dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:onClick="onAddButtonPress" />
+        android:layout_alignParentEnd="true" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/searchTextInput"
-        android:inputType="text"
-        android:layout_below="@+id/tasksScrollView"
-        android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/searchButton" />
-
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Search"
-        android:id="@+id/searchButton"
-        android:onClick="onSearchButtonPress"
-        android:layout_alignTop="@+id/tasksScrollView"
-        android:layout_alignParentEnd="true"
-        android:nestedScrollingEnabled="false" />
 </RelativeLayout>

@@ -1,5 +1,7 @@
 package utkrishtdhankar.projectneptune;
 
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,12 +21,18 @@ public class Inbox extends AppCompatActivity {
     }
 
     public void onAddButtonPress(View view) {
-        EditText addTextInput = (EditText) findViewById(R.id.addTextInput);
 
-        String newTaskName = addTextInput.getText().toString();
-        Task newTask = new Task(newTaskName);
+        FragmentManager fm = getSupportFragmentManager();
+        InputDialog inputDialog = InputDialog.newInstance("Some Title");
+        inputDialog.show(fm, "fragment_edit_name");
 
-        databaseHelper.createTask(newTask);
+
+//        EditText addTextInput = (EditText) findViewById(R.id.addTextInput);
+//
+//        String newTaskName = addTextInput.getText().toString();
+//        Task newTask = new Task(newTaskName);
+//
+//        databaseHelper.createTask(newTask);
     }
 
     public void onSearchButtonPress(View view) {
