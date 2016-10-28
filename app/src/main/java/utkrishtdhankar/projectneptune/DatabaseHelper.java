@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 /**
  * Created by utkrishtdhankar on 21/10/16.
  */
@@ -44,6 +46,29 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         db.insert(INBOX_TABLE_NAME, null, values);
         db.close();
+    }
+
+    ArrayList<Task> getAllTasks() {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(
+                INBOX_TABLE_NAME,
+                new String[] {INBOX_KEY_NAME},
+                null, null, null, null, null, null);
+
+        ArrayList<Task> tasks = new ArrayList<Task> ();
+
+        // TODO replace these return nulls with exceptions
+        if (cursor != null && cursor.getCount() > 0)
+            cursor.moveToFirst();
+        else
+            return null;
+
+        do {
+            tasks.add(new Task(cursor.getString(cursor.getColumnIndex(INBOX_KEY_NAME))));
+        } while (cursor.moveToNext());
+
+        return tasks;
     }
 
     Task getTaskByID(long id) {
