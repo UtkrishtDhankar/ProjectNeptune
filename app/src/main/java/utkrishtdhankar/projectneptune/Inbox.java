@@ -2,7 +2,6 @@ package utkrishtdhankar.projectneptune;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -25,13 +24,5 @@ public class Inbox extends AppCompatActivity {
         Task newTask = new Task(newTaskName);
 
         databaseHelper.addTask(newTask);
-    }
-
-    public void onSearchButtonPress(View view) {
-        EditText searchTextInput = (EditText) findViewById(R.id.searchTextInput);
-
-        // TODO catch exception for the string not being able to convert to long
-        long searchID = Long.parseLong(searchTextInput.getText().toString());
-        databaseHelper.getTaskByID(searchID);
     }
 }

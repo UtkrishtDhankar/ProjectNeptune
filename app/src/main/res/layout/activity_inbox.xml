@@ -9,13 +9,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="utkrishtdhankar.projectneptune.Inbox">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/tasksScrollView"
-        android:layout_centerHorizontal="true" >
-    </ScrollView>
-
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -35,23 +28,4 @@
         android:layout_alignParentEnd="true"
         android:onClick="onAddButtonPress" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/searchTextInput"
-        android:inputType="text"
-        android:layout_below="@+id/tasksScrollView"
-        android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/searchButton" />
-
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Search"
-        android:id="@+id/searchButton"
-        android:onClick="onSearchButtonPress"
-        android:layout_alignTop="@+id/tasksScrollView"
-        android:layout_alignParentEnd="true"
-        android:nestedScrollingEnabled="false" />
 </RelativeLayout>
