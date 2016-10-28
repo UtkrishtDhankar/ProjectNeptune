@@ -24,12 +24,13 @@ public class Inbox extends AppCompatActivity {
         String newTaskName = addTextInput.getText().toString();
         Task newTask = new Task(newTaskName);
 
-        databaseHelper.createTask(newTask);
+        databaseHelper.addTask(newTask);
     }
 
     public void onSearchButtonPress(View view) {
         EditText searchTextInput = (EditText) findViewById(R.id.searchTextInput);
 
+        // TODO catch exception for the string not being able to convert to long
         long searchID = Long.parseLong(searchTextInput.getText().toString());
         databaseHelper.getTaskByID(searchID);
     }
