@@ -21,8 +21,8 @@ public class Inbox extends AppCompatActivity {
 
 
 
-<<<<<<< HEAD
-        public void onFABPress(View view) {
+
+    public void onFABPress(View view) {
 
         FragmentManager fm = getSupportFragmentManager();
         InputDialog inputDialog = InputDialog.newInstance("Some Title",getApplicationContext());
@@ -34,8 +34,8 @@ public class Inbox extends AppCompatActivity {
 
         long searchID = Long.parseLong(searchTextInput.getText().toString());
         databaseHelper.getTaskByID(searchID);
-=======
-        databaseHelper.addTask(newTask);
->>>>>>> refs/remotes/origin/master
+
+      //  databaseHelper.addTask(newTask);
+
     }
 }

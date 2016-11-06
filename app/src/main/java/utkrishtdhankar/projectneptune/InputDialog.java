@@ -71,6 +71,6 @@ public class InputDialog extends DialogFragment implements View.OnClickListener 
         String newTaskName = mEditText.getText().toString();
         Task newTask = new Task(newTaskName);
 
-        databaseHelper.createTask(newTask);
+        databaseHelper.addTask(newTask);
     }
 }
