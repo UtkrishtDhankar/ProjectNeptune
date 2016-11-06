@@ -18,10 +18,10 @@ import android.widget.EditText;
 
 public class InputDialog extends DialogFragment implements View.OnClickListener {
 
-    DatabaseHelper databaseHelper;
+    DatabaseHelper databaseHelper ;
     private EditText mEditText;
     private Button mAddButton;
-    private static Context localContext;
+   // private static Context localContext;
 
     public InputDialog() {
         // Empty constructor is required for DialogFragment
@@ -34,7 +34,7 @@ public class InputDialog extends DialogFragment implements View.OnClickListener 
         Bundle args = new Bundle();
         args.putString("title", title);
         frag.setArguments(args);
-        localContext = context;
+        //localContext = context;
         return frag;
     }
 
@@ -54,7 +54,7 @@ public class InputDialog extends DialogFragment implements View.OnClickListener 
         mEditText = (EditText) view.findViewById(R.id.addTextInput);
         mAddButton = (Button) view.findViewById(R.id.addTaskbutton) ;
         mAddButton.setOnClickListener(this);
-        databaseHelper = new DatabaseHelper(localContext);
+        databaseHelper = new DatabaseHelper(getActivity());
         // Fetch arguments from bundle and set title
         String title = getArguments().getString("title", "Enter Name");
         getDialog().setTitle(title);
