@@ -9,6 +9,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="utkrishtdhankar.projectneptune.Inbox">
 
+<<<<<<< HEAD
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,6 +20,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/tasksRelativeView" >
+=======
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/addTextInput"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/addButton"
+        android:inputType="text" />
+>>>>>>> refs/remotes/origin/master
 
             <Button
                 style="?android:attr/buttonStyleSmall"
@@ -50,6 +61,11 @@
         android:onClick="onFABPress"
         android:src="@drawable/ic_add_white_48dp"
         android:layout_alignParentBottom="true"
+<<<<<<< HEAD
         android:layout_alignParentEnd="true" />
+=======
+        android:layout_alignParentEnd="true"
+        android:onClick="onAddButtonPress" />
+>>>>>>> refs/remotes/origin/master
 
 </RelativeLayout>
