@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/addButton"
         android:elevation="3sp"
-        android:onClick="onAddButtonPress"
+        android:onClick="onFABPress"
         android:src="@drawable/ic_add_white_48dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true" />

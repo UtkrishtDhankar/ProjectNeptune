@@ -10,7 +10,7 @@ import android.widget.EditText;
 
 public class Inbox extends AppCompatActivity {
 
-    DatabaseHelper databaseHelper;
+    public DatabaseHelper databaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,19 +20,13 @@ public class Inbox extends AppCompatActivity {
         databaseHelper = new DatabaseHelper(getApplicationContext());
     }
 
-    public void onAddButtonPress(View view) {
+
+
+        public void onFABPress(View view) {
 
         FragmentManager fm = getSupportFragmentManager();
-        InputDialog inputDialog = InputDialog.newInstance("Some Title");
+        InputDialog inputDialog = InputDialog.newInstance("Some Title",getApplicationContext());
         inputDialog.show(fm, "fragment_edit_name");
-
-
-//        EditText addTextInput = (EditText) findViewById(R.id.addTextInput);
-//
-//        String newTaskName = addTextInput.getText().toString();
-//        Task newTask = new Task(newTaskName);
-//
-//        databaseHelper.createTask(newTask);
     }
 
     public void onSearchButtonPress(View view) {

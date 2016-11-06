@@ -22,4 +22,10 @@
         android:inputType="text"
         android:paddingTop="20sp" />
 
+    <Button
+        android:text="Add"
+        android:layout_width="100sp"
+        android:layout_height="wrap_content"
+        android:id="@+id/addTaskbutton" />
+
 </LinearLayout>
