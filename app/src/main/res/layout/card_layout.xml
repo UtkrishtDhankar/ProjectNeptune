@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A CardView that contains a TextView -->
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_width="300sp"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="15sp"
+    android:layout_marginLeft="6sp"
+    card_view:cardElevation="6sp"
+    card_view:cardCornerRadius="2sp">
+
+    <TextView
+        android:id="@+id/info_text"
+        android:layout_width="match_parent"
+        android:text="WTF"
+        android:textSize="40sp"
+        android:layout_height="match_parent"
+        android:paddingLeft="6sp" />
+
+</android.support.v7.widget.CardView>
