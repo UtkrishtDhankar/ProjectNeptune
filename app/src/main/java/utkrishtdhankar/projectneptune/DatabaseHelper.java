@@ -19,6 +19,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     private static final String INBOX_TABLE_NAME = "inbox";
     private static final String INBOX_KEY_ID = "id";
     private static final String INBOX_KEY_NAME = "name";
+    private static final String INBOX_KEY_STATUS = "status";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -27,8 +28,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createQuery = String.format(
-                "CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT)",
-                INBOX_TABLE_NAME, INBOX_KEY_ID, INBOX_KEY_NAME);
+                "CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT, %s TEXT)",
+                INBOX_TABLE_NAME, INBOX_KEY_ID, INBOX_KEY_NAME, INBOX_KEY_STATUS);
         db.execSQL(createQuery);
     }
 
@@ -43,6 +44,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         ContentValues values = new ContentValues();
         values.put(INBOX_KEY_NAME, task.getName());
+        values.put(INBOX_KEY_STATUS, task.getStatus().name());
 
         db.insert(INBOX_TABLE_NAME, null, values);
         db.close();
@@ -53,7 +55,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         Cursor cursor = db.query(
                 INBOX_TABLE_NAME,
-                new String[] {INBOX_KEY_NAME},
+                new String[] {INBOX_KEY_NAME, INBOX_KEY_STATUS},
                 null, null, null, null, null, null);
 
         ArrayList<Task> tasks = new ArrayList<Task> ();
@@ -65,7 +67,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             return null;
 
         do {
-            tasks.add(new Task(cursor.getString(cursor.getColumnIndex(INBOX_KEY_NAME))));
+            Task task = new Task(cursor.getString(cursor.getColumnIndex(INBOX_KEY_NAME)));
+            task.changeStatus(
+                    TaskStatus.valueOf(cursor.getString(cursor.getColumnIndex(INBOX_KEY_STATUS))));
+            tasks.add(task);
         } while (cursor.moveToNext());
 
         return tasks;
