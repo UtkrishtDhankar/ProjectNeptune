@@ -43,6 +43,8 @@ public class Inbox extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
+        myDataset = databaseHelper.getAllTasks();
+
         // specifying the adapter (MyAdapter class)
         mAdapter = new MyAdapter(myDataset);
         mRecyclerView.setAdapter(mAdapter);
@@ -53,7 +55,6 @@ public class Inbox extends AppCompatActivity {
 
 
     public void onFABPress(View view) {
-
         FragmentManager fm = getSupportFragmentManager();
         InputDialog inputDialog = InputDialog.newInstance("Some Title",getApplicationContext());
         inputDialog.show(fm, "fragment_edit_name");
