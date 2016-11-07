@@ -1,5 +1,7 @@
 package utkrishtdhankar.projectneptune;
 
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,7 +17,7 @@ import java.util.ArrayList;
 
 public class Inbox extends AppCompatActivity {
 
-    DatabaseHelper databaseHelper;
+    public DatabaseHelper databaseHelper;
 
     //This is the dataset which will be used for inflation
     private ArrayList<Task> myDataset = new ArrayList<Task>();
@@ -28,6 +30,7 @@ public class Inbox extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inbox);
+
         databaseHelper = new DatabaseHelper(getApplicationContext());
 
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
@@ -47,15 +50,13 @@ public class Inbox extends AppCompatActivity {
         Log.d("Inbox.java","WE REACHED THIS POINT");
     }
 
-    public void onAddButtonPress(View view) {
-        EditText addTextInput = (EditText) findViewById(R.id.addTextInput);
 
-        String newTaskName = addTextInput.getText().toString();
-        Task newTask = new Task(newTaskName);
 
-        myDataset.add(newTask);
+    public void onFABPress(View view) {
 
-        databaseHelper.addTask(newTask);
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        FragmentManager fm = getSupportFragmentManager();
+        InputDialog inputDialog = InputDialog.newInstance("Some Title",getApplicationContext());
+        inputDialog.show(fm, "fragment_edit_name");
     }
+
 }
