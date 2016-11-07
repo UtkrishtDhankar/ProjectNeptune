@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Project Neptune</string>
+    <string name="drawer_open">OpenDrawer</string>
+    <string name="drawer_close">CloseDrawer</string>
+    <string-array name="menuItems">
+        <item>Home</item>
+        <item>Settings</item>
+
+    </string-array>
 </resources>
