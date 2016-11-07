@@ -72,5 +72,6 @@ public class InputDialog extends DialogFragment implements View.OnClickListener 
         Task newTask = new Task(newTaskName);
 
         databaseHelper.addTask(newTask);
+        dismiss();
     }
 }
