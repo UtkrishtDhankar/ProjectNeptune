@@ -42,7 +42,7 @@ public class Task {
     void changeStatus(TaskStatus newStatus) {
         status = newStatus;
     }
-    
+
     /**
      * Adds a new context to the task
      * @param newContext The context to be added
