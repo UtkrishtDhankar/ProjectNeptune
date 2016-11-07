@@ -13,15 +13,35 @@ public class Task {
     // The tags list for this task
     private ArrayList<String> tags;
 
+    // What is the status of the task, e.g. Next, Waiting etc.
+    private TaskStatus status;
+
     /**
      * Constructs a new task with the given parameters
+     * Sets the tag list to empty and the status to inbox
      * @param taskName Name for the task
      */
     Task(String taskName) {
         name = taskName;
         tags = new ArrayList<String>();
+        status = TaskStatus.Inbox;
     }
 
+    /**
+     * Returns the status of the task, e.g. Inbox, Next etc.
+     * @return The status
+     */
+    TaskStatus getStatus() {
+        return status;
+    }
+
+    /**
+     * Changes the status of the task
+     * @param newStatus the new value of the status of this task
+     */
+    void changeStatus(TaskStatus newStatus) {
+        status = newStatus;
+    }
     /**
      * Adds a new tag to the task
      * @param newTag The tag to be added
