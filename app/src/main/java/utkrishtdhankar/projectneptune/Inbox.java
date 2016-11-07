@@ -44,6 +44,16 @@ public class Inbox extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inbox);
+        //Setting the main layout
+        // Create a new fragment and specify the planet to show based on position
+        Fragment fragment = new InboxFragment();
+
+
+        // Insert the fragment by replacing view of FrameLayout in activity_inbox
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_frame,fragment).commit();
+
+
         menuItems = getResources().getStringArray(R.array.menuItems);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
@@ -72,24 +82,26 @@ public class Inbox extends AppCompatActivity {
         // Set the adapter for the list view
         mDrawerList.setAdapter(new ArrayAdapter<String>(this,
                 R.layout.drawer_list_item, menuItems));
+        // Set the list's click listener
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
         // Set the drawer toggle as the DrawerListener
         mDrawerLayout.addDrawerListener(mDrawerToggle);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        databaseHelper = new DatabaseHelper(getApplicationContext());
-        mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        mRecyclerView.setHasFixedSize(true);
-        // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        myDataset = databaseHelper.getAllTasks();
-        // specifying the adapter (MyAdapter class)
-        mAdapter = new MyAdapter(myDataset);
-        mRecyclerView.setAdapter(mAdapter);
+//        databaseHelper = new DatabaseHelper(getApplicationContext());
+//        mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+//        // use this setting to improve performance if you know that changes
+//        // in content do not change the layout size of the RecyclerView
+//        mRecyclerView.setHasFixedSize(true);
+//        // use a linear layout manager
+//        mLayoutManager = new LinearLayoutManager(this);
+//        mRecyclerView.setLayoutManager(mLayoutManager);
+//        myDataset = databaseHelper.getAllTasks();
+//        // specifying the adapter (MyAdapter class)
+//        mAdapter = new MyAdapter(myDataset);
+//        mRecyclerView.setAdapter(mAdapter);
 
         Log.d("Inbox.java","WE REACHED THIS POINT");
     }
@@ -120,28 +132,28 @@ public class Inbox extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-//    private class DrawerItemClickListener implements ListView.OnItemClickListener {
-//        @Override
-//        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//            selectItem(position);
-//        }
-//    }
+    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            selectItem(position);
+        }
+    }
 
-//    /** Swaps fragments in the main content view */
-//    private void selectItem(int position) {
-//        // Create a new fragment and specify the planet to show based on position
-//        Fragment fragment = new Settings();
-//
-//
-//        // Insert the fragment by replacing any existing fragment
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//        fragmentManager.beginTransaction().replace(R.id.content_frame,fragment).commit();
-//
-//        // Highlight the selected item, update the title, and close the drawer
-//        mDrawerList.setItemChecked(position, true);
-//        setTitle(menuItems[position]);
-//        mDrawerLayout.closeDrawer(mDrawerList);
-//    }
+    /** Swaps fragments in the main content view */
+    private void selectItem(int position) {
+        // Create a new fragment and specify the planet to show based on position
+        Fragment fragment = new Settings();
+
+
+        // Insert the fragment by replacing any existing fragment
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_frame,fragment).commit();
+
+        // Highlight the selected item, update the title, and close the drawer
+        mDrawerList.setItemChecked(position, true);
+        setTitle(menuItems[position]);
+        mDrawerLayout.closeDrawer(mDrawerList);
+    }
 
 
 

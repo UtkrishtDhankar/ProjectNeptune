@@ -5,6 +5,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,6 +75,20 @@ public class InputDialog extends DialogFragment implements View.OnClickListener 
         Task newTask = new Task(newTaskName);
 
         databaseHelper.addTask(newTask);
+
+//        InboxFragment frag = InboxFragment.newInstance();
+//        FragmentTransaction ft = getFragmentManager().beginTransaction();
+//        ft.replace(R.id.main, frag);
+//        ft.addToBackStack(null);
+//        ft.commit();
+
+
+        //Reloading the fragment so that values from tables are updated
+        //HOME fragment is opened
+        Fragment fragment = new InboxFragment();
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_frame,fragment).addToBackStack(null).commit();
+
         dismiss();
     }
 }
