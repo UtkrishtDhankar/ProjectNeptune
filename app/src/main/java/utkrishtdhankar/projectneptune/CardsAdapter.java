@@ -1,6 +1,5 @@
 package utkrishtdhankar.projectneptune;
 
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,12 +7,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Shreyak Kumar on 28-10-2016.
  */
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
+public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> {
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -27,17 +25,16 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             mTextView = (TextView) v.findViewById(R.id.info_text);
         }
     }
-    //TODO work with array lists instead of string sets
     //Constructor Accepting the data
     private ArrayList<Task> mDataset;
-    public MyAdapter(ArrayList<Task> myDataset) {
+    public CardsAdapter(ArrayList<Task> myDataset) {
         this.mDataset = myDataset;
     }
 
     // Create new views (invoked by the layout manager)
     @Override
-    public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                   int viewType) {
+    public CardsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+                                                      int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.card_layout, parent, false);

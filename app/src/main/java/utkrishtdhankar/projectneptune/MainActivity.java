@@ -2,20 +2,16 @@ package utkrishtdhankar.projectneptune;
 
 import android.content.res.Configuration;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 
 import android.support.v7.widget.RecyclerView;
 import android.widget.ListView;
@@ -23,7 +19,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 
-public class Inbox extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
     public DatabaseHelper databaseHelper;
 
@@ -43,13 +39,13 @@ public class Inbox extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_inbox);
+        setContentView(R.layout.main_activity);
         //Setting the main layout
         // Create a new fragment and specify the planet to show based on position
         Fragment fragment = new InboxFragment();
 
 
-        // Insert the fragment by replacing view of FrameLayout in activity_inbox
+        // Insert the fragment by replacing view of FrameLayout in main_activity
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame,fragment).commit();
 
@@ -99,11 +95,11 @@ public class Inbox extends AppCompatActivity {
 //        mLayoutManager = new LinearLayoutManager(this);
 //        mRecyclerView.setLayoutManager(mLayoutManager);
 //        myDataset = databaseHelper.getAllTasks();
-//        // specifying the adapter (MyAdapter class)
-//        mAdapter = new MyAdapter(myDataset);
+//        // specifying the adapter (CardsAdapter class)
+//        mAdapter = new CardsAdapter(myDataset);
 //        mRecyclerView.setAdapter(mAdapter);
 
-        Log.d("Inbox.java","WE REACHED THIS POINT");
+        Log.d("MainActivity.java","WE REACHED THIS POINT");
     }
 
 
@@ -142,7 +138,7 @@ public class Inbox extends AppCompatActivity {
     /** Swaps fragments in the main content view */
     private void selectItem(int position) {
         // Create a new fragment and specify the planet to show based on position
-        Fragment fragment = new Settings();
+        Fragment fragment = new SettingsFragment();
 
 
         // Insert the fragment by replacing any existing fragment
@@ -159,8 +155,8 @@ public class Inbox extends AppCompatActivity {
 
     public void onFABPress(View view) {
         FragmentManager fm = getSupportFragmentManager();
-        InputDialog inputDialog = InputDialog.newInstance("Some Title",getApplicationContext());
-        inputDialog.show(fm, "fragment_edit_name");
+        InputFragment inputFragment = InputFragment.newInstance("Some Title",getApplicationContext());
+        inputFragment.show(fm, "fragment_edit_name");
     }
 
 }
