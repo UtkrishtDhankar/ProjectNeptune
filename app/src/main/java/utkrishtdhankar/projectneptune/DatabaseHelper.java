@@ -36,7 +36,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                 "CREATE TABLE %s (" +
                         "%s INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         "%s TEXT, " +
-                        "%s TEXT)",
+                        "%s TEXT);",
                 INBOX_TABLE_NAME, INBOX_KEY_ID, INBOX_KEY_NAME, INBOX_KEY_STATUS);
         db.execSQL(createInboxQuery);
 
@@ -44,9 +44,9 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                 "CREATE TABLE %s (" +
                         "%s INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         "%s TEXT, " +
-                        "FOREIGN KEY(%s) REFERENCES %s(%s))",
+                        "%s INTEGER);",
                 CONTEXTS_TABLE_NAME, CONTEXTS_KEY_ID, CONTEXTS_KEY_NAME,
-                CONTEXTS_KEY_TASK_ID, INBOX_TABLE_NAME, INBOX_KEY_ID);
+                CONTEXTS_KEY_TASK_ID);
         db.execSQL(createContextsQuery);
     }
 
