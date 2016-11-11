@@ -22,6 +22,19 @@
         android:inputType="text"
         android:paddingTop="20sp" />
 
+    <TextView
+        android:id="@+id/textView3"
+        android:text="Enter Context :"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/contextEditText"
+        android:layout_width="150sp"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:paddingTop="20sp" />
+
     <Button
         android:text="Add"
         android:layout_width="100sp"

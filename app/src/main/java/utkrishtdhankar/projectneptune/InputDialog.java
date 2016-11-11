@@ -20,6 +20,7 @@ public class InputDialog extends DialogFragment implements View.OnClickListener 
 
     DatabaseHelper databaseHelper ;
     private EditText mEditText;
+    private EditText cEditText;
     private Button mAddButton;
    // private static Context localContext;
 
@@ -52,6 +53,7 @@ public class InputDialog extends DialogFragment implements View.OnClickListener 
         super.onViewCreated(view, savedInstanceState);
         // Get field from view
         mEditText = (EditText) view.findViewById(R.id.addTextInput);
+        cEditText = (EditText) view.findViewById(R.id.contextEditText);
         mAddButton = (Button) view.findViewById(R.id.addTaskbutton) ;
         mAddButton.setOnClickListener(this);
         databaseHelper = new DatabaseHelper(getActivity());
@@ -69,8 +71,10 @@ public class InputDialog extends DialogFragment implements View.OnClickListener 
     @Override
     public void onClick(View v) {
         String newTaskName = mEditText.getText().toString();
+        String newContextName = cEditText.getText().toString();
         Task newTask = new Task(newTaskName);
-
+        TaskContext taskContext = new TaskContext(newContextName);
+        newTask.addContext(taskContext);
         databaseHelper.addTask(newTask);
         dismiss();
     }
