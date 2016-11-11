@@ -79,7 +79,6 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
         Fragment fragment = new InboxFragment();
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame,fragment).addToBackStack(null).commit();
-
         //Closes the pop-up
         dismiss();
     }
