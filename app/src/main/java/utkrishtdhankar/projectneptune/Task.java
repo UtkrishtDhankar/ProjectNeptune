@@ -11,7 +11,7 @@ public class Task {
     private String name;
 
     // The contexts list for this task
-    private ArrayList<String> contexts;
+    private ArrayList<TaskContext> contexts;
 
     // What is the status of the task, e.g. Next, Waiting etc.
     private TaskStatus status;
@@ -23,7 +23,7 @@ public class Task {
      */
     Task(String taskName) {
         name = taskName;
-        contexts = new ArrayList<String>();
+        contexts = new ArrayList<TaskContext>();
         status = TaskStatus.Inbox;
     }
 
@@ -47,8 +47,8 @@ public class Task {
      * Adds a new context to the task
      * @param newContext The context to be added
      */
-    public void addContext(String newContext) {
-        if (!newContext.isEmpty() && !contexts.contains(newContext)) {
+    public void addContext(TaskContext newContext) {
+        if (newContext != null && !contexts.contains(newContext)) {
             contexts.add(newContext);
         }
     }
@@ -58,7 +58,7 @@ public class Task {
      * If the given tag exists, it will be removed.
      * @param contextToBeRemoved The tag that will be searched for and removed
      */
-    public void removeTag(String contextToBeRemoved) {
+    public void removeTag(TaskContext contextToBeRemoved) {
         // remove all contexts which are the same as tagToBeRemoved
         contexts.removeAll(Collections.singleton(contextToBeRemoved));
     }
@@ -67,7 +67,7 @@ public class Task {
      * Returns all the contexts associated with this task
      * @return an array of all the contexts
      */
-    public ArrayList<String> getAllContexts() {
+    public ArrayList<TaskContext> getAllContexts() {
         return contexts;
     }
 

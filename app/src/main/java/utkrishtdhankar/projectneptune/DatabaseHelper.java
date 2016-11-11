@@ -66,11 +66,11 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         long newTaskId = db.insert(INBOX_TABLE_NAME, null, inboxValues);
 
-        ArrayList<String> contexts = task.getAllContexts();
-        for (String context : contexts) {
+        ArrayList<TaskContext> contexts = task.getAllContexts();
+        for (TaskContext context : contexts) {
             ContentValues contextsValues = new ContentValues();
 
-            contextsValues.put(CONTEXTS_KEY_NAME, context);
+            contextsValues.put(CONTEXTS_KEY_NAME, context.getName());
             contextsValues.put(CONTEXTS_KEY_TASK_ID, newTaskId);
             db.insert(CONTEXTS_TABLE_NAME, null, contextsValues);
         }
@@ -119,7 +119,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             }
 
             do {
-                task.addContext(contextsCursor.getString(contextsCursor.getColumnIndex(CONTEXTS_KEY_NAME)));
+                TaskContext newContext = new TaskContext(contextsCursor.getString(contextsCursor.getColumnIndex(CONTEXTS_KEY_NAME)));
+                task.addContext(newContext);
             } while (contextsCursor.moveToNext());
 
             contextsCursor.close();
@@ -169,7 +170,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         }
 
         do {
-            task.addContext(contextsCursor.getString(contextsCursor.getColumnIndex(CONTEXTS_KEY_NAME)));
+            TaskContext newContext = new TaskContext(contextsCursor.getString(contextsCursor.getColumnIndex(CONTEXTS_KEY_NAME)));
+            task.addContext(newContext);
         } while (contextsCursor.moveToNext());
 
 

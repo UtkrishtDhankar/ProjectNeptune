@@ -6,7 +6,7 @@ import android.graphics.Color;
  * Created by utkrishtdhankar on 11/11/16.
  */
 
-public class Context {
+public class TaskContext {
 
     private static final int defaultColor = Color.LTGRAY;
     private static final String defaultName = "context";
@@ -19,7 +19,7 @@ public class Context {
      * Default constructor
      * Sets all the things to their default values
      */
-    Context() {
+    TaskContext() {
         name = defaultName;
         color = defaultColor;
     }
@@ -29,7 +29,7 @@ public class Context {
      * Sets the color to default
      * @param contextName the name of the new context
      */
-    Context(String contextName) {
+    TaskContext(String contextName) {
         name = contextName;
         color = defaultColor;
     }
@@ -39,7 +39,7 @@ public class Context {
      * @param contextName the name of the new context
      * @param contextColor the color of the new context
      */
-    Context(String contextName, int contextColor) {
+    TaskContext(String contextName, int contextColor) {
         name = contextName;
         color = contextColor;
     }
