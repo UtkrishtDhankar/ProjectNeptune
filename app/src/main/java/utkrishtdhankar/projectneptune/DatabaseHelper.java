@@ -19,6 +19,12 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     private static final String INBOX_TABLE_NAME = "inbox";
     private static final String INBOX_KEY_ID = "id";
     private static final String INBOX_KEY_NAME = "name";
+    private static final String INBOX_KEY_STATUS = "status";
+
+    private static final String CONTEXTS_TABLE_NAME = "contexts";
+    private static final String CONTEXTS_KEY_ID = "id";
+    private static final String CONTEXTS_KEY_NAME = "name";
+    private static final String CONTEXTS_KEY_TASK_ID = "taskId";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -26,55 +32,109 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createQuery = String.format(
-                "CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT)",
-                INBOX_TABLE_NAME, INBOX_KEY_ID, INBOX_KEY_NAME);
-        db.execSQL(createQuery);
+        final String createInboxQuery = String.format(
+                "CREATE TABLE %s (" +
+                        "%s INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        "%s TEXT, " +
+                        "%s TEXT);",
+                INBOX_TABLE_NAME, INBOX_KEY_ID, INBOX_KEY_NAME, INBOX_KEY_STATUS);
+        db.execSQL(createInboxQuery);
+
+        final String createContextsQuery = String.format(
+                "CREATE TABLE %s (" +
+                        "%s INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        "%s TEXT, " +
+                        "%s INTEGER);",
+                CONTEXTS_TABLE_NAME, CONTEXTS_KEY_ID, CONTEXTS_KEY_NAME,
+                CONTEXTS_KEY_TASK_ID);
+        db.execSQL(createContextsQuery);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + INBOX_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + CONTEXTS_TABLE_NAME);
         onCreate(db);
     }
 
     void addTask(Task task) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        ContentValues values = new ContentValues();
-        values.put(INBOX_KEY_NAME, task.getName());
+        ContentValues inboxValues = new ContentValues();
+        inboxValues.put(INBOX_KEY_NAME, task.getName());
+        inboxValues.put(INBOX_KEY_STATUS, task.getStatus().name());
 
-        db.insert(INBOX_TABLE_NAME, null, values);
+        long newTaskId = db.insert(INBOX_TABLE_NAME, null, inboxValues);
+
+        ArrayList<TaskContext> contexts = task.getAllContexts();
+        for (TaskContext context : contexts) {
+            ContentValues contextsValues = new ContentValues();
+
+            contextsValues.put(CONTEXTS_KEY_NAME, context.getName());
+            contextsValues.put(CONTEXTS_KEY_TASK_ID, newTaskId);
+            db.insert(CONTEXTS_TABLE_NAME, null, contextsValues);
+        }
+
         db.close();
     }
 
     ArrayList<Task> getAllTasks() {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.query(
+        Cursor inboxCursor = db.query(
                 INBOX_TABLE_NAME,
-                new String[] {INBOX_KEY_NAME},
+                new String[] {INBOX_KEY_ID, INBOX_KEY_NAME, INBOX_KEY_STATUS},
                 null, null, null, null, null, null);
 
         ArrayList<Task> tasks = new ArrayList<Task> ();
 
         // TODO replace these return nulls with exceptions
-        if (cursor != null && cursor.getCount() > 0)
-            cursor.moveToFirst();
+        if (inboxCursor != null && inboxCursor.getCount() > 0)
+            inboxCursor.moveToFirst();
         else
             return null;
 
         do {
-            tasks.add(new Task(cursor.getString(cursor.getColumnIndex(INBOX_KEY_NAME))));
-        } while (cursor.moveToNext());
+            long taskId = inboxCursor.getLong(inboxCursor.getColumnIndex(INBOX_KEY_ID));
 
+            Task task = new Task(inboxCursor.getString(inboxCursor.getColumnIndex(INBOX_KEY_NAME)));
+            task.changeStatus(
+                    TaskStatus.valueOf(inboxCursor.getString(inboxCursor.getColumnIndex(INBOX_KEY_STATUS))));
+
+            Cursor contextsCursor = db.query(
+                    CONTEXTS_TABLE_NAME,
+                    new String[] {CONTEXTS_KEY_NAME},
+                    CONTEXTS_KEY_TASK_ID + "=?",
+                    new String[] {Long.toString(taskId)},
+                    null, null, null, null);
+
+            if (contextsCursor != null && contextsCursor.getCount() > 0) {
+                contextsCursor.moveToFirst();
+            } else {
+                // If we've not got any tags, then this is an untagged task
+                // We should move on
+                contextsCursor.close();
+                tasks.add(task);
+                continue;
+            }
+
+            do {
+                TaskContext newContext = new TaskContext(contextsCursor.getString(contextsCursor.getColumnIndex(CONTEXTS_KEY_NAME)));
+                task.addContext(newContext);
+            } while (contextsCursor.moveToNext());
+
+            contextsCursor.close();
+            tasks.add(task);
+        } while (inboxCursor.moveToNext());
+
+        inboxCursor.close();
         return tasks;
     }
 
     Task getTaskByID(long id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.query(
+        Cursor inboxCursor = db.query(
                 INBOX_TABLE_NAME,
                 new String[] {INBOX_KEY_NAME},
                 INBOX_KEY_ID + "=?",
@@ -82,16 +142,42 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                 null, null, null, null);
 
         // TODO replace these return nulls with exceptions
-        if (cursor != null && cursor.getCount() > 0)
-            cursor.moveToFirst();
+        if (inboxCursor != null && inboxCursor.getCount() > 0)
+            inboxCursor.moveToFirst();
         else
             return null;
 
-        Task task = new Task(cursor.getString(cursor.getColumnIndex(INBOX_KEY_NAME)));
+        Task task = new Task(inboxCursor.getString(inboxCursor.getColumnIndex(INBOX_KEY_NAME)));
+        task.changeStatus(
+                TaskStatus.valueOf(inboxCursor.getString(inboxCursor.getColumnIndex(INBOX_KEY_STATUS))));
+
+        Cursor contextsCursor = db.query(
+                CONTEXTS_TABLE_NAME,
+                new String[] {CONTEXTS_KEY_NAME},
+                CONTEXTS_KEY_TASK_ID + "=?",
+                new String[] {Long.toString(id)},
+                null, null, null, null);
+
+        if (contextsCursor != null && contextsCursor.getCount() > 0) {
+            contextsCursor.moveToFirst();
+        } else {
+            // If we've not got any tags, then this is an untagged task
+            // We should move on
+            inboxCursor.close();
+            contextsCursor.close();
+            db.close();
+            return task;
+        }
+
+        do {
+            TaskContext newContext = new TaskContext(contextsCursor.getString(contextsCursor.getColumnIndex(CONTEXTS_KEY_NAME)));
+            task.addContext(newContext);
+        } while (contextsCursor.moveToNext());
+
 
         Log.d("DatabaseHelper", String.format("Fetched task with name: %s", task.getName()));
 
-        cursor.close();
+        inboxCursor.close();
         db.close();
 
         return task;

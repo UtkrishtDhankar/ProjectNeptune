@@ -21,10 +21,15 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public TextView mTextView;
+        public TextView statusView;
+        public TextView contextView;
+
         public ViewHolder(View v) {
             super(v);
             //Linking the TextView present in R.layout.card_layout
             mTextView = (TextView) v.findViewById(R.id.info_text);
+            statusView = (TextView) v.findViewById(R.id.status_text);
+            contextView = (TextView) v.findViewById(R.id.context_text);
         }
     }
     //TODO work with array lists instead of string sets
@@ -52,12 +57,21 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         // - get element from your dataset at this position
         // - replace the contents of the view (TextView) with that element's info
         holder.mTextView.setText(mDataset.get(position).getName());
+        holder.statusView.setText(mDataset.get(position).getStatus().name());
 
+        ArrayList<TaskContext> contexts = mDataset.get(position).getAllContexts();
+        if (!contexts.isEmpty()) {
+            holder.contextView.setText(contexts.get(0).getName());
+            holder.contextView.setTextColor(contexts.get(0).getColor());
+        }
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
+        if (mDataset != null)
             return mDataset.size();
+        else
+            return 0;
     }
 }
