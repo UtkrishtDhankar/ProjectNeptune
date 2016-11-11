@@ -49,11 +49,4 @@ public class InboxFragment extends Fragment {
         return baseLayoutView ;
     }
 
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.inbox_fragment);
-//
-//
-//    }
 }

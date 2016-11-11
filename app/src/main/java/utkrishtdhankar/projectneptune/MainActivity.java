@@ -2,6 +2,7 @@ package utkrishtdhankar.projectneptune;
 
 import android.content.res.Configuration;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.Fragment;
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     public static int navItemIndex = 0;
     private Handler mHandler;
     Fragment fragment;
+    FloatingActionButton fab;
     //-----------------
 
     //Navigation drawer titles
@@ -66,8 +68,6 @@ public class MainActivity extends AppCompatActivity {
         //Setting the main layout
         // Create a new fragment and specify the fragment to show based on position
         fragment = new InboxFragment();
-
-
         // Insert the fragment by replacing view of FrameLayout in main_activity
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame,fragment).commit();
@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
         navHeader = navigationView.getHeaderView(0);
         txtName = (TextView) navHeader.findViewById(R.id.name);
         txtWebsite = (TextView) navHeader.findViewById(R.id.website);
+        fab = (FloatingActionButton) findViewById(R.id.addButton);
 
         // load toolbar titles from string resources
         activityTitles = getResources().getStringArray(R.array.nav_item_activity_titles);
@@ -87,51 +88,6 @@ public class MainActivity extends AppCompatActivity {
 
         // initializing navigation menu
         setUpNavigationView();
-
-        //TODO probably delete this
-//        mDrawerToggle = new ActionBarDrawerToggle(
-//                this,                  /* host Activity */
-//                drawer,         /* DrawerLayout object */
-//                R.string.drawer_open,  /* "open drawer" description */
-//                R.string.drawer_close  /* "close drawer" description */
-//        ) {
-//
-//            /** Called when a drawer has settled in a completely closed state. */
-//            public void onDrawerClosed(View view) {
-//                super.onDrawerClosed(view);
-//                getSupportActionBar().setTitle(R.string.app_name);
-//            }
-//
-//            /** Called when a drawer has settled in a completely open state. */
-//            public void onDrawerOpened(View drawerView) {
-//                super.onDrawerOpened(drawerView);
-//                getSupportActionBar().setTitle(R.string.app_name);
-//            }
-//        };
-
-
-//        // Set the adapter for the list view
-//        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-//                R.layout.drawer_list_item, menuItems));
-//        // Set the list's click listener
-//        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-        // Set the drawer toggle as the DrawerListener
-        //drawer.addDrawerListener(mDrawerToggle);
-
-
-
-//        databaseHelper = new DatabaseHelper(getApplicationContext());
-//        mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
-//        // use this setting to improve performance if you know that changes
-//        // in content do not change the layout size of the RecyclerView
-//        mRecyclerView.setHasFixedSize(true);
-//        // use a linear layout manager
-//        mLayoutManager = new LinearLayoutManager(this);
-//        mRecyclerView.setLayoutManager(mLayoutManager);
-//        myDataset = databaseHelper.getAllTasks();
-//        // specifying the adapter (CardsAdapter class)
-//        mAdapter = new CardsAdapter(myDataset);
-//        mRecyclerView.setAdapter(mAdapter);
         Log.d("MainActivity.java","WE REACHED THIS POINT");
     }
 
@@ -159,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
                         fragment = new SettingsFragment();
                         break;
                 }
+
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.content_frame,fragment).commit();
 
@@ -172,12 +129,9 @@ public class MainActivity extends AppCompatActivity {
 
                 loadHomeFragment();
 
-
-
                 return true;
             }
         });
-
 
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.openDrawer, R.string.closeDrawer) {
 
@@ -209,14 +163,6 @@ public class MainActivity extends AppCompatActivity {
         //set Tool Bar title
         getSupportActionBar().setTitle(activityTitles[navItemIndex]);
 
-        // if user select the current navigation menu again, don't do anything
-        // just close the navigation drawer
-        //TODO if something goes wrong check this
-//        if (getSupportFragmentManager().findFragmentByTag(CURRENT_TAG) != null) {
-//            drawer.closeDrawers();
-//            return ;
-//        }
-
         // Sometimes, when fragment has huge data, screen seems hanging
         // when switching between navigation menus
         // So using runnable, the fragment is loaded with cross fade effect
@@ -225,15 +171,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 // update the main content by replacing fragments
-//                Fragment fragment = getHomeFragment();
-//                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-//                fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
-//                        android.R.anim.fade_out);
-//                fragmentTransaction.replace(R.id.frame, fragment, CURRENT_TAG);
-//                fragmentTransaction.commitAllowingStateLoss();
                 // Create a new fragment and specify the fragment to show based on position
                 Fragment fragment = getHomeFragment();
-
 
                 // Insert the fragment by replacing view of FrameLayout in main_activity
                 FragmentManager fragmentManager = getSupportFragmentManager();
@@ -241,10 +180,8 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        // If mPendingRunnable is not null, then add to the message queue
-//        if (mPendingRunnable != null) {
-//            mHandler.post(mPendingRunnable);
-//        }
+        toggleFab();
+
         //Closing drawer on item click
         drawer.closeDrawers();
 
@@ -270,44 +207,11 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void loadNavHeader() {
-        // name, website
+        // name, email
         txtName.setText("Shreyak Kumar");
         txtWebsite.setText("kumarshreyak@gmail.com");
     }
 
-    //TODO probably delete this later
-//    @Override
-//    protected void onPostCreate(Bundle savedInstanceState) {
-//        super.onPostCreate(savedInstanceState);
-//        // Sync the toggle state after onRestoreInstanceState has occurred.
-//        mDrawerToggle.syncState();
-//    }
-//
-//    @Override
-//    public void onConfigurationChanged(Configuration newConfig) {
-//        super.onConfigurationChanged(newConfig);
-//        mDrawerToggle.onConfigurationChanged(newConfig);
-//    }
-
-    //TODO probably delete this
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Pass the event to ActionBarDrawerToggle, if it returns
-//        // true, then it has handled the app icon touch event
-//        if (mDrawerToggle.onOptionsItemSelected(item)) {
-//            return true;
-//        }
-//        // Handle your other action bar items...
-//
-//        return super.onOptionsItemSelected(item);
-//    }
-//
-//    private class DrawerItemClickListener implements ListView.OnItemClickListener {
-//        @Override
-//        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//            selectItem(position);
-//        }
-//    }
 
     /** Swaps fragments in the main content view */
     private void selectItem(int position) {
@@ -339,6 +243,14 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fm = getSupportFragmentManager();
         InputFragment inputFragment = InputFragment.newInstance("Some Title",getApplicationContext());
         inputFragment.show(fm, "fragment_edit_name");
+    }
+
+    // show or hide the fab
+    private void toggleFab() {
+        if (navItemIndex == 0)
+            fab.show();
+        else
+            fab.hide();
     }
 
 }
