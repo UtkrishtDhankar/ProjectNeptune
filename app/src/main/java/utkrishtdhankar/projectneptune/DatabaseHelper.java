@@ -16,10 +16,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "projectNeptune";
 
-    private static final String INBOX_TABLE_NAME = "inbox";
-    private static final String INBOX_KEY_ID = "id";
-    private static final String INBOX_KEY_NAME = "name";
-    private static final String INBOX_KEY_STATUS = "status";
+    private static final String TASKS_TABLE_NAME = "tasks";
+    private static final String TASKS_KEY_ID = "id";
+    private static final String TASKS_KEY_NAME = "name";
+    private static final String TASKS_KEY_STATUS = "status";
 
     private static final String CONTEXTS_TABLE_NAME = "contexts";
     private static final String CONTEXTS_KEY_ID = "id";
@@ -37,22 +37,20 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                         "%s INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         "%s TEXT, " +
                         "%s TEXT);",
-                INBOX_TABLE_NAME, INBOX_KEY_ID, INBOX_KEY_NAME, INBOX_KEY_STATUS);
+                TASKS_TABLE_NAME, TASKS_KEY_ID, TASKS_KEY_NAME, TASKS_KEY_STATUS);
         db.execSQL(createInboxQuery);
 
         final String createContextsQuery = String.format(
                 "CREATE TABLE %s (" +
                         "%s INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        "%s TEXT, " +
-                        "%s INTEGER);",
-                CONTEXTS_TABLE_NAME, CONTEXTS_KEY_ID, CONTEXTS_KEY_NAME,
-                CONTEXTS_KEY_TASK_ID);
+                        "%s TEXT);",
+                CONTEXTS_TABLE_NAME, CONTEXTS_KEY_ID, CONTEXTS_KEY_NAME);
         db.execSQL(createContextsQuery);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + INBOX_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + TASKS_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + CONTEXTS_TABLE_NAME);
         onCreate(db);
     }
@@ -61,10 +59,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues inboxValues = new ContentValues();
-        inboxValues.put(INBOX_KEY_NAME, task.getName());
-        inboxValues.put(INBOX_KEY_STATUS, task.getStatus().name());
+        inboxValues.put(TASKS_KEY_NAME, task.getName());
+        inboxValues.put(TASKS_KEY_STATUS, task.getStatus().name());
 
-        long newTaskId = db.insert(INBOX_TABLE_NAME, null, inboxValues);
+        long newTaskId = db.insert(TASKS_TABLE_NAME, null, inboxValues);
 
         ArrayList<TaskContext> contexts = task.getAllContexts();
         for (TaskContext context : contexts) {
@@ -82,8 +80,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor inboxCursor = db.query(
-                INBOX_TABLE_NAME,
-                new String[] {INBOX_KEY_ID, INBOX_KEY_NAME, INBOX_KEY_STATUS},
+                TASKS_TABLE_NAME,
+                new String[] {TASKS_KEY_ID, TASKS_KEY_NAME, TASKS_KEY_STATUS},
                 null, null, null, null, null, null);
 
         ArrayList<Task> tasks = new ArrayList<Task> ();
@@ -95,11 +93,11 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             return null;
 
         do {
-            long taskId = inboxCursor.getLong(inboxCursor.getColumnIndex(INBOX_KEY_ID));
+            long taskId = inboxCursor.getLong(inboxCursor.getColumnIndex(TASKS_KEY_ID));
 
-            Task task = new Task(inboxCursor.getString(inboxCursor.getColumnIndex(INBOX_KEY_NAME)));
+            Task task = new Task(inboxCursor.getString(inboxCursor.getColumnIndex(TASKS_KEY_NAME)));
             task.changeStatus(
-                    TaskStatus.valueOf(inboxCursor.getString(inboxCursor.getColumnIndex(INBOX_KEY_STATUS))));
+                    TaskStatus.valueOf(inboxCursor.getString(inboxCursor.getColumnIndex(TASKS_KEY_STATUS))));
 
             Cursor contextsCursor = db.query(
                     CONTEXTS_TABLE_NAME,
@@ -135,9 +133,9 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor inboxCursor = db.query(
-                INBOX_TABLE_NAME,
-                new String[] {INBOX_KEY_NAME},
-                INBOX_KEY_ID + "=?",
+                TASKS_TABLE_NAME,
+                new String[] {TASKS_KEY_NAME},
+                TASKS_KEY_ID + "=?",
                 new String[] {Long.toString(id)},
                 null, null, null, null);
 
@@ -147,9 +145,9 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         else
             return null;
 
-        Task task = new Task(inboxCursor.getString(inboxCursor.getColumnIndex(INBOX_KEY_NAME)));
+        Task task = new Task(inboxCursor.getString(inboxCursor.getColumnIndex(TASKS_KEY_NAME)));
         task.changeStatus(
-                TaskStatus.valueOf(inboxCursor.getString(inboxCursor.getColumnIndex(INBOX_KEY_STATUS))));
+                TaskStatus.valueOf(inboxCursor.getString(inboxCursor.getColumnIndex(TASKS_KEY_STATUS))));
 
         Cursor contextsCursor = db.query(
                 CONTEXTS_TABLE_NAME,
