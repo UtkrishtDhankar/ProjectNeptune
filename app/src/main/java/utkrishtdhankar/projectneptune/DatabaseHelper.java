@@ -113,6 +113,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             } else {
                 // If we've not got any tags, then this is an untagged task
                 // We should move on
+                contextsCursor.close();
+                tasks.add(task);
                 continue;
             }
 
