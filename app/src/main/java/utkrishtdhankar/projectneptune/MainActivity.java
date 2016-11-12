@@ -107,8 +107,13 @@ public class MainActivity extends AppCompatActivity {
                         fragment = new InboxFragment();
                         break;
 
-                    case R.id.nav_settings:
+                    case R.id.nav_context:
                         navItemIndex = 1;
+                        fragment = new ContextsFragment();
+                        break;
+
+                    case R.id.nav_settings:
+                        navItemIndex = 2;
                         fragment = new SettingsFragment();
                         break;
                 }
@@ -233,7 +238,7 @@ public class MainActivity extends AppCompatActivity {
                 fragment = new SettingsFragment();
                 break;
         }
-        //Fragment fragment = new SettingsFragment();
+
         // Insert the fragment by replacing any existing fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame,fragment).commit();
