@@ -150,42 +150,40 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     }
 
     /**
-     * @param taskId The id of the task for which the contexts are needed
-     * @return A list of all the contexts of the task
+     * @param taskId The id to search for
+     * @return The task, if found. Otherwise, returns null
      */
-    private ArrayList<TaskContext> getAllContextsForTask(long taskId) {
+    public Task getTaskById(long taskId) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        ArrayList<TaskContext> contexts = new ArrayList<TaskContext>();
+        // Get a cursor pointing to this task
+        Cursor tasksCursor = db.query(
+                TASKS_TABLE_NAME,
+                new String[]{TASKS_KEY_ID, TASKS_KEY_NAME, TASKS_KEY_STATUS},
+                TASKS_KEY_ID + "=?",
+                new String[]{Long.toString(taskId)},
+                null, null, null, null);
 
-        // Defining the query to get the contexts from the task
-        String contextQuery = String.format(
-                "SELECT %s FROM %s LEFT JOIN %s " +
-                        "ON %s.%s = %s.%s " +
-                        "WHERE %s.%s = %s",
-                CONTEXTS_KEY_NAME, CONTEXTS_TABLE_NAME, TASKS_CONTEXTS_JUNCTION_TABLE_NAME,
-                TASKS_CONTEXTS_JUNCTION_TABLE_NAME, TASKS_CONTEXTS_JUNCTION_KEY_CONTEXT_ID, CONTEXTS_TABLE_NAME, CONTEXTS_KEY_ID,
-                TASKS_CONTEXTS_JUNCTION_TABLE_NAME, TASKS_CONTEXTS_JUNCTION_KEY_TASK_ID, Long.toString(taskId));
-
-        // Run the query
-        Cursor contextsCursor = db.rawQuery(contextQuery, null);
-        try {
-            contextsCursor.moveToFirst();
-
-            // Add all the contexts to the task
-            do {
-                TaskContext newContext = new TaskContext(
-                        contextsCursor.getString(contextsCursor.getColumnIndex(CONTEXTS_KEY_NAME)));
-                contexts.add(newContext);
-            } while (contextsCursor.moveToNext());
-        } catch(CursorIndexOutOfBoundsException exception) {
-            // Do nothing. This is probably caused by the contextsCursor being empty.
-            // TODO maybe make this a little more robust? Use a custom exception?
-        } finally {
-            contextsCursor.close();
+        // TODO replace these return nulls with exceptions
+        if (tasksCursor != null && tasksCursor.getCount() > 0) {
+            tasksCursor.moveToFirst();
+        } else {
+            tasksCursor.close();
+            return null;
         }
 
-        return contexts;
+        // Store the task name and status
+        Task task = new Task(tasksCursor.getString(tasksCursor.getColumnIndex(TASKS_KEY_NAME)));
+        task.changeStatus(
+                TaskStatus.valueOf(tasksCursor.getString(tasksCursor.getColumnIndex(TASKS_KEY_STATUS))));
+
+        // Add all the contexts to the task
+        ArrayList<TaskContext> contexts = getAllContextsForTask(taskId);
+        for (TaskContext context : contexts) {
+            task.addContext(context);
+        }
+
+        return task;
     }
 
     /**
@@ -229,5 +227,44 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         // Close the inbox cursor and we're done
         inboxCursor.close();
         return tasks;
+    }
+
+    /**
+     * @param taskId The id of the task for which the contexts are needed
+     * @return A list of all the contexts of the task
+     */
+    private ArrayList<TaskContext> getAllContextsForTask(long taskId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        ArrayList<TaskContext> contexts = new ArrayList<TaskContext>();
+
+        // Defining the query to get the contexts from the task
+        String contextQuery = String.format(
+                "SELECT %s FROM %s LEFT JOIN %s " +
+                        "ON %s.%s = %s.%s " +
+                        "WHERE %s.%s = %s",
+                CONTEXTS_KEY_NAME, CONTEXTS_TABLE_NAME, TASKS_CONTEXTS_JUNCTION_TABLE_NAME,
+                TASKS_CONTEXTS_JUNCTION_TABLE_NAME, TASKS_CONTEXTS_JUNCTION_KEY_CONTEXT_ID, CONTEXTS_TABLE_NAME, CONTEXTS_KEY_ID,
+                TASKS_CONTEXTS_JUNCTION_TABLE_NAME, TASKS_CONTEXTS_JUNCTION_KEY_TASK_ID, Long.toString(taskId));
+
+        // Run the query
+        Cursor contextsCursor = db.rawQuery(contextQuery, null);
+        try {
+            contextsCursor.moveToFirst();
+
+            // Add all the contexts to the task
+            do {
+                TaskContext newContext = new TaskContext(
+                        contextsCursor.getString(contextsCursor.getColumnIndex(CONTEXTS_KEY_NAME)));
+                contexts.add(newContext);
+            } while (contextsCursor.moveToNext());
+        } catch(CursorIndexOutOfBoundsException exception) {
+            // Do nothing. This is probably caused by the contextsCursor being empty.
+            // TODO maybe make this a little more robust? Use a custom exception?
+        } finally {
+            contextsCursor.close();
+        }
+
+        return contexts;
     }
 }
