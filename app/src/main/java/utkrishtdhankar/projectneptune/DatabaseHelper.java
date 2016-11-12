@@ -280,6 +280,19 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     }
 
     /**
+     * Adds a new context to the contexts table
+     * @param context The context to be added
+     */
+    public void addContext(TaskContext context) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues contextValues = new ContentValues();
+        contextValues.put(CONTEXTS_KEY_NAME, context.getName());
+
+        db.insert(CONTEXTS_TABLE_NAME, null, contextValues);
+    }
+
+    /**
      * @param taskId The id of the task for which the contexts are needed
      * @return A list of all the contexts of the task
      */
