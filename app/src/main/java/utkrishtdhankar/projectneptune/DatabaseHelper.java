@@ -109,7 +109,6 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         inboxValues.put(TASKS_KEY_STATUS, task.getStatus().name());
 
         // Insert the task into the database and get it's id
-        long newTaskId = db.insert(INBOX_TABLE_NAME, null, inboxValues);
         long newTaskId = db.insert(TASKS_TABLE_NAME, null, inboxValues);
 
         // Add all of the task's contexts into the database as well
@@ -207,62 +206,5 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         inboxCursor.close();
         return tasks;
-    }
-
-    /**
-     * Finds a task by it's id and returns it
-     * @param id the thing to search for
-     * @return the task
-     */
-    Task getTaskByID(long id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor inboxCursor = db.query(
-                INBOX_TABLE_NAME,
-                new String[] {INBOX_KEY_NAME},
-                INBOX_KEY_ID + "=?",
-                new String[] {Long.toString(id)},
-                null, null, null, null);
-
-        // TODO replace these return nulls with exceptions
-        if (inboxCursor != null && inboxCursor.getCount() > 0)
-            inboxCursor.moveToFirst();
-        else
-            return null;
-
-        Task task = new Task(inboxCursor.getString(inboxCursor.getColumnIndex(INBOX_KEY_NAME)));
-        task.changeStatus(
-                TaskStatus.valueOf(inboxCursor.getString(inboxCursor.getColumnIndex(INBOX_KEY_STATUS))));
-
-        Cursor contextsCursor = db.query(
-                CONTEXTS_TABLE_NAME,
-                new String[] {CONTEXTS_KEY_NAME},
-                CONTEXTS_KEY_TASK_ID + "=?",
-                new String[] {Long.toString(id)},
-                null, null, null, null);
-
-        if (contextsCursor != null && contextsCursor.getCount() > 0) {
-            contextsCursor.moveToFirst();
-        } else {
-            // If we've not got any tags, then this is an untagged task
-            // We should move on
-            inboxCursor.close();
-            contextsCursor.close();
-            db.close();
-            return task;
-        }
-
-        do {
-            TaskContext newContext = new TaskContext(contextsCursor.getString(contextsCursor.getColumnIndex(CONTEXTS_KEY_NAME)));
-            task.addContext(newContext);
-        } while (contextsCursor.moveToNext());
-
-
-        Log.d("DatabaseHelper", String.format("Fetched task with name: %s", task.getName()));
-
-        inboxCursor.close();
-        db.close();
-
-        return task;
     }
 }
