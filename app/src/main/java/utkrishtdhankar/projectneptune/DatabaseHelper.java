@@ -192,14 +192,15 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     public ArrayList<Task> getAllTasks() {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor inboxCursor = db.query(
+        // This gets _all_ the tasks
+        Cursor tasksCursor = db.query(
                 TASKS_TABLE_NAME,
                 new String[] {TASKS_KEY_ID, TASKS_KEY_NAME, TASKS_KEY_STATUS},
                 null, null, null, null, null, null);
 
         // TODO replace these return nulls with exceptions
-        if (inboxCursor != null && inboxCursor.getCount() > 0)
-            inboxCursor.moveToFirst();
+        if (tasksCursor != null && tasksCursor.getCount() > 0)
+            tasksCursor.moveToFirst();
         else
             return null;
 
@@ -208,12 +209,12 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         // Keep adding tasks to the list until we run out of tasks to add
         do {
             // Get the task's id
-            long taskId = inboxCursor.getLong(inboxCursor.getColumnIndex(TASKS_KEY_ID));
+            long taskId = tasksCursor.getLong(tasksCursor.getColumnIndex(TASKS_KEY_ID));
 
             // Store the task name and status
-            Task task = new Task(inboxCursor.getString(inboxCursor.getColumnIndex(TASKS_KEY_NAME)));
+            Task task = new Task(tasksCursor.getString(tasksCursor.getColumnIndex(TASKS_KEY_NAME)));
             task.changeStatus(
-                    TaskStatus.valueOf(inboxCursor.getString(inboxCursor.getColumnIndex(TASKS_KEY_STATUS))));
+                    TaskStatus.valueOf(tasksCursor.getString(tasksCursor.getColumnIndex(TASKS_KEY_STATUS))));
 
             // Add all the contexts to the task
             ArrayList<TaskContext> contexts = getAllContextsForTask(taskId);
@@ -222,10 +223,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             }
 
             tasks.add(task);
-        } while (inboxCursor.moveToNext());
+        } while (tasksCursor.moveToNext());
 
         // Close the inbox cursor and we're done
-        inboxCursor.close();
+        tasksCursor.close();
         return tasks;
     }
 
