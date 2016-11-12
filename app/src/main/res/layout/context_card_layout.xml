@@ -19,7 +19,7 @@
         <TextView
             android:id="@+id/context_text"
             android:layout_width="match_parent"
-            android:text="WTF"
+            android:text="Damn"
             android:textSize="25sp"
             android:layout_height="wrap_content"
             android:paddingLeft="6sp" />
