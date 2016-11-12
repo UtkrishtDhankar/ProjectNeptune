@@ -18,4 +18,12 @@
         <item>Contexts</item>
         <item>Settings</item>
     </string-array>
+
+    <string-array name="color_titles">
+        <item>Red</item>
+        <item>Green</item>
+        <item>Blue</item>
+        <item>Black</item>
+        <item>Orange</item>
+    </string-array>
 </resources>

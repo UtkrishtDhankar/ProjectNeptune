@@ -21,6 +21,12 @@
         android:layout_height="wrap_content"
         android:inputType="text"
         android:paddingTop="20sp" />
+    <Spinner
+        android:id="@+id/color_spinner"
+        android:layout_width="150sp"
+        android:layout_height="40sp"
+        android:clipToPadding="true"
+        android:layout_marginTop="3sp" />
 
     <Button
         android:text="Add"
