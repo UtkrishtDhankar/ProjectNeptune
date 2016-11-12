@@ -1,5 +1,6 @@
 package utkrishtdhankar.projectneptune;
 
+import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,6 +18,7 @@ import android.widget.EditText;
  * Created by Shreyak Kumar on 28-10-2016.
  * This pops up to let the player enter/edit the task
  */
+
 public class InputFragment extends DialogFragment implements View.OnClickListener {
 
     // A reference to the database. Used when adding/editing tasks
@@ -27,6 +29,8 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
 
     // The button that is pressed when the user has added the thing
     private Button inboxAddButton;
+    private EditText cEditText;
+   // private static Context localContext;
 
     /**
      * Default constructor
@@ -82,6 +86,8 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
         inboxEditText = (EditText) view.findViewById(R.id.addTextInput);
         inboxAddButton = (Button) view.findViewById(R.id.addTaskbutton) ;
         inboxAddButton.setOnClickListener(this);
+        cEditText = (EditText) view.findViewById(R.id.contextEditText);
+
         databaseHelper = new DatabaseHelper(getActivity());
 
         // Fetch arguments from bundle and set title
@@ -102,9 +108,13 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
     public void onClick(View view) {
         // Fill out the new task
         String newTaskName = inboxEditText.getText().toString();
+        String newContextName = cEditText.getText().toString();
+
         Task newTask = new Task(newTaskName);
 
         // Add said task to the database
+        TaskContext taskContext = new TaskContext(newContextName);
+        newTask.addContext(taskContext);
         databaseHelper.addTask(newTask);
 
         //Reloading the fragment so that values from tables are updated
