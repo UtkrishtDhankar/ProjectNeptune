@@ -1,6 +1,7 @@
 package utkrishtdhankar.projectneptune;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -24,6 +25,7 @@ public class ContextInputFragment extends DialogFragment implements View.OnClick
 
     // The place where the user types in their task name
     private EditText contextEditText;
+    Spinner spinner;
 
     // The button that is pressed when the user has added the thing
     private Button contextAddButton;
@@ -80,7 +82,7 @@ public class ContextInputFragment extends DialogFragment implements View.OnClick
         super.onViewCreated(view, savedInstanceState);
 
 
-        Spinner spinner = (Spinner) view.findViewById(R.id.color_spinner);
+        spinner = (Spinner) view.findViewById(R.id.color_spinner);
 
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
@@ -115,19 +117,19 @@ public class ContextInputFragment extends DialogFragment implements View.OnClick
      */
     @Override
     public void onClick(View view) {
-        // Fill out the new task
-        String newTaskName = contextEditText.getText().toString();
-
-        Task newTask = new Task(newTaskName);
+        // Fill out the new context
+        String newContextName = contextEditText.getText().toString();
+        int newContextColor = Color.parseColor(spinner.getSelectedItem().toString());
+        TaskContext newTask = new TaskContext(newContextName,newContextColor);
 
         // Add said task to the database
         //TaskContext taskContext = new TaskContext(newContextName);
         //newTask.addContext(taskContext);
-        databaseHelper.addTask(newTask);
+        //databaseHelper.addTask(newTask);
 
         //Reloading the fragment so that values from tables are updated
         //HOME fragment is opened
-        Fragment fragment = new InboxFragment();
+        Fragment fragment = new ContextsFragment();
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame,fragment).addToBackStack(null).commit();
 
