@@ -102,16 +102,16 @@ public class DatabaseHelper extends SQLiteOpenHelper{
      * Does _not_ check if such a task already exists, so this might add duplicates
      * @param task the task to add
      */
-    void addTask(Task task) {
+    public void addTask(Task task) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         // Put in the values for this task into a contentvalues
-        ContentValues inboxValues = new ContentValues();
-        inboxValues.put(TASKS_KEY_NAME, task.getName());
-        inboxValues.put(TASKS_KEY_STATUS, task.getStatus().name());
+        ContentValues taskValues = new ContentValues();
+        taskValues.put(TASKS_KEY_NAME, task.getName());
+        taskValues.put(TASKS_KEY_STATUS, task.getStatus().name());
 
         // Insert the task into the database and get it's id
-        long newTaskId = db.insert(TASKS_TABLE_NAME, null, inboxValues);
+        long newTaskId = db.insert(TASKS_TABLE_NAME, null, taskValues);
 
         // Add all of the task's contexts into the database as well
         ArrayList<TaskContext> contexts = task.getAllContexts();
@@ -147,6 +147,23 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         }
 
         db.close();
+    }
+
+    /**
+     * Updates the task stored in the database with the given values.
+     * @param updatedTask The new values of the task
+     * @param taskId The id of the task to update
+     */
+    public void updateTask(Task updatedTask, long taskId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Put in the values for this task into a contentvalues
+        ContentValues taskValues = new ContentValues();
+        taskValues.put(TASKS_KEY_NAME, updatedTask.getName());
+        taskValues.put(TASKS_KEY_STATUS, updatedTask.getStatus().name());
+
+        // Update the values in the database
+        db.update(TASKS_TABLE_NAME, taskValues, TASKS_KEY_ID + " = " + Long.toString(taskId), null);
     }
 
     /**
