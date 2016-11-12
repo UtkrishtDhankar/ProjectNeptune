@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="8sp"
     android:layout_marginBottom="8sp"
-    android:layout_marginLeft="6sp"
+    android:layout_marginLeft="10sp"
     android:layout_marginRight="6sp"
     card_view:cardElevation="6sp"
     card_view:cardCornerRadius="2sp">
@@ -20,30 +20,28 @@
             android:id="@+id/info_text"
             android:layout_width="match_parent"
             android:text="WTF"
-            android:textSize="20sp"
+            android:textSize="25sp"
             android:layout_height="wrap_content"
             android:paddingLeft="6sp" />
 
-        <TextView
-            android:id="@+id/status_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="status"
-            android:textColor="#777777"
-            android:textSize="10sp"
-            android:paddingLeft="6sp"
-            android:layout_below="@+id/info_text" />
 
         <TextView
             android:text="context"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/context_text"
-            android:layout_alignBottom="@+id/status_text"
-            android:layout_toEndOf="@+id/status_text"
-            android:textSize="10sp"
-            android:layout_below="@+id/info_text"
-            android:paddingLeft="20sp" />
+            android:textSize="15sp"
+            android:paddingLeft="6sp"
+            android:layout_below="@+id/info_text" />
+        <TextView
+            android:id="@+id/status_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="status"
+            android:textColor="#777777"
+            android:textSize="15sp"
+            android:paddingLeft="6sp"
+            android:layout_below="@+id/context_text" />
 
     </RelativeLayout>
 
