@@ -14,27 +14,23 @@ import android.widget.Button;
 import android.widget.EditText;
 
 /**
- * Created by Shreyak Kumar on 28-10-2016.
- * This pops up to let the player enter/edit the task
+ * Created by Shreyak Kumar on 12-11-2016.
  */
-
-public class InputFragment extends DialogFragment implements View.OnClickListener {
-
+public class ContextInputFragment extends DialogFragment implements View.OnClickListener {
     // A reference to the database. Used when adding/editing tasks
     DatabaseHelper databaseHelper;
 
     // The place where the user types in their task name
-    private EditText inboxEditText;
+    private EditText contextEditText;
 
     // The button that is pressed when the user has added the thing
-    private Button inboxAddButton;
-    private EditText cEditText;
-   // private static Context localContext;
+    private Button contextAddButton;
+    // private static Context localContext;
 
     /**
      * Default constructor
      */
-    public InputFragment() {
+    public ContextInputFragment() {
         // Empty constructor is required for DialogFragment
         // Make sure not to add arguments to the constructor
         // Use `newInstance` instead as shown below
@@ -46,8 +42,8 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
      * @param context The context this is called in
      * @return The new input fragment that we created
      */
-    public static InputFragment newInstance(String title, Context context) {
-        InputFragment frag = new InputFragment();
+    public static ContextInputFragment newInstance(String title, Context context) {
+        ContextInputFragment frag = new ContextInputFragment();
 
         // Set the arguments for the fragment
         Bundle args = new Bundle();
@@ -67,7 +63,7 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.input_fragment, container);
+        return inflater.inflate(R.layout.context_input_fragment, container);
 
     }
 
@@ -82,10 +78,9 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
         super.onViewCreated(view, savedInstanceState);
 
         // Get field from view
-        inboxEditText = (EditText) view.findViewById(R.id.addTextInput);
-        inboxAddButton = (Button) view.findViewById(R.id.addTaskbutton) ;
-        inboxAddButton.setOnClickListener(this);
-        cEditText = (EditText) view.findViewById(R.id.contextEditText);
+        contextEditText = (EditText) view.findViewById(R.id.addContextInput);
+        contextAddButton = (Button) view.findViewById(R.id.addTaskbutton) ;
+        contextAddButton.setOnClickListener(this);
 
         databaseHelper = new DatabaseHelper(getActivity());
 
@@ -94,7 +89,7 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
         getDialog().setTitle(title);
 
         // Show soft keyboard automatically and request focus to field
-        inboxEditText.requestFocus();
+        contextEditText.requestFocus();
         getDialog().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
@@ -106,14 +101,13 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
     @Override
     public void onClick(View view) {
         // Fill out the new task
-        String newTaskName = inboxEditText.getText().toString();
-        String newContextName = cEditText.getText().toString();
+        String newTaskName = contextEditText.getText().toString();
 
         Task newTask = new Task(newTaskName);
 
         // Add said task to the database
-        TaskContext taskContext = new TaskContext(newContextName);
-        newTask.addContext(taskContext);
+        //TaskContext taskContext = new TaskContext(newContextName);
+        //newTask.addContext(taskContext);
         databaseHelper.addTask(newTask);
 
         //Reloading the fragment so that values from tables are updated

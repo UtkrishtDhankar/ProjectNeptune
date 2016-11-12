@@ -268,6 +268,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     *
+     * @param view The view for the Floating Action Button
+     */
+    public void onContextFABPress(View view) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        ContextInputFragment contextInputFragment = ContextInputFragment.newInstance("Some Title",getApplicationContext());
+        contextInputFragment.show(fragmentManager, "fragment_edit_name");
+    }
+
+    /**
      * Show the fab only when Inbox fragment is opened
      */
     private void toggleFab() {
