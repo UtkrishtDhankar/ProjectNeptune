@@ -3,6 +3,7 @@ package utkrishtdhankar.projectneptune;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -177,6 +178,9 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                         contextsCursor.getString(contextsCursor.getColumnIndex(CONTEXTS_KEY_NAME)));
                 contexts.add(newContext);
             } while (contextsCursor.moveToNext());
+        } catch(CursorIndexOutOfBoundsException exception) {
+            // Do nothing. This is probably caused by the contextsCursor being empty.
+            // TODO maybe make this a little more robust? Use a custom exception?
         } finally {
             contextsCursor.close();
         }
