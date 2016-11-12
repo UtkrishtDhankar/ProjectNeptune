@@ -3,9 +3,9 @@ package utkrishtdhankar.projectneptune;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -102,16 +102,16 @@ public class DatabaseHelper extends SQLiteOpenHelper{
      * Does _not_ check if such a task already exists, so this might add duplicates
      * @param task the task to add
      */
-    void addTask(Task task) {
+    public void addTask(Task task) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         // Put in the values for this task into a contentvalues
-        ContentValues inboxValues = new ContentValues();
-        inboxValues.put(TASKS_KEY_NAME, task.getName());
-        inboxValues.put(TASKS_KEY_STATUS, task.getStatus().name());
+        ContentValues taskValues = new ContentValues();
+        taskValues.put(TASKS_KEY_NAME, task.getName());
+        taskValues.put(TASKS_KEY_STATUS, task.getStatus().name());
 
         // Insert the task into the database and get it's id
-        long newTaskId = db.insert(TASKS_TABLE_NAME, null, inboxValues);
+        long newTaskId = db.insert(TASKS_TABLE_NAME, null, taskValues);
 
         // Add all of the task's contexts into the database as well
         ArrayList<TaskContext> contexts = task.getAllContexts();
@@ -150,19 +150,74 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     }
 
     /**
-     * @return all the tasks in the database
+     * Updates the task stored in the database with the given values.
+     * @param updatedTask The new values of the task
+     * @param taskId The id of the task to update
      */
-    ArrayList<Task> getAllTasks() {
+    public void updateTask(Task updatedTask, long taskId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Put in the values for this task into a contentvalues
+        ContentValues taskValues = new ContentValues();
+        taskValues.put(TASKS_KEY_NAME, updatedTask.getName());
+        taskValues.put(TASKS_KEY_STATUS, updatedTask.getStatus().name());
+
+        // Update the values in the database
+        db.update(TASKS_TABLE_NAME, taskValues, TASKS_KEY_ID + " = " + Long.toString(taskId), null);
+    }
+
+    /**
+     * @param taskId The id to search for
+     * @return The task, if found. Otherwise, returns null
+     */
+    public Task getTaskById(long taskId) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor inboxCursor = db.query(
+        // Get a cursor pointing to this task
+        Cursor tasksCursor = db.query(
+                TASKS_TABLE_NAME,
+                new String[]{TASKS_KEY_ID, TASKS_KEY_NAME, TASKS_KEY_STATUS},
+                TASKS_KEY_ID + "=?",
+                new String[]{Long.toString(taskId)},
+                null, null, null, null);
+
+        // TODO replace these return nulls with exceptions
+        if (tasksCursor != null && tasksCursor.getCount() > 0) {
+            tasksCursor.moveToFirst();
+        } else {
+            tasksCursor.close();
+            return null;
+        }
+
+        // Store the task name and status
+        Task task = new Task(tasksCursor.getString(tasksCursor.getColumnIndex(TASKS_KEY_NAME)));
+        task.changeStatus(
+                TaskStatus.valueOf(tasksCursor.getString(tasksCursor.getColumnIndex(TASKS_KEY_STATUS))));
+
+        // Add all the contexts to the task
+        ArrayList<TaskContext> contexts = getAllContextsForTask(taskId);
+        for (TaskContext context : contexts) {
+            task.addContext(context);
+        }
+
+        return task;
+    }
+
+    /**
+     * @return all the tasks in the database
+     */
+    public ArrayList<Task> getAllTasks() {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // This gets _all_ the tasks
+        Cursor tasksCursor = db.query(
                 TASKS_TABLE_NAME,
                 new String[] {TASKS_KEY_ID, TASKS_KEY_NAME, TASKS_KEY_STATUS},
                 null, null, null, null, null, null);
 
         // TODO replace these return nulls with exceptions
-        if (inboxCursor != null && inboxCursor.getCount() > 0)
-            inboxCursor.moveToFirst();
+        if (tasksCursor != null && tasksCursor.getCount() > 0)
+            tasksCursor.moveToFirst();
         else
             return null;
 
@@ -171,51 +226,95 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         // Keep adding tasks to the list until we run out of tasks to add
         do {
             // Get the task's id
-            long taskId = inboxCursor.getLong(inboxCursor.getColumnIndex(TASKS_KEY_ID));
+            long taskId = tasksCursor.getLong(tasksCursor.getColumnIndex(TASKS_KEY_ID));
 
             // Store the task name and status
-            Task task = new Task(inboxCursor.getString(inboxCursor.getColumnIndex(TASKS_KEY_NAME)));
+            Task task = new Task(tasksCursor.getString(tasksCursor.getColumnIndex(TASKS_KEY_NAME)));
             task.changeStatus(
-                    TaskStatus.valueOf(inboxCursor.getString(inboxCursor.getColumnIndex(TASKS_KEY_STATUS))));
+                    TaskStatus.valueOf(tasksCursor.getString(tasksCursor.getColumnIndex(TASKS_KEY_STATUS))));
 
-            // Defining the query to get the contexts from the task
-            String contextQuery = String.format(
-                    "SELECT %s FROM %s LEFT JOIN %s " +
-                            "ON %s.%s = %s.%s " +
-                            "WHERE %s.%s = %s",
-                    CONTEXTS_KEY_NAME, CONTEXTS_TABLE_NAME, TASKS_CONTEXTS_JUNCTION_TABLE_NAME,
-                    TASKS_CONTEXTS_JUNCTION_TABLE_NAME, TASKS_CONTEXTS_JUNCTION_KEY_CONTEXT_ID, CONTEXTS_TABLE_NAME, CONTEXTS_KEY_ID,
-                    TASKS_CONTEXTS_JUNCTION_TABLE_NAME, TASKS_CONTEXTS_JUNCTION_KEY_TASK_ID, Long.toString(taskId));
-
-            // Run the query
-            Cursor contextsCursor = db.rawQuery(
-                    contextQuery,
-                    null);
-
-            // If we have something, then go to first, otherwise we're done
-            if (contextsCursor != null && contextsCursor.getCount() > 0) {
-                contextsCursor.moveToFirst();
-            } else {
-                // If we've not got any tags, then this is an untagged task
-                // We should move on
-                contextsCursor.close();
-                tasks.add(task);
-                continue;
+            // Add all the contexts to the task
+            ArrayList<TaskContext> contexts = getAllContextsForTask(taskId);
+            for (TaskContext context : contexts) {
+                task.addContext(context);
             }
+
+            tasks.add(task);
+        } while (tasksCursor.moveToNext());
+
+        // Close the inbox cursor and we're done
+        tasksCursor.close();
+        return tasks;
+    }
+
+    /**
+     * @return all the contexts in the contexts table
+     */
+    public ArrayList<TaskContext> getAllContexts() {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        ArrayList<TaskContext> contexts = new ArrayList<TaskContext>();
+
+        // This gets _all_ the contexts
+        Cursor contextsCursor = db.query(
+                CONTEXTS_TABLE_NAME,
+                new String[] {CONTEXTS_KEY_ID, CONTEXTS_KEY_NAME},
+                null, null, null, null, null, null);
+        try {
+            contextsCursor.moveToFirst();
 
             // Add all the contexts to the task
             do {
-                TaskContext newContext = new TaskContext(contextsCursor.getString(contextsCursor.getColumnIndex(CONTEXTS_KEY_NAME)));
-                task.addContext(newContext);
+                TaskContext newContext = new TaskContext(
+                        contextsCursor.getString(contextsCursor.getColumnIndex(CONTEXTS_KEY_NAME)));
+                contexts.add(newContext);
             } while (contextsCursor.moveToNext());
-
-            // Close the contexts cursor and add the task
+        } catch(CursorIndexOutOfBoundsException exception) {
+            // Do nothing. This is probably caused by the contextsCursor being empty.
+            // TODO maybe make this a little more robust? Use a custom exception?
+        } finally {
             contextsCursor.close();
-            tasks.add(task);
-        } while (inboxCursor.moveToNext());
+        }
 
-        // Close the inbox cursor and we're done
-        inboxCursor.close();
-        return tasks;
+        return contexts;
+    }
+
+    /**
+     * @param taskId The id of the task for which the contexts are needed
+     * @return A list of all the contexts of the task
+     */
+    private ArrayList<TaskContext> getAllContextsForTask(long taskId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        ArrayList<TaskContext> contexts = new ArrayList<TaskContext>();
+
+        // Defining the query to get the contexts from the task
+        String contextQuery = String.format(
+                "SELECT %s FROM %s LEFT JOIN %s " +
+                        "ON %s.%s = %s.%s " +
+                        "WHERE %s.%s = %s",
+                CONTEXTS_KEY_NAME, CONTEXTS_TABLE_NAME, TASKS_CONTEXTS_JUNCTION_TABLE_NAME,
+                TASKS_CONTEXTS_JUNCTION_TABLE_NAME, TASKS_CONTEXTS_JUNCTION_KEY_CONTEXT_ID, CONTEXTS_TABLE_NAME, CONTEXTS_KEY_ID,
+                TASKS_CONTEXTS_JUNCTION_TABLE_NAME, TASKS_CONTEXTS_JUNCTION_KEY_TASK_ID, Long.toString(taskId));
+
+        // Run the query
+        Cursor contextsCursor = db.rawQuery(contextQuery, null);
+        try {
+            contextsCursor.moveToFirst();
+
+            // Add all the contexts to the task
+            do {
+                TaskContext newContext = new TaskContext(
+                        contextsCursor.getString(contextsCursor.getColumnIndex(CONTEXTS_KEY_NAME)));
+                contexts.add(newContext);
+            } while (contextsCursor.moveToNext());
+        } catch(CursorIndexOutOfBoundsException exception) {
+            // Do nothing. This is probably caused by the contextsCursor being empty.
+            // TODO maybe make this a little more robust? Use a custom exception?
+        } finally {
+            contextsCursor.close();
+        }
+
+        return contexts;
     }
 }
