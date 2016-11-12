@@ -62,5 +62,4 @@ public class InboxFragment extends Fragment {
         // Inflate the layout for this fragment
         return baseLayoutView ;
     }
-
 }
