@@ -1,5 +1,6 @@
 package utkrishtdhankar.projectneptune;
 
+import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -22,6 +23,7 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
     DatabaseHelper databaseHelper ;
     private EditText inboxEditText;
     private Button inboxAddButton;
+    private EditText cEditText;
    // private static Context localContext;
 
     public InputFragment() {
@@ -55,6 +57,8 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
         inboxEditText = (EditText) view.findViewById(R.id.addTextInput);
         inboxAddButton = (Button) view.findViewById(R.id.addTaskbutton) ;
         inboxAddButton.setOnClickListener(this);
+        cEditText = (EditText) view.findViewById(R.id.contextEditText);
+
         databaseHelper = new DatabaseHelper(getActivity());
         // Fetch arguments from bundle and set title
         String title = getArguments().getString("title", "Enter Name");
@@ -70,8 +74,11 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
     @Override
     public void onClick(View v) {
         String newTaskName = inboxEditText.getText().toString();
-        Task newTask = new Task(newTaskName);
+        String newContextName = cEditText.getText().toString();
 
+        Task newTask = new Task(newTaskName);
+        TaskContext taskContext = new TaskContext(newContextName);
+        newTask.addContext(taskContext);
         databaseHelper.addTask(newTask);
 
         //Reloading the fragment so that values from tables are updated
