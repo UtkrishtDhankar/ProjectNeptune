@@ -248,6 +248,38 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     }
 
     /**
+     * @return all the contexts in the contexts table
+     */
+    public ArrayList<TaskContext> getAllContexts() {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        ArrayList<TaskContext> contexts = new ArrayList<TaskContext>();
+
+        // This gets _all_ the contexts
+        Cursor contextsCursor = db.query(
+                CONTEXTS_TABLE_NAME,
+                new String[] {CONTEXTS_KEY_ID, CONTEXTS_KEY_NAME},
+                null, null, null, null, null, null);
+        try {
+            contextsCursor.moveToFirst();
+
+            // Add all the contexts to the task
+            do {
+                TaskContext newContext = new TaskContext(
+                        contextsCursor.getString(contextsCursor.getColumnIndex(CONTEXTS_KEY_NAME)));
+                contexts.add(newContext);
+            } while (contextsCursor.moveToNext());
+        } catch(CursorIndexOutOfBoundsException exception) {
+            // Do nothing. This is probably caused by the contextsCursor being empty.
+            // TODO maybe make this a little more robust? Use a custom exception?
+        } finally {
+            contextsCursor.close();
+        }
+
+        return contexts;
+    }
+
+    /**
      * @param taskId The id of the task for which the contexts are needed
      * @return A list of all the contexts of the task
      */
