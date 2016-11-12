@@ -1,6 +1,10 @@
 package utkrishtdhankar.projectneptune;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.style.BackgroundColorSpan;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,11 +90,27 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.TaskCardView
         holder.nameTextView.setText(dataset.get(position).getName());
         holder.statusTextView.setText(dataset.get(position).getStatus().name());
 
-        ArrayList<TaskContext> contexts = dataset.get(position).getAllContexts();
-        if (!contexts.isEmpty()) {
-            holder.contextTextView.setText(contexts.get(0).getName());
-            holder.contextTextView.setTextColor(contexts.get(0).getColor());
-        }
+        StringBuilder stringbuilder = new StringBuilder();
+        SpannableString spannableString = new SpannableString(stringbuilder.toString());
+
+
+            int lastContextIndex = 0;
+            stringbuilder = new StringBuilder();
+            ArrayList<TaskContext> taskContexts ;
+            taskContexts = dataset.get(position).getAllContexts();
+            for(int j = 0; j < taskContexts.size() - 1; j++) {
+                stringbuilder.append(taskContexts.get(j).getName());
+                stringbuilder.append(" · ");
+            }
+            stringbuilder.append(taskContexts.get(taskContexts.size() - 1).getName());
+            spannableString = new SpannableString(stringbuilder.toString());
+
+            for(int j = 0; j < taskContexts.size(); j++) {
+                Object colorSpan = new ForegroundColorSpan(taskContexts.get(j).getColor());
+                spannableString.setSpan(colorSpan, lastContextIndex, lastContextIndex + taskContexts.get(j).getName().length(), 0);
+                lastContextIndex = lastContextIndex + taskContexts.get(j).getName().length() + 3 ;
+            }
+        holder.contextTextView.setText(spannableString);
     }
 
     /**
