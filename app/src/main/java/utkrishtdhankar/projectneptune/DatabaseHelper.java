@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -150,9 +149,45 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     }
 
     /**
+     * @param taskId The id of the task for which the contexts are needed
+     * @return A list of all the contexts of the task
+     */
+    private ArrayList<TaskContext> getAllContextsForTask(long taskId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        ArrayList<TaskContext> contexts = new ArrayList<TaskContext>();
+
+        // Defining the query to get the contexts from the task
+        String contextQuery = String.format(
+                "SELECT %s FROM %s LEFT JOIN %s " +
+                        "ON %s.%s = %s.%s " +
+                        "WHERE %s.%s = %s",
+                CONTEXTS_KEY_NAME, CONTEXTS_TABLE_NAME, TASKS_CONTEXTS_JUNCTION_TABLE_NAME,
+                TASKS_CONTEXTS_JUNCTION_TABLE_NAME, TASKS_CONTEXTS_JUNCTION_KEY_CONTEXT_ID, CONTEXTS_TABLE_NAME, CONTEXTS_KEY_ID,
+                TASKS_CONTEXTS_JUNCTION_TABLE_NAME, TASKS_CONTEXTS_JUNCTION_KEY_TASK_ID, Long.toString(taskId));
+
+        // Run the query
+        Cursor contextsCursor = db.rawQuery(contextQuery, null);
+        try {
+            contextsCursor.moveToFirst();
+
+            // Add all the contexts to the task
+            do {
+                TaskContext newContext = new TaskContext(
+                        contextsCursor.getString(contextsCursor.getColumnIndex(CONTEXTS_KEY_NAME)));
+                contexts.add(newContext);
+            } while (contextsCursor.moveToNext());
+        } finally {
+            contextsCursor.close();
+        }
+
+        return contexts;
+    }
+
+    /**
      * @return all the tasks in the database
      */
-    ArrayList<Task> getAllTasks() {
+    public ArrayList<Task> getAllTasks() {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor inboxCursor = db.query(
@@ -178,39 +213,12 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             task.changeStatus(
                     TaskStatus.valueOf(inboxCursor.getString(inboxCursor.getColumnIndex(TASKS_KEY_STATUS))));
 
-            // Defining the query to get the contexts from the task
-            String contextQuery = String.format(
-                    "SELECT %s FROM %s LEFT JOIN %s " +
-                            "ON %s.%s = %s.%s " +
-                            "WHERE %s.%s = %s",
-                    CONTEXTS_KEY_NAME, CONTEXTS_TABLE_NAME, TASKS_CONTEXTS_JUNCTION_TABLE_NAME,
-                    TASKS_CONTEXTS_JUNCTION_TABLE_NAME, TASKS_CONTEXTS_JUNCTION_KEY_CONTEXT_ID, CONTEXTS_TABLE_NAME, CONTEXTS_KEY_ID,
-                    TASKS_CONTEXTS_JUNCTION_TABLE_NAME, TASKS_CONTEXTS_JUNCTION_KEY_TASK_ID, Long.toString(taskId));
-
-            // Run the query
-            Cursor contextsCursor = db.rawQuery(
-                    contextQuery,
-                    null);
-
-            // If we have something, then go to first, otherwise we're done
-            if (contextsCursor != null && contextsCursor.getCount() > 0) {
-                contextsCursor.moveToFirst();
-            } else {
-                // If we've not got any tags, then this is an untagged task
-                // We should move on
-                contextsCursor.close();
-                tasks.add(task);
-                continue;
+            // Add all the contexts to the task
+            ArrayList<TaskContext> contexts = getAllContextsForTask(taskId);
+            for (TaskContext context : contexts) {
+                task.addContext(context);
             }
 
-            // Add all the contexts to the task
-            do {
-                TaskContext newContext = new TaskContext(contextsCursor.getString(contextsCursor.getColumnIndex(CONTEXTS_KEY_NAME)));
-                task.addContext(newContext);
-            } while (contextsCursor.moveToNext());
-
-            // Close the contexts cursor and add the task
-            contextsCursor.close();
             tasks.add(task);
         } while (inboxCursor.moveToNext());
 
