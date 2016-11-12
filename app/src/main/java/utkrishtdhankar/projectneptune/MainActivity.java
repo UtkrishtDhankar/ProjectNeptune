@@ -1,12 +1,10 @@
 package utkrishtdhankar.projectneptune;
 
-import android.content.res.Configuration;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,85 +13,85 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 
-import android.support.v7.widget.RecyclerView;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity {
 
     public DatabaseHelper databaseHelper;
 
-    //NEW DECLARATIONS
     private Toolbar toolbar;
     private View navHeader;
-    private NavigationView navigationView;
-    // toolbar titles respective to selected nav menu item
+    private NavigationView navigationDrawer;
+    private String[] navDrawerItemNames;
+    private DrawerLayout drawerLayout;
+    private ListView navDrawerMenuList;
+    private TextView navHeaderName, navHeaderSubText;
+
+    // Toolbar titles respective to selected nav menu item
     private String[] activityTitles;
-    // index to identify current nav menu item
+    // Index to identify current nav menu item
     public static int navItemIndex = 0;
+
     private Handler mHandler;
     Fragment fragment;
     FloatingActionButton fab;
     //-----------------
 
-    //Navigation drawer titles
-    private String[] menuItems;
-    private DrawerLayout drawer;
-    private ListView mDrawerList;
-    //private ActionBarDrawerToggle mDrawerToggle;
 
-    //This is the dataset which will be used for inflation
-    private ArrayList<Task> myDataset = new ArrayList<Task>();
-
-    private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
-    private TextView txtName,txtWebsite;
-
-
+    /**
+     * Creates a new ToolBar and sets it as Action Bar
+     * Opens the Inbox Fragment
+     * Creates the Navigation Drawer
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.main_activity);
+
+        // Setting the custom toolbar as the Action Bar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setHomeButtonEnabled(false);
-        //Setting the main layout
-        // Create a new fragment and specify the fragment to show based on position
+
+        // Setting the main layout
+        // Create a new fragment and inserting the fragment by replacing view of FrameLayout in main_activity
         fragment = new InboxFragment();
-        // Insert the fragment by replacing view of FrameLayout in main_activity
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame,fragment).commit();
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
-        menuItems = getResources().getStringArray(R.array.menuItems);
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        navHeader = navigationView.getHeaderView(0);
-        txtName = (TextView) navHeader.findViewById(R.id.name);
-        txtWebsite = (TextView) navHeader.findViewById(R.id.website);
+        // Finding all the elements
+        navigationDrawer = (NavigationView) findViewById(R.id.nav_view);
+        navDrawerItemNames = getResources().getStringArray(R.array.menuItems);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        navHeader = navigationDrawer.getHeaderView(0);
+        navHeaderName = (TextView) navHeader.findViewById(R.id.name);
+        navHeaderSubText = (TextView) navHeader.findViewById(R.id.website);
         fab = (FloatingActionButton) findViewById(R.id.addButton);
 
-        // load toolbar titles from string resources
+        // Load toolbar titles from string resources
         activityTitles = getResources().getStringArray(R.array.nav_item_activity_titles);
 
-        // load nav menu header data
+        // Load nav menu header data
         loadNavHeader();
 
-        // initializing navigation menu
+        // Initializing navigation menu
         setUpNavigationView();
         Log.d("MainActivity.java","WE REACHED THIS POINT");
     }
 
+    /**
+     *
+     */
     private void setUpNavigationView() {
-        //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+
+        //Setting click listeners for items in the navigation drawer
+        navigationDrawer.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 
             // This method will trigger on item Click of navigation menu
             @Override
@@ -101,21 +99,21 @@ public class MainActivity extends AppCompatActivity {
 
                 //Check to see which item was being clicked and perform appropriate action
                 switch (menuItem.getItemId()) {
-                    //Replacing the main content with ContentFragment Which is our Inbox View;
+
+                    // Creating the fragment which will replace the current fragment
+                    // Setting the selected item's index
                     case R.id.nav_home:
-                        //OPEN FRAGMENT HERE
                         navItemIndex = 0;
                         fragment = new InboxFragment();
-                        // Insert the fragment by replacing view of FrameLayout in main_activity
-
                         break;
+
                     case R.id.nav_settings:
-                        //OPEN FRAGMENT HERE
                         navItemIndex = 1;
                         fragment = new SettingsFragment();
                         break;
                 }
 
+                // Replacing the current fragment
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.content_frame,fragment).commit();
 
@@ -133,34 +131,37 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.openDrawer, R.string.closeDrawer) {
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.openDrawer, R.string.closeDrawer) {
 
             @Override
             public void onDrawerClosed(View drawerView) {
-                // Code here will be triggered once the drawer closes as we dont want anything to happen so we leave this blank
+                // Code here will be triggered once the drawerLayout closes as we dont want anything to happen so we leave this blank
                 super.onDrawerClosed(drawerView);
             }
 
             @Override
             public void onDrawerOpened(View drawerView) {
-                // Code here will be triggered once the drawer open as we dont want anything to happen so we leave this blank
+                // Code here will be triggered once the drawerLayout open as we dont want anything to happen so we leave this blank
                 super.onDrawerOpened(drawerView);
             }
         };
 
-        //Setting the actionbarToggle to drawer layout
-        drawer.setDrawerListener(actionBarDrawerToggle);
+        // Setting the actionbarToggle(clicking the hamburger) to open Navigation drawer
+        drawerLayout.setDrawerListener(actionBarDrawerToggle);
 
-        //calling sync state is necessary or else your hamburger icon wont show up
+        // Calling sync state to set the hamburger icon
         actionBarDrawerToggle.syncState();
-
     }
 
+    /**
+     *
+     */
     private void loadHomeFragment() {
-        //selectNavView
-        navigationView.getMenu().getItem(navItemIndex).setChecked(true);
 
-        //set Tool Bar title
+        // Setting the selected Nav drawer item as checked
+        navigationDrawer.getMenu().getItem(navItemIndex).setChecked(true);
+
+        // Setting the Toolbar's Title
         getSupportActionBar().setTitle(activityTitles[navItemIndex]);
 
         // Sometimes, when fragment has huge data, screen seems hanging
@@ -170,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
         Runnable mPendingRunnable = new Runnable() {
             @Override
             public void run() {
-                // update the main content by replacing fragments
+                // Update the main content by replacing fragments
                 // Create a new fragment and specify the fragment to show based on position
                 Fragment fragment = getHomeFragment();
 
@@ -182,21 +183,25 @@ public class MainActivity extends AppCompatActivity {
 
         toggleFab();
 
-        //Closing drawer on item click
-        drawer.closeDrawers();
+        // Closing drawerLayout on item click
+        drawerLayout.closeDrawers();
 
-        // refresh toolbar menu
+        // Refresh toolbar menu
         invalidateOptionsMenu();
     }
 
+    /**
+     * Uses selected item's index to return the fragment to be opened
+     * @return The fragment to be opened according to the item selected in the nav drawer
+     */
     private Fragment getHomeFragment() {
         switch (navItemIndex) {
             case 0:
-                // home
+                // Creating the Inbox Fragment
                 InboxFragment inboxFragment = new InboxFragment();
                 return inboxFragment;
             case 1:
-                // settings fragment
+                // Creating the Settings Fragment
                 SettingsFragment settingsFragment = new SettingsFragment();
                 return settingsFragment;
             default:
@@ -205,11 +210,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
+    /**
+     * Setting Nav header and subtext
+     */
     private void loadNavHeader() {
-        // name, email
-        txtName.setText("Shreyak Kumar");
-        txtWebsite.setText("kumarshreyak@gmail.com");
+        // Setting the respective Textviews
+        navHeaderName.setText("Shreyak Kumar");
+        navHeaderSubText.setText("kumarshreyak@gmail.com");
     }
 
 
@@ -231,21 +238,26 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame,fragment).commit();
 
-        // Highlight the selected item, update the title, and close the drawer
-        mDrawerList.setItemChecked(position, true);
-        setTitle(menuItems[position]);
-        drawer.closeDrawer(mDrawerList);
+        // Highlight the selected item, update the title, and close the drawerLayout
+        navDrawerMenuList.setItemChecked(position, true);
+        setTitle(navDrawerItemNames[position]);
+        drawerLayout.closeDrawer(navDrawerMenuList);
     }
 
 
-
+    /**
+     *
+     * @param view The view for the Floating Action Button
+     */
     public void onFABPress(View view) {
-        FragmentManager fm = getSupportFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         InputFragment inputFragment = InputFragment.newInstance("Some Title",getApplicationContext());
-        inputFragment.show(fm, "fragment_edit_name");
+        inputFragment.show(fragmentManager, "fragment_edit_name");
     }
 
-    // show or hide the fab
+    /**
+     * Show the fab only when Inbox fragment is opened
+     */
     private void toggleFab() {
         if (navItemIndex == 0)
             fab.show();

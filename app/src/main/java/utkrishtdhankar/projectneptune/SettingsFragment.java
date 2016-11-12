@@ -12,6 +12,14 @@ import android.view.ViewGroup;
  */
 
 public class SettingsFragment extends Fragment {
+
+    /**
+     *
+     * @param inflater inflater to use to inflate this
+     * @param container the container for this
+     * @param savedInstanceState
+     * @return the view for settings fragment
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

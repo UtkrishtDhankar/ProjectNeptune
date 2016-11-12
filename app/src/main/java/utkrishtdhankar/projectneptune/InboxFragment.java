@@ -16,37 +16,50 @@ import java.util.ArrayList;
  */
 public class InboxFragment extends Fragment {
 
+    // The database that stores all of our tasks and contexts
     public DatabaseHelper databaseHelper;
 
-    //This is the dataset which will be used for inflation
-    private ArrayList<Task> myDataset = new ArrayList<Task>();
+    // Contains a list of all the tasks in the inbox
+    private ArrayList<Task> tasksList = new ArrayList<Task>();
 
+    // The view that contains the cards
     private RecyclerView inboxRecyclerView;
     private RecyclerView.Adapter recyclerViewAdapter;
     private RecyclerView.LayoutManager inboxLayoutManager;
 
-
-
+    /**
+     * Inflates this layout and puts up all the tasks cards etc. on the screen
+     * @param inflater the inflater to use to inflate this
+     * @param container the container for this
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        //Making the Relative layout and inflating
-        RelativeLayout baseLayoutView = (RelativeLayout) inflater.inflate(R.layout.inbox_fragment,container,false);
-        databaseHelper = new DatabaseHelper(getActivity());
+
+        // inflate the layout for this Inbox
+        RelativeLayout baseLayoutView = (RelativeLayout) inflater
+                .inflate(R.layout.inbox_fragment,container,false);
+
+        // Get a reference to the recycler view.
+        // Also, set it's size to fixed to improve performance
         inboxRecyclerView = (RecyclerView) baseLayoutView.findViewById(R.id.my_recycler_view);
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
         inboxRecyclerView.setHasFixedSize(true);
-        // use a linear layout manager
+
+        // Set a layout manager for our tasks list displaying recycler view
         inboxLayoutManager = new LinearLayoutManager(getActivity());
         inboxRecyclerView.setLayoutManager(inboxLayoutManager);
-        myDataset = databaseHelper.getAllTasks();
-        // specifying the adapter (CardsAdapter class)
-        recyclerViewAdapter = new CardsAdapter(myDataset);
+
+        // Get the database
+        databaseHelper = new DatabaseHelper(getActivity());
+
+        // Fill the dataset from the database, and get the tasks list on the screen
+        tasksList = databaseHelper.getAllTasks();
+        recyclerViewAdapter = new CardsAdapter(tasksList);
         inboxRecyclerView.setAdapter(recyclerViewAdapter);
 
         // Inflate the layout for this fragment
         return baseLayoutView ;
     }
-
 }
