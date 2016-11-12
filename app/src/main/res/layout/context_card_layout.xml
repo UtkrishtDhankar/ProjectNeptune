@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A CardView that contains a TextView -->
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/context_card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8sp"
+    android:layout_marginBottom="8sp"
+    android:layout_marginLeft="10sp"
+    android:layout_marginRight="6sp"
+    card_view:cardElevation="6sp"
+    card_view:cardCornerRadius="2sp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/context_text"
+            android:layout_width="match_parent"
+            android:text="WTF"
+            android:textSize="25sp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="6sp" />
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

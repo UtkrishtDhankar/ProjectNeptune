@@ -122,13 +122,10 @@ public class ContextInputFragment extends DialogFragment implements View.OnClick
         int newContextColor = Color.parseColor(spinner.getSelectedItem().toString());
         TaskContext newTask = new TaskContext(newContextName,newContextColor);
 
-        // Add said task to the database
-        //TaskContext taskContext = new TaskContext(newContextName);
-        //newTask.addContext(taskContext);
-        //databaseHelper.addTask(newTask);
+        // Add said context to the database
+        databaseHelper.addContext(newTask);
 
         //Reloading the fragment so that values from tables are updated
-        //HOME fragment is opened
         Fragment fragment = new ContextsFragment();
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame,fragment).addToBackStack(null).commit();
