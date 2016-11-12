@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Finding all the elements
         navigationDrawer = (NavigationView) findViewById(R.id.nav_view);
-        navDrawerItemNames = getResources().getStringArray(R.array.menuItems);
+        navDrawerItemNames = getResources().getStringArray(R.array.nav_item_titles);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navHeader = navigationDrawer.getHeaderView(0);
         navHeaderName = (TextView) navHeader.findViewById(R.id.name);
@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         fab = (FloatingActionButton) findViewById(R.id.addButton);
 
         // Load toolbar titles from string resources
-        activityTitles = getResources().getStringArray(R.array.nav_item_activity_titles);
+        activityTitles = getResources().getStringArray(R.array.nav_item_toolbar_titles);
 
         // Load nav menu header data
         loadNavHeader();
@@ -207,6 +207,10 @@ public class MainActivity extends AppCompatActivity {
                 return inboxFragment;
             case 1:
                 // Creating the Settings Fragment
+                ContextsFragment contextsFragment = new ContextsFragment();
+                return contextsFragment;
+            case 2:
+                // Creating the Settings Fragment
                 SettingsFragment settingsFragment = new SettingsFragment();
                 return settingsFragment;
             default:
@@ -235,6 +239,9 @@ public class MainActivity extends AppCompatActivity {
                 fragment = new InboxFragment();
                 break;
             case 1:
+                fragment = new ContextsFragment();
+                break;
+            case 2:
                 fragment = new SettingsFragment();
                 break;
         }
