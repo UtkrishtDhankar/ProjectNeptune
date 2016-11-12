@@ -32,6 +32,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     // Parameters related to the contexts table. The name and all of it's column names go here.
     private static final String CONTEXTS_TABLE_NAME = "contexts";
     private static final String CONTEXTS_KEY_ID = "id";
+    private static final String CONTEXTS_KEY_COLOR = "color";
     private static final String CONTEXTS_KEY_NAME = "name";
 
     // Parameters related to the tasks-contexts junction table.
@@ -67,8 +68,9 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         final String createContextsQuery = String.format(
                 "CREATE TABLE %s (" +
                         "%s INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        "%s TEXT UNIQUE);",
-                CONTEXTS_TABLE_NAME, CONTEXTS_KEY_ID, CONTEXTS_KEY_NAME);
+                        "%s TEXT UNIQUE, " +
+                        "%s INTEGER);",
+                CONTEXTS_TABLE_NAME, CONTEXTS_KEY_ID, CONTEXTS_KEY_NAME, CONTEXTS_KEY_COLOR);
         db.execSQL(createContextsQuery);
 
         final String createJunctionQuery = String.format(
@@ -120,7 +122,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             // exists in the database. If it does not exist, then it adds it to the database
             Cursor contextsCursor = db.query(
                     CONTEXTS_TABLE_NAME,
-                    new String[] {CONTEXTS_KEY_NAME, CONTEXTS_KEY_ID},
+                    new String[] {CONTEXTS_KEY_ID},
                     CONTEXTS_KEY_NAME + "=?",
                     new String[]{context.getName()},
                     null, null, null, null);
@@ -134,6 +136,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                 // If we don't have this cursor, we should add it to the database
                 ContentValues contextValues = new ContentValues();
                 contextValues.put(CONTEXTS_KEY_NAME, context.getName());
+                contextValues.put(CONTEXTS_KEY_COLOR, context.getColor());
 
                 newContextId = db.insert(CONTEXTS_TABLE_NAME, null, contextValues);
             }
@@ -258,7 +261,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         // This gets _all_ the contexts
         Cursor contextsCursor = db.query(
                 CONTEXTS_TABLE_NAME,
-                new String[] {CONTEXTS_KEY_ID, CONTEXTS_KEY_NAME},
+                new String[] {CONTEXTS_KEY_ID, CONTEXTS_KEY_NAME, CONTEXTS_KEY_COLOR},
                 null, null, null, null, null, null);
         try {
             contextsCursor.moveToFirst();
@@ -267,6 +270,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             do {
                 TaskContext newContext = new TaskContext(
                         contextsCursor.getString(contextsCursor.getColumnIndex(CONTEXTS_KEY_NAME)));
+                newContext.setColor(contextsCursor.getInt(contextsCursor.getColumnIndex(CONTEXTS_KEY_COLOR)));
                 contexts.add(newContext);
             } while (contextsCursor.moveToNext());
         } catch(CursorIndexOutOfBoundsException exception) {
@@ -288,6 +292,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         ContentValues contextValues = new ContentValues();
         contextValues.put(CONTEXTS_KEY_NAME, context.getName());
+        contextValues.put(CONTEXTS_KEY_COLOR, context.getColor());
 
         db.insert(CONTEXTS_TABLE_NAME, null, contextValues);
     }
@@ -303,10 +308,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         // Defining the query to get the contexts from the task
         String contextQuery = String.format(
-                "SELECT %s FROM %s LEFT JOIN %s " +
+                "SELECT %s, %s FROM %s LEFT JOIN %s " +
                         "ON %s.%s = %s.%s " +
                         "WHERE %s.%s = %s",
-                CONTEXTS_KEY_NAME, CONTEXTS_TABLE_NAME, TASKS_CONTEXTS_JUNCTION_TABLE_NAME,
+                CONTEXTS_KEY_NAME, CONTEXTS_KEY_COLOR, CONTEXTS_TABLE_NAME, TASKS_CONTEXTS_JUNCTION_TABLE_NAME,
                 TASKS_CONTEXTS_JUNCTION_TABLE_NAME, TASKS_CONTEXTS_JUNCTION_KEY_CONTEXT_ID, CONTEXTS_TABLE_NAME, CONTEXTS_KEY_ID,
                 TASKS_CONTEXTS_JUNCTION_TABLE_NAME, TASKS_CONTEXTS_JUNCTION_KEY_TASK_ID, Long.toString(taskId));
 
@@ -319,6 +324,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             do {
                 TaskContext newContext = new TaskContext(
                         contextsCursor.getString(contextsCursor.getColumnIndex(CONTEXTS_KEY_NAME)));
+            newContext.setColor(contextsCursor.getInt(contextsCursor.getColumnIndex(CONTEXTS_KEY_NAME)));
                 contexts.add(newContext);
             } while (contextsCursor.moveToNext());
         } catch(CursorIndexOutOfBoundsException exception) {
