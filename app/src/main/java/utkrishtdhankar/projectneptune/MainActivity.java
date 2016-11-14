@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Finding all the elements
         navigationDrawer = (NavigationView) findViewById(R.id.nav_view);
-        navDrawerItemNames = getResources().getStringArray(R.array.menuItems);
+        navDrawerItemNames = getResources().getStringArray(R.array.nav_item_titles);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navHeader = navigationDrawer.getHeaderView(0);
         navHeaderName = (TextView) navHeader.findViewById(R.id.name);
@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         fab = (FloatingActionButton) findViewById(R.id.addButton);
 
         // Load toolbar titles from string resources
-        activityTitles = getResources().getStringArray(R.array.nav_item_activity_titles);
+        activityTitles = getResources().getStringArray(R.array.nav_item_toolbar_titles);
 
         // Load nav menu header data
         loadNavHeader();
@@ -107,8 +107,13 @@ public class MainActivity extends AppCompatActivity {
                         fragment = new InboxFragment();
                         break;
 
-                    case R.id.nav_settings:
+                    case R.id.nav_context:
                         navItemIndex = 1;
+                        fragment = new ContextsFragment();
+                        break;
+
+                    case R.id.nav_settings:
+                        navItemIndex = 2;
                         fragment = new SettingsFragment();
                         break;
                 }
@@ -202,6 +207,10 @@ public class MainActivity extends AppCompatActivity {
                 return inboxFragment;
             case 1:
                 // Creating the Settings Fragment
+                ContextsFragment contextsFragment = new ContextsFragment();
+                return contextsFragment;
+            case 2:
+                // Creating the Settings Fragment
                 SettingsFragment settingsFragment = new SettingsFragment();
                 return settingsFragment;
             default:
@@ -230,10 +239,13 @@ public class MainActivity extends AppCompatActivity {
                 fragment = new InboxFragment();
                 break;
             case 1:
+                fragment = new ContextsFragment();
+                break;
+            case 2:
                 fragment = new SettingsFragment();
                 break;
         }
-        //Fragment fragment = new SettingsFragment();
+
         // Insert the fragment by replacing any existing fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame,fragment).commit();
@@ -253,6 +265,16 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         InputFragment inputFragment = InputFragment.newInstance("Some Title",getApplicationContext());
         inputFragment.show(fragmentManager, "fragment_edit_name");
+    }
+
+    /**
+     *
+     * @param view The view for the Floating Action Button
+     */
+    public void onContextFABPress(View view) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        ContextInputFragment contextInputFragment = ContextInputFragment.newInstance("Some Title",getApplicationContext());
+        contextInputFragment.show(fragmentManager, "fragment_edit_name");
     }
 
     /**
