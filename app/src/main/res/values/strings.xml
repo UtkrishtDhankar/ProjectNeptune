@@ -19,6 +19,14 @@
         <item>Settings</item>
     </string-array>
 
+    <string-array name="status_names" >
+        <item>Inbox</item>
+        <item>Next</item>
+        <item>Waiting</item>
+        <item>Scheduled</item>
+        <item>Someday</item>
+    </string-array>
+
     <string-array name="color_titles">
         <item>Red</item>
         <item>Green</item>

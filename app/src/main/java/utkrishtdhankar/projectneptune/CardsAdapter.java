@@ -87,7 +87,6 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.TaskCardView
         // - replace the contents of the view (TextView) with that element's info
         holder.nameTextView.setText(dataset.get(position).getName());
         holder.statusTextView.setText(dataset.get(position).getStatus().name());
-
         StringBuilder stringbuilder = new StringBuilder();
         SpannableString spannableString = new SpannableString(stringbuilder.toString());
 
