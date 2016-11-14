@@ -81,7 +81,7 @@ public class ContextCardsAdapter extends RecyclerView.Adapter<ContextCardsAdapte
         // get element from your dataset at this position
         // replace the contents of the view (TextView) with that element's info
         holder.nameTextView.setText(dataset.get(position).getName());
-        holder.cardView.setCardBackgroundColor(dataset.get(position).getColor());
+        holder.nameTextView.setTextColor(dataset.get(position).getColor());
     }
 
     /**

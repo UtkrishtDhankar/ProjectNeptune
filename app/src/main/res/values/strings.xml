@@ -24,6 +24,9 @@
         <item>Green</item>
         <item>Blue</item>
         <item>Black</item>
-        <item>Orange</item>
+        <item>gray</item>
+        <item>cyan</item>
+        <item>magenta</item>
+        <item>gray</item>
     </string-array>
 </resources>
