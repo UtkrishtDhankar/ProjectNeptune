@@ -297,6 +297,39 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         db.insert(CONTEXTS_TABLE_NAME, null, contextValues);
     }
 
+    public void updateContext(TaskContext context) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Get the context that matches this context we've been supplied
+        Cursor contextsCursor = db.query(
+                CONTEXTS_TABLE_NAME,
+                new String[] {CONTEXTS_KEY_ID},
+                CONTEXTS_KEY_NAME + "=? && " + CONTEXTS_KEY_COLOR + "=?",
+                new String[]{context.getName(), Integer.toString(context.getColor())},
+                null, null, null, null);
+
+        // If we find this context, then update it
+        if (contextsCursor != null && contextsCursor.getCount() > 0) {
+            db.close();
+            db = this.getWritableDatabase();
+
+            // If we have this cursor, we should just add an entry to the junction db
+            contextsCursor.moveToFirst();
+            long contextId = contextsCursor.getLong(contextsCursor.getColumnIndex(CONTEXTS_KEY_ID));
+
+            // Put the values in the bundle
+            ContentValues contextValues = new ContentValues();
+            contextValues.put(CONTEXTS_KEY_NAME, context.getName());
+            contextValues.put(CONTEXTS_KEY_COLOR, context.getColor());
+
+            // Update the value
+            db.update(CONTEXTS_TABLE_NAME, contextValues, CONTEXTS_KEY_ID + " = " + Long.toString(contextId), null);
+        } else {
+            // Otherwise, add it to the database
+            this.addContext(context);
+        }
+    }
+
     /**
      * @param taskId The id of the task for which the contexts are needed
      * @return A list of all the contexts of the task
