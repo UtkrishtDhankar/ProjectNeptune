@@ -24,16 +24,25 @@
 
     <TextView
         android:id="@+id/textView3"
-        android:text="Enter Context :"
+        android:text="Select Context :"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <EditText
-        android:id="@+id/contextEditText"
+    <Spinner
         android:layout_width="150sp"
-        android:layout_height="wrap_content"
-        android:inputType="text"
-        android:paddingTop="20sp" />
+        android:id="@+id/contextSpinner"
+        android:layout_height="40sp" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:text="Select Status :"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Spinner
+        android:layout_width="150sp"
+        android:id="@+id/statusSpinner"
+        android:layout_height="40sp" />
 
     <Button
         android:text="Add"

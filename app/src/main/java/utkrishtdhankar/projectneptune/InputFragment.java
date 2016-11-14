@@ -10,8 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
+
+import java.util.ArrayList;
 
 /**
  * Created by Shreyak Kumar on 28-10-2016.
@@ -29,6 +33,8 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
     // The button that is pressed when the user has added the thing
     private Button inboxAddButton;
     private EditText cEditText;
+    private Spinner contextDropDown;
+    private Spinner statusDropDown;
    // private static Context localContext;
 
     /**
@@ -81,13 +87,41 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // Initializing database helper
+        databaseHelper = new DatabaseHelper(getActivity());
+
         // Get field from view
         inboxEditText = (EditText) view.findViewById(R.id.addTextInput);
         inboxAddButton = (Button) view.findViewById(R.id.addTaskbutton) ;
         inboxAddButton.setOnClickListener(this);
-        cEditText = (EditText) view.findViewById(R.id.contextEditText);
 
-        databaseHelper = new DatabaseHelper(getActivity());
+        // Setting the context drop down menu
+        contextDropDown = (Spinner) view.findViewById(R.id.contextSpinner);
+
+        // Fetching all contexts from table
+        ArrayList<TaskContext> contextsArray = databaseHelper.getAllContexts();
+        String[] contextsNames= new String[contextsArray.size()];
+        for (int i = 0; i < contextsArray.size(); i++) {
+            contextsNames[i] = contextsArray.get(i).getName();
+        }
+
+        // populating the drop down menu
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, contextsNames); //selected item will look like a spinner set from XML
+        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        contextDropDown.setAdapter(spinnerArrayAdapter);
+
+        // Setting the status drop down menu
+        statusDropDown = (Spinner) view.findViewById(R.id.statusSpinner);
+
+        // Create an ArrayAdapter using the string array and a default colorDropDown layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                R.array.status_names, android.R.layout.simple_spinner_item);
+
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // Apply the adapter to the statusDropDown list
+       statusDropDown.setAdapter(adapter);
 
         // Fetch arguments from bundle and set title
         String title = getArguments().getString("title", "Enter Name");
@@ -107,13 +141,17 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
     public void onClick(View view) {
         // Fill out the new task
         String newTaskName = inboxEditText.getText().toString();
-        String newContextName = cEditText.getText().toString();
+        String newContextName = contextDropDown.getSelectedItem().toString();
+        String newStatusName = statusDropDown.getSelectedItem().toString();
 
         Task newTask = new Task(newTaskName);
 
-        // Add said task to the database
+        // Add the context for the task
         TaskContext taskContext = new TaskContext(newContextName);
         newTask.addContext(taskContext);
+        newTask.changeStatus(TaskStatus.valueOf(newStatusName));
+
+        // Add said task to the database
         databaseHelper.addTask(newTask);
 
         //Reloading the fragment so that values from tables are updated
