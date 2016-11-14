@@ -1,5 +1,7 @@
 package utkrishtdhankar.projectneptune;
 
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
@@ -65,7 +67,6 @@ public class ContextCardsAdapter extends RecyclerView.Adapter<ContextCardsAdapte
         // create a new view
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.context_card_layout, parent, false);
-
         ContextCardViewHolder viewHolder = new ContextCardViewHolder(view);
         return viewHolder;
     }
@@ -77,11 +78,18 @@ public class ContextCardsAdapter extends RecyclerView.Adapter<ContextCardsAdapte
      * @param position the position for this data in the dataset
      */
     @Override
-    public void onBindViewHolder(ContextCardViewHolder holder, int position) {
+    public void onBindViewHolder(ContextCardViewHolder holder, final int position) {
         // get element from your dataset at this position
         // replace the contents of the view (TextView) with that element's info
         holder.nameTextView.setText(dataset.get(position).getName());
         holder.nameTextView.setTextColor(dataset.get(position).getColor());
+
+        // Setting the onClick listener
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                //Add Activity here
+            }
+        });
     }
 
     /**

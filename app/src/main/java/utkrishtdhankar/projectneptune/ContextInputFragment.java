@@ -30,6 +30,8 @@ public class ContextInputFragment extends DialogFragment implements View.OnClick
     // The button that is pressed when the user has added the context
     private Button contextAddButton;
 
+    int openedForEdit = 0;
+
     /**
      * Default constructor
      */
@@ -57,6 +59,25 @@ public class ContextInputFragment extends DialogFragment implements View.OnClick
     }
 
     /**
+     * Creates this input fragment
+     * @param title The title of this fragment
+     * @param context The context this is called in
+     * @return The new input fragment that we created
+     */
+    public static ContextInputFragment newInstance(String title,String contextText,int contextColor) {
+        ContextInputFragment frag = new ContextInputFragment();
+
+        // Set the arguments for the fragment
+        Bundle args = new Bundle();
+        args.putString("title", title);
+        args.putString("contextText", contextText);
+        args.putInt("contextColor", contextColor);
+        frag.setArguments(args);
+
+        return frag;
+    }
+
+    /**
      * Inflates this fragment
      * @param inflater
      * @param container
@@ -66,6 +87,11 @@ public class ContextInputFragment extends DialogFragment implements View.OnClick
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Bundle bundle = this.getArguments();
+        if(bundle.get("title") == "edit") {
+            openedForEdit = 1;
+        }
+
         return inflater.inflate(R.layout.context_input_fragment, container);
 
     }
@@ -103,6 +129,11 @@ public class ContextInputFragment extends DialogFragment implements View.OnClick
         // Fetch arguments from bundle and set title
         String title = getArguments().getString("title", "Enter Name");
         getDialog().setTitle(title);
+
+//        if(openedForEdit == 1){
+//            contextEditText.setText(getArguments().getString("contextText"));
+//        }
+
 
         // Show soft keyboard automatically and request focus to field
         contextEditText.requestFocus();
