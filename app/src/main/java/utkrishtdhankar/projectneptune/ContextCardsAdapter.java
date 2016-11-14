@@ -14,7 +14,7 @@ import java.util.ArrayList;
 /**
  * Created by Shreyak Kumar on 28-10-2016.
  *
- * Cards Adapter adapts a list of cards to display a bunch of tasks
+ * Cards Adapter adapts a list of cards to display a bunch of contexts
  */
 public class ContextCardsAdapter extends RecyclerView.Adapter<ContextCardsAdapter.ContextCardViewHolder> {
 
@@ -42,7 +42,7 @@ public class ContextCardsAdapter extends RecyclerView.Adapter<ContextCardsAdapte
     }
 
     // The dataset that this adapter will inflate
-    // Contains all the tasks for this view
+    // Contains all the contexts for this view
     private ArrayList<TaskContext> dataset;
 
     /**
@@ -78,31 +78,10 @@ public class ContextCardsAdapter extends RecyclerView.Adapter<ContextCardsAdapte
      */
     @Override
     public void onBindViewHolder(ContextCardViewHolder holder, int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view (TextView) with that element's info
+        // get element from your dataset at this position
+        // replace the contents of the view (TextView) with that element's info
         holder.nameTextView.setText(dataset.get(position).getName());
         holder.cardView.setCardBackgroundColor(dataset.get(position).getColor());
-//        StringBuilder stringbuilder = new StringBuilder();
-//        SpannableString spannableString = new SpannableString(stringbuilder.toString());
-//
-//
-//        int lastContextIndex = 0;
-//        stringbuilder = new StringBuilder();
-//        ArrayList<TaskContext> taskContexts ;
-//        taskContexts = dataset.get(position).getAllContexts();
-//        for(int j = 0; j < taskContexts.size() - 1; j++) {
-//            stringbuilder.append(taskContexts.get(j).getName());
-//            stringbuilder.append(" · ");
-//        }
-//        stringbuilder.append(taskContexts.get(taskContexts.size() - 1).getName());
-//        spannableString = new SpannableString(stringbuilder.toString());
-//
-//        for(int j = 0; j < taskContexts.size(); j++) {
-//            Object colorSpan = new ForegroundColorSpan(taskContexts.get(j).getColor());
-//            spannableString.setSpan(colorSpan, lastContextIndex, lastContextIndex + taskContexts.get(j).getName().length(), 0);
-//            lastContextIndex = lastContextIndex + taskContexts.get(j).getName().length() + 3 ;
-//        }
-//        holder.contextTextView.setText(spannableString);
     }
 
     /**

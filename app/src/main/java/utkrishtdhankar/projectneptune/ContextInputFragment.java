@@ -20,16 +20,15 @@ import android.widget.Spinner;
  * Created by Shreyak Kumar on 12-11-2016.
  */
 public class ContextInputFragment extends DialogFragment implements View.OnClickListener {
-    // A reference to the database. Used when adding/editing tasks
+    // A reference to the database. Used when adding/editing contexts
     DatabaseHelper databaseHelper;
 
-    // The place where the user types in their task name
+    // The place where the user types in their context name
     private EditText contextEditText;
-    Spinner spinner;
+    Spinner colorDropDown;
 
-    // The button that is pressed when the user has added the thing
+    // The button that is pressed when the user has added the context
     private Button contextAddButton;
-    // private static Context localContext;
 
     /**
      * Default constructor
@@ -82,19 +81,19 @@ public class ContextInputFragment extends DialogFragment implements View.OnClick
         super.onViewCreated(view, savedInstanceState);
 
 
-        spinner = (Spinner) view.findViewById(R.id.color_spinner);
+        colorDropDown = (Spinner) view.findViewById(R.id.color_spinner);
 
-        // Create an ArrayAdapter using the string array and a default spinner layout
+        // Create an ArrayAdapter using the string array and a default colorDropDown layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.color_titles, android.R.layout.simple_spinner_item);
 
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        // Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
+        // Apply the adapter to the colorDropDown list
+        colorDropDown.setAdapter(adapter);
 
-        // Get field from view
+        // Get fields from view
         contextEditText = (EditText) view.findViewById(R.id.addContextInput);
         contextAddButton = (Button) view.findViewById(R.id.addTaskbutton) ;
         contextAddButton.setOnClickListener(this);
@@ -119,11 +118,11 @@ public class ContextInputFragment extends DialogFragment implements View.OnClick
     public void onClick(View view) {
         // Fill out the new context
         String newContextName = contextEditText.getText().toString();
-        int newContextColor = Color.parseColor(spinner.getSelectedItem().toString());
-        TaskContext newTask = new TaskContext(newContextName,newContextColor);
+        int newContextColor = Color.parseColor(colorDropDown.getSelectedItem().toString());
+        TaskContext newContext = new TaskContext(newContextName,newContextColor);
 
         // Add said context to the database
-        databaseHelper.addContext(newTask);
+        databaseHelper.addContext(newContext);
 
         //Reloading the fragment so that values from tables are updated
         Fragment fragment = new ContextsFragment();
