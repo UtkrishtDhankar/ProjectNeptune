@@ -324,7 +324,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             do {
                 TaskContext newContext = new TaskContext(
                         contextsCursor.getString(contextsCursor.getColumnIndex(CONTEXTS_KEY_NAME)));
-            newContext.setColor(contextsCursor.getInt(contextsCursor.getColumnIndex(CONTEXTS_KEY_NAME)));
+                newContext.setColor(contextsCursor.getInt(contextsCursor.getColumnIndex(CONTEXTS_KEY_COLOR)));
                 contexts.add(newContext);
             } while (contextsCursor.moveToNext());
         } catch(CursorIndexOutOfBoundsException exception) {
