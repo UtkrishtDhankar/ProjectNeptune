@@ -13,7 +13,7 @@ public class Identifiable {
         id = INVALID_ID;
     }
 
-    public static boolean isInvalid(long id) {
+    public boolean isInvalid() {
         return id == INVALID_ID;
     }
 
