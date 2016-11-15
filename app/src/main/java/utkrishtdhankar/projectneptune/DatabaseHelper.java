@@ -321,17 +321,14 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             contextsCursor.moveToFirst();
             long contextId = contextsCursor.getLong(contextsCursor.getColumnIndex(CONTEXTS_KEY_ID));
 
-            // Put the values in the bundle
-            ContentValues contextValues = new ContentValues();
-            contextValues.put(CONTEXTS_KEY_NAME, context.getName());
-            contextValues.put(CONTEXTS_KEY_COLOR, context.getColor());
+        // Put the values in the bundle
+        ContentValues contextValues = new ContentValues();
+        contextValues.put(CONTEXTS_KEY_NAME, newContext.getName());
+        contextValues.put(CONTEXTS_KEY_COLOR, newContext.getColor());
 
-            // Update the value
-            db.update(CONTEXTS_TABLE_NAME, contextValues, CONTEXTS_KEY_ID + " = " + Long.toString(contextId), null);
-        } else {
-            // Otherwise, add it to the database
-            this.addContext(context);
-        }
+        // Update the value
+        db.update(CONTEXTS_TABLE_NAME, contextValues,
+                CONTEXTS_KEY_ID + " = " + Long.toString(oldContext.getId()), null);
     }
 
     /**
