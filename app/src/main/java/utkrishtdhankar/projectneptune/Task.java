@@ -26,7 +26,7 @@ public class Task extends Identifiable {
     Task(String taskName) {
         name = taskName;
         contexts = new ArrayList<TaskContext>();
-        status = TaskStatus.Inbox;
+        status = new Inbox();
     }
 
     /**
