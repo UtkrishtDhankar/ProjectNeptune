@@ -158,7 +158,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
      * @param newTask The id of the task to update
      */
     public void updateTask(Task oldTask, Task newTask) {
-        if (!oldTask.isInvalid()) {
+        if (oldTask.isInvalid()) {
             throw new IllegalArgumentException("oldTask should have a valid id.");
         }
 
