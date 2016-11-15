@@ -1,6 +1,7 @@
 package utkrishtdhankar.projectneptune;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -35,7 +36,10 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
     private EditText cEditText;
     private Spinner contextDropDown;
     private Spinner statusDropDown;
-   // private static Context localContext;
+
+    // For updating contexts
+    int openedForEdit = 0;
+    Task task;
 
     /**
      * Default constructor
@@ -87,8 +91,15 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.input_fragment, container);
 
+
+        if(getArguments().getString("title") == "edit") {
+            openedForEdit = 1;
+        }else{
+            openedForEdit = 0;
+        }
+
+        return inflater.inflate(R.layout.input_fragment, container);
     }
 
     /**
@@ -140,6 +151,26 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
         // Fetch arguments from bundle and set title
         String title = getArguments().getString("title", "Enter Name");
         getDialog().setTitle(title);
+
+        // For Editing Tasks
+        if(openedForEdit == 1){
+
+            task = new Task(getArguments().getString("taskText"));
+            task.addContext(new TaskContext(getArguments().getString("taskContext")));
+            task.changeStatus(TaskStatus.valueOf(getArguments().getString("taskStatus")));
+            inboxEditText.setText(task.getName());
+            for(int i = 0; i < contextsNames.length; i++){
+                if(contextsNames[i].equals(getArguments().getString("taskContext"))){
+                    contextDropDown.setSelection(i);
+                }
+            }
+            for(int i = 0; i < adapter.getCount(); i++){
+                if(adapter.getItem(i).toString().equals(getArguments().getString("taskStatus"))){
+                    statusDropDown.setSelection(i);
+                }
+            }
+
+        }
 
         // Show soft keyboard automatically and request focus to field
         inboxEditText.requestFocus();

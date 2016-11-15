@@ -30,7 +30,7 @@ public class ContextInputFragment extends DialogFragment implements View.OnClick
     // The button that is pressed when the user has added the context
     private Button contextAddButton;
 
-    // Variables for updating contexts
+    // For updating contexts
     int openedForEdit = 0;
     TaskContext taskContext = new TaskContext();
 
