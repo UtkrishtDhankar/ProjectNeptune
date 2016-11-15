@@ -1,11 +1,7 @@
 package utkrishtdhankar.projectneptune;
 
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +16,7 @@ import java.util.ArrayList;
  */
 public class ContextCardsAdapter extends RecyclerView.Adapter<ContextCardsAdapter.ContextCardViewHolder> {
 
+    ContextsFragment contextsFragment;
     /**
      * Class to hold a single Card instance.
      * Contains references to all the text views etc. inside the card
@@ -51,8 +48,9 @@ public class ContextCardsAdapter extends RecyclerView.Adapter<ContextCardsAdapte
      * Constructs a new adapter, setting the dataset to the one supplied
      * @param newDataset The dataset to be inflated
      */
-    public ContextCardsAdapter(ArrayList<TaskContext> newDataset) {
+    public ContextCardsAdapter(ArrayList<TaskContext> newDataset, ContextsFragment main) {
         this.dataset = newDataset;
+        this.contextsFragment = main;
     }
 
     /**
