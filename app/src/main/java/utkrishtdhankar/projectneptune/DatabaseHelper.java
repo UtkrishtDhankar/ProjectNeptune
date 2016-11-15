@@ -110,7 +110,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         // Put in the values for this task into a contentvalues
         ContentValues taskValues = new ContentValues();
         taskValues.put(TASKS_KEY_NAME, task.getName());
-        taskValues.put(TASKS_KEY_STATUS, task.getStatus().name());
+        taskValues.put(TASKS_KEY_STATUS, task.getStatus().encode());
 
         // Insert the task into the database and get it's id
         long newTaskId = db.insert(TASKS_TABLE_NAME, null, taskValues);
@@ -167,7 +167,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         // Put in the values for this task into a contentvalues
         ContentValues taskValues = new ContentValues();
         taskValues.put(TASKS_KEY_NAME, newTask.getName());
-        taskValues.put(TASKS_KEY_STATUS, newTask.getStatus().name());
+        taskValues.put(TASKS_KEY_STATUS, newTask.getStatus().encode());
 
         // Update the values in the database
         db.update(TASKS_TABLE_NAME, taskValues, TASKS_KEY_ID + " = " + Long.toString(oldTask.getId()), null);
