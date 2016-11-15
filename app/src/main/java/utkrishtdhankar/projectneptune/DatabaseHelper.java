@@ -154,19 +154,23 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
     /**
      * Updates the task stored in the database with the given values.
-     * @param updatedTask The new values of the task
-     * @param taskId The id of the task to update
+     * @param oldTask The new values of the task. _Must_ have the id set
+     * @param newTask The id of the task to update
      */
-    public void updateTask(Task updatedTask, long taskId) {
+    public void updateTask(Task oldTask, Task newTask) {
+        if (!oldTask.isInvalid()) {
+            throw new IllegalArgumentException("oldTask should have a valid id.");
+        }
+
         SQLiteDatabase db = this.getWritableDatabase();
 
         // Put in the values for this task into a contentvalues
         ContentValues taskValues = new ContentValues();
-        taskValues.put(TASKS_KEY_NAME, updatedTask.getName());
-        taskValues.put(TASKS_KEY_STATUS, updatedTask.getStatus().name());
+        taskValues.put(TASKS_KEY_NAME, newTask.getName());
+        taskValues.put(TASKS_KEY_STATUS, newTask.getStatus().name());
 
         // Update the values in the database
-        db.update(TASKS_TABLE_NAME, taskValues, TASKS_KEY_ID + " = " + Long.toString(taskId), null);
+        db.update(TASKS_TABLE_NAME, taskValues, TASKS_KEY_ID + " = " + Long.toString(oldTask.getId()), null);
     }
 
     /**
@@ -295,6 +299,36 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         contextValues.put(CONTEXTS_KEY_COLOR, context.getColor());
 
         db.insert(CONTEXTS_TABLE_NAME, null, contextValues);
+    }
+
+    public void updateContext(TaskContext context) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Get the context that matches this context we've been supplied
+        Cursor contextsCursor = db.query(
+                CONTEXTS_TABLE_NAME,
+                new String[] {CONTEXTS_KEY_ID},
+                CONTEXTS_KEY_NAME + "=? && " + CONTEXTS_KEY_COLOR + "=?",
+                new String[]{context.getName(), Integer.toString(context.getColor())},
+                null, null, null, null);
+
+        // If we find this context, then update it
+        if (contextsCursor != null && contextsCursor.getCount() > 0) {
+            db.close();
+            db = this.getWritableDatabase();
+
+            // If we have this cursor, we should just add an entry to the junction db
+            contextsCursor.moveToFirst();
+            long contextId = contextsCursor.getLong(contextsCursor.getColumnIndex(CONTEXTS_KEY_ID));
+
+        // Put the values in the bundle
+        ContentValues contextValues = new ContentValues();
+        contextValues.put(CONTEXTS_KEY_NAME, newContext.getName());
+        contextValues.put(CONTEXTS_KEY_COLOR, newContext.getColor());
+
+        // Update the value
+        db.update(CONTEXTS_TABLE_NAME, contextValues,
+                CONTEXTS_KEY_ID + " = " + Long.toString(oldContext.getId()), null);
     }
 
     /**
