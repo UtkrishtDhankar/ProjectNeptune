@@ -165,7 +165,7 @@ public class ContextInputFragment extends DialogFragment implements View.OnClick
         TaskContext newContext = new TaskContext(newContextName,newContextColor);
 
         if(openedForEdit == 1){
-            //call the editing function
+            // Call the editing function use the taskContext variable for old values
         }else{
             // Add said context to the database
             databaseHelper.addContext(newContext);
