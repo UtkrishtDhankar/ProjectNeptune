@@ -24,22 +24,22 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     private static final String DATABASE_NAME = "projectNeptune";
 
     // Parameters related to the tasks table. The name and all of it's column names go here.
-    private static final String TASKS_TABLE_NAME = "tasks";
-    private static final String TASKS_KEY_ID = "id";
-    private static final String TASKS_KEY_NAME = "name";
-    private static final String TASKS_KEY_STATUS = "status";
+    public static final String TASKS_TABLE_NAME = "tasks";
+    public static final String TASKS_KEY_ID = "id";
+    public static final String TASKS_KEY_NAME = "name";
+    public static final String TASKS_KEY_STATUS = "status";
 
     // Parameters related to the contexts table. The name and all of it's column names go here.
-    private static final String CONTEXTS_TABLE_NAME = "contexts";
-    private static final String CONTEXTS_KEY_ID = "id";
-    private static final String CONTEXTS_KEY_COLOR = "color";
-    private static final String CONTEXTS_KEY_NAME = "name";
+    public static final String CONTEXTS_TABLE_NAME = "contexts";
+    public static final String CONTEXTS_KEY_ID = "id";
+    public static final String CONTEXTS_KEY_COLOR = "color";
+    public static final String CONTEXTS_KEY_NAME = "name";
 
     // Parameters related to the tasks-contexts junction table.
     // The name and all of it's column names go here.
-    private static final String TASKS_CONTEXTS_JUNCTION_TABLE_NAME = "tasksContextsJunction";
-    private static final String TASKS_CONTEXTS_JUNCTION_KEY_TASK_ID = "taskId";
-    private static final String TASKS_CONTEXTS_JUNCTION_KEY_CONTEXT_ID = "contextId";
+    public static final String TASKS_CONTEXTS_JUNCTION_TABLE_NAME = "tasksContextsJunction";
+    public static final String TASKS_CONTEXTS_JUNCTION_KEY_TASK_ID = "taskId";
+    public static final String TASKS_CONTEXTS_JUNCTION_KEY_CONTEXT_ID = "contextId";
 
     /**
      * Creates a new DatabaseHelper
