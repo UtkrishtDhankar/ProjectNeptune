@@ -63,6 +63,20 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
         return frag;
     }
 
+    public static InputFragment newInstance(String title,String taskText,String taskContext,String taskStatus) {
+        InputFragment frag = new InputFragment();
+
+        // Set the arguments for the fragment
+        Bundle args = new Bundle();
+        args.putString("title", title);
+        args.putString("taskText", taskText);
+        args.putString("taskContext", taskContext);
+        args.putString("taskStatus", taskStatus);
+        frag.setArguments(args);
+
+        return frag;
+    }
+
     /**
      * Inflates this fragment
      * @param inflater

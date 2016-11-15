@@ -56,7 +56,7 @@ public class InboxFragment extends Fragment {
 
         // Fill the dataset from the database, and get the tasks list on the screen
         tasksList = databaseHelper.getAllTasks();
-        recyclerViewAdapter = new CardsAdapter(tasksList);
+        recyclerViewAdapter = new CardsAdapter(tasksList,InboxFragment.this);
         inboxRecyclerView.setAdapter(recyclerViewAdapter);
 
         // Inflate the layout for this fragment
