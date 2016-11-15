@@ -56,7 +56,9 @@ public class ContextsFragment extends Fragment {
 
         // Fill the dataset from the database, and get the contexts list on the screen
         tasksList = databaseHelper.getAllContexts();
-        recyclerViewAdapter = new ContextCardsAdapter(tasksList);
+
+        // Passing the dataset and fragment reference to the adapter
+        recyclerViewAdapter = new ContextCardsAdapter(tasksList,ContextsFragment.this);
         inboxRecyclerView.setAdapter(recyclerViewAdapter);
 
         // Inflate the layout for this fragment

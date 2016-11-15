@@ -1,6 +1,7 @@
 package utkrishtdhankar.projectneptune;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -35,7 +36,10 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
     private EditText cEditText;
     private Spinner contextDropDown;
     private Spinner statusDropDown;
-   // private static Context localContext;
+
+    // For updating contexts
+    int openedForEdit = 0;
+    Task task;
 
     /**
      * Default constructor
@@ -63,6 +67,20 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
         return frag;
     }
 
+    public static InputFragment newInstance(String title,String taskText,String taskContext,String taskStatus) {
+        InputFragment frag = new InputFragment();
+
+        // Set the arguments for the fragment
+        Bundle args = new Bundle();
+        args.putString("title", title);
+        args.putString("taskText", taskText);
+        args.putString("taskContext", taskContext);
+        args.putString("taskStatus", taskStatus);
+        frag.setArguments(args);
+
+        return frag;
+    }
+
     /**
      * Inflates this fragment
      * @param inflater
@@ -73,8 +91,15 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.input_fragment, container);
 
+
+        if(getArguments().getString("title") == "edit") {
+            openedForEdit = 1;
+        }else{
+            openedForEdit = 0;
+        }
+
+        return inflater.inflate(R.layout.input_fragment, container);
     }
 
     /**
@@ -127,6 +152,26 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
         String title = getArguments().getString("title", "Enter Name");
         getDialog().setTitle(title);
 
+        // For Editing Tasks
+        if(openedForEdit == 1){
+
+            task = new Task(getArguments().getString("taskText"));
+            task.addContext(new TaskContext(getArguments().getString("taskContext")));
+            task.changeStatus(TaskStatus.valueOf(getArguments().getString("taskStatus")));
+            inboxEditText.setText(task.getName());
+            for(int i = 0; i < contextsNames.length; i++){
+                if(contextsNames[i].equals(getArguments().getString("taskContext"))){
+                    contextDropDown.setSelection(i);
+                }
+            }
+            for(int i = 0; i < adapter.getCount(); i++){
+                if(adapter.getItem(i).toString().equals(getArguments().getString("taskStatus"))){
+                    statusDropDown.setSelection(i);
+                }
+            }
+
+        }
+
         // Show soft keyboard automatically and request focus to field
         inboxEditText.requestFocus();
         getDialog().getWindow().setSoftInputMode(
@@ -151,8 +196,14 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
         newTask.addContext(taskContext);
         newTask.changeStatus(TaskStatus.valueOf(newStatusName));
 
-        // Add said task to the database
-        databaseHelper.addTask(newTask);
+        if(openedForEdit == 1){
+            // Call the editing function use the task variable for old values
+        }else{
+            // Add said task to the database
+            databaseHelper.addTask(newTask);
+        }
+
+
 
         //Reloading the fragment so that values from tables are updated
         //HOME fragment is opened
