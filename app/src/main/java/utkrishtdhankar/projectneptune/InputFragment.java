@@ -196,8 +196,14 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
         newTask.addContext(taskContext);
         newTask.changeStatus(TaskStatus.valueOf(newStatusName));
 
-        // Add said task to the database
-        databaseHelper.addTask(newTask);
+        if(openedForEdit == 1){
+            // Call the editing function use the task variable for old values
+        }else{
+            // Add said task to the database
+            databaseHelper.addTask(newTask);
+        }
+
+
 
         //Reloading the fragment so that values from tables are updated
         //HOME fragment is opened
