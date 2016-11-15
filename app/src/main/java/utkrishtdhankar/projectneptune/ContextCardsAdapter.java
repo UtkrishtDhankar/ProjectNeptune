@@ -18,6 +18,7 @@ import java.util.ArrayList;
 public class ContextCardsAdapter extends RecyclerView.Adapter<ContextCardsAdapter.ContextCardViewHolder> {
 
     ContextsFragment contextsFragment;
+
     /**
      * Class to hold a single Card instance.
      * Contains references to all the text views etc. inside the card
@@ -48,10 +49,11 @@ public class ContextCardsAdapter extends RecyclerView.Adapter<ContextCardsAdapte
     /**
      * Constructs a new adapter, setting the dataset to the one supplied
      * @param newDataset The dataset to be inflated
+     * @param contextsFrag  The reference from calling fragment so that we can use it to replace fragments here
      */
-    public ContextCardsAdapter(ArrayList<TaskContext> newDataset, ContextsFragment main) {
+    public ContextCardsAdapter(ArrayList<TaskContext> newDataset, ContextsFragment contextsFrag) {
         this.dataset = newDataset;
-        this.contextsFragment = main;
+        this.contextsFragment = contextsFrag;
     }
 
     /**

@@ -30,7 +30,9 @@ public class ContextInputFragment extends DialogFragment implements View.OnClick
     // The button that is pressed when the user has added the context
     private Button contextAddButton;
 
+    // Variables for updating contexts
     int openedForEdit = 0;
+    TaskContext taskContext = new TaskContext();
 
     /**
      * Default constructor
@@ -49,7 +51,6 @@ public class ContextInputFragment extends DialogFragment implements View.OnClick
      */
     public static ContextInputFragment newInstance(String title, Context context) {
         ContextInputFragment frag = new ContextInputFragment();
-
         // Set the arguments for the fragment
         Bundle args = new Bundle();
         args.putString("title", title);
@@ -59,10 +60,11 @@ public class ContextInputFragment extends DialogFragment implements View.OnClick
     }
 
     /**
-     * Creates this input fragment
-     * @param title The title of this fragment
-     * @param context The context this is called in
-     * @return The new input fragment that we created
+     *
+     * @param title The title of the fragment
+     * @param contextText The content of the context text
+     * @param contextColor The color of the context
+     * @return The new fragment that we return
      */
     public static ContextInputFragment newInstance(String title,String contextText,int contextColor) {
         ContextInputFragment frag = new ContextInputFragment();
@@ -90,6 +92,8 @@ public class ContextInputFragment extends DialogFragment implements View.OnClick
         Bundle bundle = this.getArguments();
         if(bundle.get("title") == "edit") {
             openedForEdit = 1;
+        }else{
+            openedForEdit = 0;
         }
 
         return inflater.inflate(R.layout.context_input_fragment, container);
@@ -130,9 +134,17 @@ public class ContextInputFragment extends DialogFragment implements View.OnClick
         String title = getArguments().getString("title", "Enter Name");
         getDialog().setTitle(title);
 
-//        if(openedForEdit == 1){
-//            contextEditText.setText(getArguments().getString("contextText"));
-//        }
+        if(openedForEdit == 1){
+            taskContext.setName(getArguments().getString("contextText"));
+            taskContext.setColor(getArguments().getInt("contextColor"));
+            contextEditText.setText(taskContext.getName());
+            for(int i = 0; i < adapter.getCount(); i++){
+                if(Color.parseColor(adapter.getItem(i).toString()) == taskContext.getColor()){
+                    colorDropDown.setSelection(i);
+                }
+            }
+
+        }
 
 
         // Show soft keyboard automatically and request focus to field
@@ -152,8 +164,13 @@ public class ContextInputFragment extends DialogFragment implements View.OnClick
         int newContextColor = Color.parseColor(colorDropDown.getSelectedItem().toString());
         TaskContext newContext = new TaskContext(newContextName,newContextColor);
 
-        // Add said context to the database
-        databaseHelper.addContext(newContext);
+        if(openedForEdit == 1){
+            //call the editing function
+        }else{
+            // Add said context to the database
+            databaseHelper.addContext(newContext);
+        }
+
 
         //Reloading the fragment so that values from tables are updated
         Fragment fragment = new ContextsFragment();
