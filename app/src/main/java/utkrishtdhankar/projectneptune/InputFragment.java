@@ -1,7 +1,6 @@
 package utkrishtdhankar.projectneptune;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -20,7 +19,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Shreyak Kumar on 28-10-2016.
- * This pops up to let the player enter/edit the task
+ * This pops up to let the player enter/edit the oldtask
  */
 
 public class InputFragment extends DialogFragment implements View.OnClickListener {
@@ -28,7 +27,7 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
     // A reference to the database. Used when adding/editing tasks
     DatabaseHelper databaseHelper;
 
-    // The place where the user types in their task name
+    // The place where the user types in their oldtask name
     private EditText inboxEditText;
 
     // The button that is pressed when the user has added the thing
@@ -39,7 +38,7 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
 
     // For updating contexts
     int openedForEdit = 0;
-    Task task;
+    Task oldtask;
 
     /**
      * Default constructor
@@ -67,15 +66,16 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
         return frag;
     }
 
-    public static InputFragment newInstance(String title,String taskText,String taskContext,String taskStatus) {
+    public static InputFragment newInstance(String title,String taskText,String taskContext,String taskStatus,long id) {
         InputFragment frag = new InputFragment();
 
         // Set the arguments for the fragment
         Bundle args = new Bundle();
         args.putString("title", title);
         args.putString("taskText", taskText);
-        args.putString("taskContext", taskContext);
+        args.putString("oldContext", taskContext);
         args.putString("taskStatus", taskStatus);
+        args.putLong("taskId",id);
         frag.setArguments(args);
 
         return frag;
@@ -155,12 +155,13 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
         // For Editing Tasks
         if(openedForEdit == 1){
 
-            task = new Task(getArguments().getString("taskText"));
-            task.addContext(new TaskContext(getArguments().getString("taskContext")));
-            task.changeStatus(TaskStatus.valueOf(getArguments().getString("taskStatus")));
-            inboxEditText.setText(task.getName());
+            oldtask = new Task(getArguments().getString("taskText"));
+            oldtask.addContext(new TaskContext(getArguments().getString("oldContext")));
+            oldtask.changeStatus(TaskStatus.valueOf(getArguments().getString("taskStatus")));
+            oldtask.setId(getArguments().getLong("taskId"));
+            inboxEditText.setText(oldtask.getName());
             for(int i = 0; i < contextsNames.length; i++){
-                if(contextsNames[i].equals(getArguments().getString("taskContext"))){
+                if(contextsNames[i].equals(getArguments().getString("oldContext"))){
                     contextDropDown.setSelection(i);
                 }
             }
@@ -184,22 +185,23 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
      */
     @Override
     public void onClick(View view) {
-        // Fill out the new task
+        // Fill out the new oldtask
         String newTaskName = inboxEditText.getText().toString();
         String newContextName = contextDropDown.getSelectedItem().toString();
         String newStatusName = statusDropDown.getSelectedItem().toString();
 
         Task newTask = new Task(newTaskName);
 
-        // Add the context for the task
+        // Add the context for the oldtask
         TaskContext taskContext = new TaskContext(newContextName);
         newTask.addContext(taskContext);
         newTask.changeStatus(TaskStatus.valueOf(newStatusName));
 
         if(openedForEdit == 1){
-            // Call the editing function use the task variable for old values
+            // Call the editing function use the oldtask variable for old values
+            databaseHelper.updateTask(oldtask,newTask);
         }else{
-            // Add said task to the database
+            // Add said oldtask to the database
             databaseHelper.addTask(newTask);
         }
 
