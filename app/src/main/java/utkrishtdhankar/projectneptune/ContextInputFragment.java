@@ -32,7 +32,7 @@ public class ContextInputFragment extends DialogFragment implements View.OnClick
 
     // For updating contexts
     int openedForEdit = 0;
-    TaskContext taskContext = new TaskContext();
+    TaskContext oldContext = new TaskContext();
 
     /**
      * Default constructor
@@ -66,7 +66,7 @@ public class ContextInputFragment extends DialogFragment implements View.OnClick
      * @param contextColor The color of the context
      * @return The new fragment that we return
      */
-    public static ContextInputFragment newInstance(String title,String contextText,int contextColor) {
+    public static ContextInputFragment newInstance(String title,String contextText,int contextColor, long id) {
         ContextInputFragment frag = new ContextInputFragment();
 
         // Set the arguments for the fragment
@@ -74,6 +74,7 @@ public class ContextInputFragment extends DialogFragment implements View.OnClick
         args.putString("title", title);
         args.putString("contextText", contextText);
         args.putInt("contextColor", contextColor);
+        args.putLong("contextId",id);
         frag.setArguments(args);
 
         return frag;
@@ -135,11 +136,12 @@ public class ContextInputFragment extends DialogFragment implements View.OnClick
         getDialog().setTitle(title);
 
         if(openedForEdit == 1){
-            taskContext.setName(getArguments().getString("contextText"));
-            taskContext.setColor(getArguments().getInt("contextColor"));
-            contextEditText.setText(taskContext.getName());
+            oldContext.setName(getArguments().getString("contextText"));
+            oldContext.setColor(getArguments().getInt("contextColor"));
+            oldContext.setId(getArguments().getLong("contextId"));
+            contextEditText.setText(oldContext.getName());
             for(int i = 0; i < adapter.getCount(); i++){
-                if(Color.parseColor(adapter.getItem(i).toString()) == taskContext.getColor()){
+                if(Color.parseColor(adapter.getItem(i).toString()) == oldContext.getColor()){
                     colorDropDown.setSelection(i);
                 }
             }
@@ -165,7 +167,8 @@ public class ContextInputFragment extends DialogFragment implements View.OnClick
         TaskContext newContext = new TaskContext(newContextName,newContextColor);
 
         if(openedForEdit == 1){
-            // Call the editing function use the taskContext variable for old values
+            // Call the editing function use the oldContext variable for old values
+            databaseHelper.updateContext(oldContext,newContext);
         }else{
             // Add said context to the database
             databaseHelper.addContext(newContext);
