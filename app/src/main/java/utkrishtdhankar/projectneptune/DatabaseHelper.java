@@ -154,19 +154,19 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
     /**
      * Updates the task stored in the database with the given values.
-     * @param updatedTask The new values of the task
-     * @param taskId The id of the task to update
+     * @param oldTask The new values of the task. _Must_ have the id set
+     * @param newTask The id of the task to update
      */
-    public void updateTask(Task updatedTask, long taskId) {
+    public void updateTask(Task oldTask, Task newTask) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         // Put in the values for this task into a contentvalues
         ContentValues taskValues = new ContentValues();
-        taskValues.put(TASKS_KEY_NAME, updatedTask.getName());
-        taskValues.put(TASKS_KEY_STATUS, updatedTask.getStatus().name());
+        taskValues.put(TASKS_KEY_NAME, newTask.getName());
+        taskValues.put(TASKS_KEY_STATUS, newTask.getStatus().name());
 
         // Update the values in the database
-        db.update(TASKS_TABLE_NAME, taskValues, TASKS_KEY_ID + " = " + Long.toString(taskId), null);
+        db.update(TASKS_TABLE_NAME, taskValues, TASKS_KEY_ID + " = " + Long.toString(oldTask.getId()), null);
     }
 
     /**
