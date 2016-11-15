@@ -8,7 +8,7 @@ import java.util.Collections;
 /**
  * Created by utkrishtdhankar on 21/10/16.
  */
-public class Task {
+public class Task extends Identifiable {
     // The name of this task, e.g "Do the laundry"
     private String name;
 
