@@ -277,13 +277,6 @@ public class MainActivity extends AppCompatActivity {
         contextInputFragment.show(fragmentManager, "fragment_edit_name");
     }
 
-    public void contextOnClick(TaskContext taskContext){
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        ContextInputFragment contextInputFragment = new ContextInputFragment();
-        contextInputFragment.show(fragmentManager, "fragment_edit_name");
-    }
-
     /**
      * Show the fab only when Inbox fragment is opened
      */

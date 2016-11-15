@@ -1,5 +1,6 @@
 package utkrishtdhankar.projectneptune;
 
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -85,7 +86,9 @@ public class ContextCardsAdapter extends RecyclerView.Adapter<ContextCardsAdapte
         // Setting the onClick listener
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
-                //Add Activity here
+                FragmentManager fragmentManager = contextsFragment.getFragmentManager();
+                ContextInputFragment contextInputFragment = ContextInputFragment.newInstance("edit",dataset.get(position).getName(),dataset.get(position).getColor());
+                contextInputFragment.show(fragmentManager, "fragment_edit_name");
             }
         });
     }
