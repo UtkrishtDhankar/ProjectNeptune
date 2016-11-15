@@ -1,5 +1,10 @@
 package utkrishtdhankar.projectneptune;
 
+import android.provider.ContactsContract;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 /**
  * Created by utkrishtdhankar on 15/11/16.
  */
@@ -45,6 +50,49 @@ public class Filter {
      */
     public void setTaskStatus(String status) {
         taskStatus = status;
+    }
+
+    /**
+     * Returns the whereclause bit for the database query
+     * @return
+     */
+    public WhereClause getQueryWhereClause() {
+        WhereClause whereClause = new WhereClause();
+
+        if (!isAnythingSet()) {
+            return whereClause;
+        }
+
+        StringBuilder clauseStringBuilder = new StringBuilder();
+
+        if (taskPattern != null && !taskPattern.isEmpty()) {
+            clauseStringBuilder.append(DatabaseHelper.TASKS_KEY_NAME);
+            clauseStringBuilder.append(" LIKE ");
+            whereClause.clauseArgs.add(taskPattern);
+        }
+
+        if (taskStatus != null && !taskStatus.isEmpty()) {
+            // If the string builder already has something in it before this particular clause
+            // Then we should add an "&&".
+            if (clauseStringBuilder.length() > 0) {
+                clauseStringBuilder.append(" && ");
+            }
+            clauseStringBuilder.append(DatabaseHelper.TASKS_KEY_STATUS);
+            clauseStringBuilder.append("=?");
+            whereClause.clauseArgs.add(taskStatus)
+        }
+
+        whereClause.clause = clauseStringBuilder.toString();
+    }
+
+    public class WhereClause {
+        public String clause;
+        public ArrayList<String> clauseArgs;
+
+        WhereClause() {
+            clause = new String();
+            clauseArgs = new ArrayList<>();
+        }
     }
 
     /**
