@@ -1,6 +1,7 @@
 package utkrishtdhankar.projectneptune;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 
 import utkrishtdhankar.projectneptune.TaskStatusPackage.Inbox;
@@ -18,6 +19,9 @@ public class Task extends Identifiable {
 
     // What is the status of the oldtask, e.g. Next, Waiting etc.
     private TaskStatus status;
+
+    // When is this task due to be completed?
+    private Calendar dueDate;
 
     /**
      * Constructs a new oldtask with the given parameters
@@ -87,4 +91,19 @@ public class Task extends Identifiable {
      * @return The name of the oldtask
      */
     public String getName() {return name;}
+
+    /**
+     * @return the due date for this task
+     */
+    public Calendar getDueDate() {
+        return dueDate;
+    }
+
+    /**
+     * Sets the due date of this task to whatever is the parameter dueDate.
+     * @param dueDate
+     */
+    public void setDueDate(Calendar dueDate) {
+        this.dueDate = dueDate;
+    }
 }
