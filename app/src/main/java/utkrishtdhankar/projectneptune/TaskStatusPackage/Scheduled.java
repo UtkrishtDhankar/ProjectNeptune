@@ -1,5 +1,6 @@
 package utkrishtdhankar.projectneptune.TaskStatusPackage;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
@@ -30,11 +31,13 @@ public class Scheduled implements TaskStatus {
 
     @Override
     public String getSpecial() {
-        return scheduledForDate.toString();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy");
+        return sdf.format(scheduledForDate);
     }
 
     @Override
     public String encode() {
-        return name + " " + scheduledForDate.toString();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+        return name + " " + sdf.format(scheduledForDate);
     }
 }
