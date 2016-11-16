@@ -102,22 +102,22 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     }
 
     /**
-     * Adds the task given to the database
-     * Does _not_ check if such a task already exists, so this might add duplicates
-     * @param task the task to add
+     * Adds the oldtask given to the database
+     * Does _not_ check if such a oldtask already exists, so this might add duplicates
+     * @param task the oldtask to add
      */
     public void addTask(Task task) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        // Put in the values for this task into a contentvalues
+        // Put in the values for this oldtask into a contentvalues
         ContentValues taskValues = new ContentValues();
         taskValues.put(TASKS_KEY_NAME, task.getName());
         taskValues.put(TASKS_KEY_STATUS, task.getStatus().encode());
 
-        // Insert the task into the database and get it's id
+        // Insert the oldtask into the database and get it's id
         long newTaskId = db.insert(TASKS_TABLE_NAME, null, taskValues);
 
-        // Add all of the task's contexts into the database as well
+        // Add all of the oldtask's contexts into the database as well
         ArrayList<TaskContext> contexts = task.getAllContexts();
         for (TaskContext context : contexts) {
             // The following two paragraphs of code sees if the context we are on now
@@ -155,18 +155,18 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     }
 
     /**
-     * Updates the task stored in the database with the given values.
-     * @param oldTask The new values of the task. _Must_ have the id set
-     * @param newTask The id of the task to update
+     * Updates the oldtask stored in the database with the given values.
+     * @param oldTask The new values of the oldtask. _Must_ have the id set
+     * @param newTask The id of the oldtask to update
      */
     public void updateTask(Task oldTask, Task newTask) {
-        if (!oldTask.isInvalid()) {
+        if (oldTask.isInvalid()) {
             throw new IllegalArgumentException("oldTask should have a valid id.");
         }
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        // Put in the values for this task into a contentvalues
+        // Put in the values for this oldtask into a contentvalues
         ContentValues taskValues = new ContentValues();
         taskValues.put(TASKS_KEY_NAME, newTask.getName());
         taskValues.put(TASKS_KEY_STATUS, newTask.getStatus().encode());
@@ -177,12 +177,12 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
     /**
      * @param taskId The id to search for
-     * @return The task, if found. Otherwise, returns null
+     * @return The oldtask, if found. Otherwise, returns null
      */
     public Task getTaskById(long taskId) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        // Get a cursor pointing to this task
+        // Get a cursor pointing to this oldtask
         Cursor tasksCursor = db.query(
                 TASKS_TABLE_NAME,
                 new String[]{TASKS_KEY_ID, TASKS_KEY_NAME, TASKS_KEY_STATUS},
@@ -198,12 +198,12 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             return null;
         }
 
-        // Store the task name and status
+        // Store the oldtask name and status
         Task task = new Task(tasksCursor.getString(tasksCursor.getColumnIndex(TASKS_KEY_NAME)));
         task.changeStatus(
                 TaskStatusHelper.decode(tasksCursor.getString(tasksCursor.getColumnIndex(TASKS_KEY_STATUS))));
 
-        // Add all the contexts to the task
+        // Add all the contexts to the oldtask
         ArrayList<TaskContext> contexts = getAllContextsForTask(taskId);
         for (TaskContext context : contexts) {
             task.addContext(context);
@@ -234,15 +234,15 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         // Keep adding tasks to the list until we run out of tasks to add
         do {
-            // Get the task's id
+            // Get the oldtask's id
             long taskId = tasksCursor.getLong(tasksCursor.getColumnIndex(TASKS_KEY_ID));
 
-            // Store the task name and status
+            // Store the oldtask name and status
             Task task = new Task(tasksCursor.getString(tasksCursor.getColumnIndex(TASKS_KEY_NAME)));
             task.changeStatus(
                     TaskStatusHelper.decode(tasksCursor.getString(tasksCursor.getColumnIndex(TASKS_KEY_STATUS))));
 
-            // Add all the contexts to the task
+            // Add all the contexts to the oldtask
             ArrayList<TaskContext> contexts = getAllContextsForTask(taskId);
             for (TaskContext context : contexts) {
                 task.addContext(context);
@@ -272,11 +272,12 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         try {
             contextsCursor.moveToFirst();
 
-            // Add all the contexts to the task
+            // Add all the contexts to the oldtask
             do {
                 TaskContext newContext = new TaskContext(
                         contextsCursor.getString(contextsCursor.getColumnIndex(CONTEXTS_KEY_NAME)));
                 newContext.setColor(contextsCursor.getInt(contextsCursor.getColumnIndex(CONTEXTS_KEY_COLOR)));
+                newContext.setId(contextsCursor.getLong(contextsCursor.getColumnIndex(CONTEXTS_KEY_ID)));
                 contexts.add(newContext);
             } while (contextsCursor.moveToNext());
         } catch(CursorIndexOutOfBoundsException exception) {
@@ -322,15 +323,15 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     }
 
     /**
-     * @param taskId The id of the task for which the contexts are needed
-     * @return A list of all the contexts of the task
+     * @param taskId The id of the oldtask for which the contexts are needed
+     * @return A list of all the contexts of the oldtask
      */
     private ArrayList<TaskContext> getAllContextsForTask(long taskId) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         ArrayList<TaskContext> contexts = new ArrayList<TaskContext>();
 
-        // Defining the query to get the contexts from the task
+        // Defining the query to get the contexts from the oldtask
         String contextQuery = String.format(
                 "SELECT %s, %s FROM %s LEFT JOIN %s " +
                         "ON %s.%s = %s.%s " +
@@ -344,7 +345,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         try {
             contextsCursor.moveToFirst();
 
-            // Add all the contexts to the task
+            // Add all the contexts to the oldtask
             do {
                 TaskContext newContext = new TaskContext(
                         contextsCursor.getString(contextsCursor.getColumnIndex(CONTEXTS_KEY_NAME)));

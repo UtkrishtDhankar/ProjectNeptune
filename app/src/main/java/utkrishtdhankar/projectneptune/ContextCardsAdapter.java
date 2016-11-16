@@ -30,7 +30,7 @@ public class ContextCardsAdapter extends RecyclerView.Adapter<ContextCardsAdapte
         public CardView cardView;
 
         /**
-         * Constructor for this task
+         * Constructor for this oldtask
          * Sets the different views to their values for the view that was passed in
          * @param view
          */
@@ -89,7 +89,7 @@ public class ContextCardsAdapter extends RecyclerView.Adapter<ContextCardsAdapte
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 FragmentManager fragmentManager = contextsFragment.getFragmentManager();
-                ContextInputFragment contextInputFragment = ContextInputFragment.newInstance("edit",dataset.get(position).getName(),dataset.get(position).getColor());
+                ContextInputFragment contextInputFragment = ContextInputFragment.newInstance("edit",dataset.get(position).getName(),dataset.get(position).getColor(),dataset.get(position).getId());
                 contextInputFragment.show(fragmentManager, "fragment_edit_name");
             }
         });

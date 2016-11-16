@@ -27,20 +27,20 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.TaskCardView
      * Is used to set these views from code
      */
     public static class TaskCardViewHolder extends RecyclerView.ViewHolder {
-        // The name of the task
+        // The name of the oldtask
         public TextView nameTextView;
 
-        // The status (Inbox, Waiting, etc. for this task)
+        // The status (Inbox, Waiting, etc. for this oldtask)
         public TextView statusTextView;
 
-        // The context for this task (Home, etc.)
+        // The context for this oldtask (Home, etc.)
         public TextView contextTextView;
 
-        // The cardview for this task
+        // The cardview for this oldtask
         public CardView cardView;
 
         /**
-         * Constructor for this task
+         * Constructor for this oldtask
          * Sets the different views to their values for the view that was passed in
          * @param view
          */
@@ -127,7 +127,7 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.TaskCardView
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 FragmentManager fragmentManager = inboxFragment.getFragmentManager();
-                InputFragment inputFragment = InputFragment.newInstance("edit",dataset.get(position).getName(),dataset.get(position).getAllContexts().get(0).getName(),dataset.get(position).getStatus().toString());
+                InputFragment inputFragment = InputFragment.newInstance("edit",dataset.get(position).getName(),dataset.get(position).getAllContexts().get(0).getName(),dataset.get(position).getStatus().toString(),dataset.get(position).getId());
                 inputFragment.show(fragmentManager, "fragment_edit_name");
             }
         });
