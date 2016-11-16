@@ -89,10 +89,11 @@ public class ContextCardsAdapter extends RecyclerView.Adapter<ContextCardsAdapte
         // Setting the fonts for all texts in the card
         holder.nameTextView.setTypeface(robotoRegular);
 
-        // get element from your dataset at this position
-        // replace the contents of the view (TextView) with that element's info
+        // Getting elements from the dataset at this position
+        // Setting the context's text and color
         holder.nameTextView.setText(dataset.get(position).getName());
-        holder.nameTextView.setTextColor(dataset.get(position).getColor());
+        holder.cardView.setBackgroundColor(dataset.get(position).getColor());
+        // TODO set context's text color according to the background color
 
         // Setting the onClick listener
         holder.cardView.setOnClickListener(new View.OnClickListener() {
