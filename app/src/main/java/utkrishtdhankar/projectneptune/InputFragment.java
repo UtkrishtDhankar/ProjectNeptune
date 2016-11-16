@@ -17,6 +17,8 @@ import android.widget.Spinner;
 
 import java.util.ArrayList;
 
+import utkrishtdhankar.projectneptune.TaskStatusPackage.TaskStatusHelper;
+
 /**
  * Created by Shreyak Kumar on 28-10-2016.
  * This pops up to let the player enter/edit the oldtask
@@ -157,7 +159,7 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
 
             oldtask = new Task(getArguments().getString("taskText"));
             oldtask.addContext(new TaskContext(getArguments().getString("oldContext")));
-            oldtask.changeStatus(TaskStatus.valueOf(getArguments().getString("taskStatus")));
+            oldtask.changeStatus(TaskStatusHelper.decode(getArguments().getString("taskStatus")));
             oldtask.setId(getArguments().getLong("taskId"));
             inboxEditText.setText(oldtask.getName());
             for(int i = 0; i < contextsNames.length; i++){
@@ -195,7 +197,7 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
         // Add the context for the oldtask
         TaskContext taskContext = new TaskContext(newContextName);
         newTask.addContext(taskContext);
-        newTask.changeStatus(TaskStatus.valueOf(newStatusName));
+        newTask.changeStatus(TaskStatusHelper.decode(newStatusName));
 
         if(openedForEdit == 1){
             // Call the editing function use the oldtask variable for old values
