@@ -32,7 +32,7 @@ public class Scheduled implements TaskStatus {
     @Override
     public String getSpecial() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy");
-        return sdf.format(scheduledForDate);
+        return sdf.format(scheduledForDate.getTime());
     }
 
     @Override
