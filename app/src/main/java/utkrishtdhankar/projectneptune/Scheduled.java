@@ -1,6 +1,6 @@
 package utkrishtdhankar.projectneptune;
 
-import java.util.Date;
+import java.util.Calendar;
 
 /**
  * Created by utkrishtdhankar on 15/11/16.
@@ -9,17 +9,17 @@ import java.util.Date;
 public class Scheduled implements TaskStatus {
     private static final String name = "Scheduled";
 
-    private Date scheduledForDate;
+    private Calendar scheduledForDate;
 
-    Scheduled(Date date) {
+    Scheduled(Calendar date) {
         scheduledForDate = date;
     }
 
-    public Date getScheduledForDate() {
+    public Calendar getScheduledForDate() {
         return scheduledForDate;
     }
 
-    public void setScheduledForDate(Date scheduledForDate) {
+    public void setScheduledForDate(Calendar scheduledForDate) {
         this.scheduledForDate = scheduledForDate;
     }
 

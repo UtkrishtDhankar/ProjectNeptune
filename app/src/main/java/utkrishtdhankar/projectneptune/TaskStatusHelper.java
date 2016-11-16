@@ -2,6 +2,7 @@ package utkrishtdhankar.projectneptune;
 
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.util.Calendar;
 
 /**
  * Created by utkrishtdhankar on 16/11/16.
@@ -28,8 +29,10 @@ public class TaskStatusHelper {
             status = new Waiting(encodedStatus.substring("Waiting".length() + 2));
         } else if(encodedStatus.startsWith("Scheduled")) {
             try {
-                status = new Scheduled(DateFormat.getDateInstance()
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(DateFormat.getDateInstance()
                         .parse(encodedStatus.substring("Scheduled".length() + 2)));
+                status = new Scheduled(cal);
             } catch (ParseException e) {
                 throw new IllegalArgumentException("Scheduled date format is illegal. Given substring is: "
                         + encodedStatus.substring("Scheduled".length() + 2));
