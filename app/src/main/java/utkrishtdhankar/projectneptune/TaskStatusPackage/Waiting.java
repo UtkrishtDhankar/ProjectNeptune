@@ -9,7 +9,7 @@ public class Waiting implements TaskStatus {
 
     private String waitingForName;
 
-    Waiting(String newWaitingForName) {
+    public Waiting(String newWaitingForName) {
         waitingForName = newWaitingForName;
     }
 

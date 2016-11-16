@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import utkrishtdhankar.projectneptune.TaskStatusPackage.TaskStatusHelper;
+import utkrishtdhankar.projectneptune.TaskStatusPackage.Waiting;
 
 /**
  * Created by Shreyak Kumar on 28-10-2016.
@@ -237,10 +238,21 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
 
         Task newTask = new Task(newTaskName);
 
+        if(newStatusName.equals("Waiting")){
+            String waitingFor = waitingText.getText().toString();
+            newTask.changeStatus(new Waiting(waitingFor));
+        } else if(newStatusName.equals("Scheduled")) {
+
+        } else {
+
+        }
+
+
+
         // Add the context for the oldtask
         TaskContext taskContext = new TaskContext(newContextName);
         newTask.addContext(taskContext);
-        newTask.changeStatus(TaskStatusHelper.decode(newStatusName));
+       // newTask.changeStatus(TaskStatusHelper.decode(newStatusName));
 
         if(openedForEdit == 1){
             // Call the editing function use the oldtask variable for old values
