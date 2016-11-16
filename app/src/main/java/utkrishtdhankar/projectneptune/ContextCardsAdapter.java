@@ -1,5 +1,6 @@
 package utkrishtdhankar.projectneptune;
 
+import android.graphics.Typeface;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -80,6 +81,15 @@ public class ContextCardsAdapter extends RecyclerView.Adapter<ContextCardsAdapte
      */
     @Override
     public void onBindViewHolder(ContextCardViewHolder holder, final int position) {
+        // Importing the required fonts
+        Typeface robotoLight = Typeface.createFromAsset(contextsFragment.getActivity().getAssets(), "fonts/Roboto-Light.ttf");
+        Typeface robotoLightItalic = Typeface.createFromAsset(contextsFragment.getActivity().getAssets(), "fonts/Roboto-LightItalic.ttf");
+        Typeface robotoRegular = Typeface.createFromAsset(contextsFragment.getActivity().getAssets(), "fonts/Roboto-Regular.ttf");
+
+        // Setting the fonts for all texts in the card
+        holder.nameTextView.setTypeface(robotoRegular);
+       //TODO
+
         // get element from your dataset at this position
         // replace the contents of the view (TextView) with that element's info
         holder.nameTextView.setText(dataset.get(position).getName());
