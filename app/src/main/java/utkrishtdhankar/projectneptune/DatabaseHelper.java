@@ -212,6 +212,50 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         return task;
     }
 
+    public ArrayList<Task> getTasksByFilter(Filter filter) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Filter.WhereClause whereClause = filter.getQueryWhereClause();
+
+        // This gets _all_ the tasks
+        Cursor tasksCursor = db.query(
+                TASKS_TABLE_NAME,
+                new String[] {TASKS_KEY_ID, TASKS_KEY_NAME, TASKS_KEY_STATUS},
+                whereClause.clause, whereClause.clauseArgs.toArray(new String [whereClause.clauseArgs.size()]),
+                null, null, null, null);
+
+        // TODO replace these return nulls with exceptions
+        if (tasksCursor != null && tasksCursor.getCount() > 0)
+            tasksCursor.moveToFirst();
+        else
+            return null;
+
+        ArrayList<Task> tasks = new ArrayList<Task> ();
+
+        // Keep adding tasks to the list until we run out of tasks to add
+        do {
+            // Get the oldtask's id
+            long taskId = tasksCursor.getLong(tasksCursor.getColumnIndex(TASKS_KEY_ID));
+
+            // Store the oldtask name and status
+            Task task = new Task(tasksCursor.getString(tasksCursor.getColumnIndex(TASKS_KEY_NAME)));
+            task.changeStatus(
+                    TaskStatusHelper.decode(tasksCursor.getString(tasksCursor.getColumnIndex(TASKS_KEY_STATUS))));
+
+            // Add all the contexts to the oldtask
+            ArrayList<TaskContext> contexts = getAllContextsForTask(taskId);
+            for (TaskContext context : contexts) {
+                task.addContext(context);
+            }
+
+            tasks.add(task);
+        } while (tasksCursor.moveToNext());
+
+        // Close the inbox cursor and we're done
+        tasksCursor.close();
+        return tasks;
+    }
+
     /**
      * @return all the tasks in the database
      */
