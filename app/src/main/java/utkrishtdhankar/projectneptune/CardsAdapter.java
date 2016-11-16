@@ -127,7 +127,13 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.TaskCardView
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 FragmentManager fragmentManager = inboxFragment.getFragmentManager();
-                InputFragment inputFragment = InputFragment.newInstance("edit",dataset.get(position).getName(),dataset.get(position).getAllContexts().get(0).getName(),dataset.get(position).getStatus().toString(),dataset.get(position).getId());
+                InputFragment inputFragment = InputFragment.newInstance("edit",
+                        dataset.get(position).getName(),
+                        dataset.get(position).getAllContexts().get(0).getName(),
+                        dataset.get(position).getStatus().encode(),
+                        dataset.get(position).getStatus().getName(),
+                        dataset.get(position).getStatus().getSpecial(),
+                        dataset.get(position).getId());
                 inputFragment.show(fragmentManager, "fragment_edit_name");
             }
         });

@@ -78,7 +78,7 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
         return frag;
     }
 
-    public static InputFragment newInstance(String title,String taskText,String taskContext,String taskStatus,long id) {
+    public static InputFragment newInstance(String title,String taskText,String taskContext, String taskStatusEncoded, String taskStatus,String taskStatusSpecial,long id) {
         InputFragment frag = new InputFragment();
 
         // Set the arguments for the fragment
@@ -87,6 +87,8 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
         args.putString("taskText", taskText);
         args.putString("oldContext", taskContext);
         args.putString("taskStatus", taskStatus);
+        args.putString("taskStatusSpecial", taskStatusSpecial);
+        args.putString("encodedStatus", taskStatusEncoded);
         args.putLong("taskId",id);
         frag.setArguments(args);
 
@@ -171,7 +173,7 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
 
             oldtask = new Task(getArguments().getString("taskText"));
             oldtask.addContext(new TaskContext(getArguments().getString("oldContext")));
-            oldtask.changeStatus(TaskStatusHelper.decode(getArguments().getString("taskStatus")));
+            oldtask.changeStatus(TaskStatusHelper.decode(getArguments().getString("encodedStatus")));
             oldtask.setId(getArguments().getLong("taskId"));
             inboxEditText.setText(oldtask.getName());
             for(int i = 0; i < contextsNames.length; i++){
