@@ -1,5 +1,6 @@
 package utkrishtdhankar.projectneptune;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,17 +14,19 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Created by Shreyak Kumar on 28-10-2016.
  * This pops up to let the player enter/edit the oldtask
  */
 
-public class InputFragment extends DialogFragment implements View.OnClickListener {
+public class InputFragment extends DialogFragment implements View.OnClickListener,DatePickerDialog.OnDateSetListener {
 
     // A reference to the database. Used when adding/editing tasks
     DatabaseHelper databaseHelper;
@@ -40,6 +43,8 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
     // For updating contexts
     int openedForEdit = 0;
     Task oldtask;
+
+    Calendar calendar;
 
     /**
      * Default constructor
@@ -195,6 +200,8 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
             }
 
         });
+        //The Calendar variable is now set.
+
         // Show soft keyboard automatically and request focus to field
         inboxEditText.requestFocus();
         getDialog().getWindow().setSoftInputMode(
@@ -237,5 +244,20 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
 
         //Closes the pop-up
         dismiss();
+    }
+
+    /**
+     * @param view       the picker associated with the dialog
+     * @param year       the selected year
+     * @param month      the selected month (0-11 for compatibility with
+     *                   {@link Calendar#MONTH})
+     * @param dayOfMonth th selected day of the month (1-31, depending on
+     */
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR,year);
+        calendar.set(Calendar.MONTH,month);
+        calendar.set(Calendar.DAY_OF_MONTH,dayOfMonth);
     }
 }

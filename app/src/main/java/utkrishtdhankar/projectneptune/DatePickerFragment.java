@@ -6,13 +6,14 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.widget.DatePicker;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 /**
  * Created by Shreyak Kumar on 16-11-2016.
  */
-public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+public class DatePickerFragment extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -22,19 +23,13 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
 
+        // Activity needs to implement this interface
+        DatePickerDialog.OnDateSetListener listener = (DatePickerDialog.OnDateSetListener) getParentFragment();
+
+
         // Create a new instance of TimePickerDialog and return it
-        return new DatePickerDialog(getActivity(), this, year, month, day);
+        return new DatePickerDialog(getActivity(), listener, year, month, day);
     }
 
-    /**
-     * @param view       the picker associated with the dialog
-     * @param year       the selected year
-     * @param month      the selected month (0-11 for compatibility with
-     *                   {@link Calendar#MONTH})
-     * @param dayOfMonth th selected day of the month (1-31, depending on
-     */
-    @Override
-    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
 
-    }
 }
