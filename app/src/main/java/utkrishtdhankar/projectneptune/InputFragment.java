@@ -78,7 +78,13 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
         return frag;
     }
 
-    public static InputFragment newInstance(String title,String taskText,String taskContext, String taskStatusEncoded, String taskStatus,String taskStatusSpecial,long id) {
+    public static InputFragment newInstance(String title,
+                                            String taskText,
+                                            String taskContext,
+                                            String taskStatusEncoded,
+                                            String taskStatus,
+                                            String taskStatusSpecial,
+                                            long id) {
         InputFragment frag = new InputFragment();
 
         // Set the arguments for the fragment
@@ -184,15 +190,6 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
             for(int i = 0; i < adapter.getCount(); i++){
                 if(adapter.getItem(i).toString().equals(getArguments().getString("taskStatus"))){
                     statusDropDown.setSelection(i);
-                    //TODO open corresponding fragment
-                    if(statusDropDown.getSelectedItem().toString().equals("Scheduled")){
-                        DatePickerFragment newFragment = new DatePickerFragment();
-                        newFragment.show(getFragmentManager(), "datePicker");
-                    }
-                    if(statusDropDown.getSelectedItem().toString().equals("Waiting")){
-                        waitingText.setVisibility(View.VISIBLE);
-                    }
-
                 }
             }
 
@@ -251,8 +248,6 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
         } else {
             newTask.changeStatus(TaskStatusHelper.decode(newStatusName));
         }
-
-
 
         // Add the context for the oldtask
         TaskContext taskContext = new TaskContext(newContextName);
