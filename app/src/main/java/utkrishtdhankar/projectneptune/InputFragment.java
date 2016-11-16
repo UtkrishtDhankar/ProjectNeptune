@@ -21,6 +21,7 @@ import android.widget.Spinner;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import utkrishtdhankar.projectneptune.TaskStatusPackage.Scheduled;
 import utkrishtdhankar.projectneptune.TaskStatusPackage.TaskStatusHelper;
 import utkrishtdhankar.projectneptune.TaskStatusPackage.Waiting;
 
@@ -207,6 +208,7 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
                 if(adapter.getItem(position).toString().equals("Scheduled") ){
                     //open corresponding fragment
                     DatePickerFragment newFragment = new DatePickerFragment();
+                    newFragment.setTargetFragment(InputFragment.this,300);
                     newFragment.show(getFragmentManager(), "datePicker");
                 }
             }
@@ -242,7 +244,7 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
             String waitingFor = waitingText.getText().toString();
             newTask.changeStatus(new Waiting(waitingFor));
         } else if(newStatusName.equals("Scheduled")) {
-
+            newTask.changeStatus(new Scheduled(calendar));
         } else {
 
         }
