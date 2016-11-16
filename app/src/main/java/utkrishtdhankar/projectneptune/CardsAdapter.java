@@ -121,28 +121,11 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.TaskCardView
             holder.statusTextView.setText(dataset.get(position).getStatus().getName());
         }
 
-        StringBuilder stringbuilder = new StringBuilder();
-        SpannableString spannableString = new SpannableString(stringbuilder.toString());
-
-        // Setting the colors of contexts and displaying them
-        int lastContextIndex = 0;
-        stringbuilder = new StringBuilder();
-        ArrayList<TaskContext> taskContexts ;
-        taskContexts = dataset.get(position).getAllContexts();
-        for(int j = 0; j < taskContexts.size() - 1; j++) {
-            stringbuilder.append(taskContexts.get(j).getName());
-            stringbuilder.append(" · ");
-        }
-        stringbuilder.append(taskContexts.get(taskContexts.size() - 1).getName());
-        spannableString = new SpannableString(stringbuilder.toString());
-        for(int j = 0; j < taskContexts.size(); j++) {
-            Object colorSpan = new ForegroundColorSpan(taskContexts.get(j).getColor());
-            spannableString.setSpan(colorSpan, lastContextIndex, lastContextIndex + taskContexts.get(j).getName().length(), 0);
-            lastContextIndex = lastContextIndex + taskContexts.get(j).getName().length() + 3 ;
-        }
-
-        //Setting the color spannable string
-        holder.contextTextView.setText(spannableString);
+        // Setting the context's text
+        holder.contextTextView.setText(" " + dataset.get(position).getAllContexts().get(0).getName() + " ");
+        // Setting the context's background color
+        holder.contextTextView.setBackgroundColor(dataset.get(position).getAllContexts().get(0).getColor());
+        // TODO Setting the context's text color according to the background color
 
         // Setting the onClick listener for each card
         holder.cardView.setOnClickListener(new View.OnClickListener() {

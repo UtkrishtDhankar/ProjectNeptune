@@ -88,7 +88,6 @@ public class ContextCardsAdapter extends RecyclerView.Adapter<ContextCardsAdapte
 
         // Setting the fonts for all texts in the card
         holder.nameTextView.setTypeface(robotoRegular);
-       //TODO
 
         // get element from your dataset at this position
         // replace the contents of the view (TextView) with that element's info
