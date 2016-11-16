@@ -4,21 +4,62 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.widget.DatePicker;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Created by Shreyak Kumar on 16-11-2016.
  */
 public class DatePickerFragment extends DialogFragment {
 
+
+    /**
+     * Creates this input fragment
+     * @return The new input fragment that we created
+     */
+    public static DatePickerFragment newInstance() {
+        DatePickerFragment frag = new DatePickerFragment();
+
+        // Set the arguments for the fragment
+        Bundle args = new Bundle();
+        frag.setArguments(args);
+
+        return frag;
+    }
+
+    /**
+     * Creates this input fragment
+     * @param special The title of this fragment
+     * @return The new input fragment that we created
+     */
+    public static DatePickerFragment newInstance(String special) {
+        DatePickerFragment frag = new DatePickerFragment();
+
+        // Set the arguments for the fragment
+        Bundle args = new Bundle();
+        args.putString("ScheduledSpecial", special);
+        frag.setArguments(args);
+
+        return frag;
+    }
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the current time as the default values for the picker
         final Calendar c = Calendar.getInstance();
+        String temp = null;
+        if(!getArguments().containsKey("ScheduledSpecial")){
+            DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+            try {
+                c.setTime(df.parse(getArguments().getString("ScheduledSpecial")));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);

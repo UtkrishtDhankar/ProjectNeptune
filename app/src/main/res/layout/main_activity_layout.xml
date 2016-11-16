@@ -24,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/addButton"
-        android:elevation="4sp"
+        android:elevation="6sp"
         android:onClick="onFABPress"
         android:layout_marginBottom="12sp"
         android:layout_marginRight="12sp"

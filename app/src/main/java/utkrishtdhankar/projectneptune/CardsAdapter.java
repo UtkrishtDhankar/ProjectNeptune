@@ -50,7 +50,7 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.TaskCardView
             cardView = (CardView) view.findViewById(R.id.card_view);
             nameTextView = (TextView) view.findViewById(R.id.info_text);
             statusTextView = (TextView) view.findViewById(R.id.status_text);
-            contextTextView = (TextView) view.findViewById(R.id.context_text);
+            contextTextView = (TextView) view.findViewById(R.id.task_context_text);
         }
     }
 
@@ -99,7 +99,14 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.TaskCardView
         // - get element from your dataset at this position
         // - replace the contents of the view (TextView) with that element's info
         holder.nameTextView.setText(dataset.get(position).getName());
-        holder.statusTextView.setText(dataset.get(position).getStatus().getName() + " : " + dataset.get(position).getStatus().getSpecial());
+        if(dataset.get(position).getStatus().getName().equals("Scheduled") || dataset.get(position).getStatus().getName().equals("Waiting")){
+            holder.statusTextView.setText(dataset.get(position).getStatus().getName() +
+                    " : " +
+                    dataset.get(position).getStatus().getSpecial());
+        }else {
+            holder.statusTextView.setText(dataset.get(position).getStatus().getName());
+        }
+
         StringBuilder stringbuilder = new StringBuilder();
         SpannableString spannableString = new SpannableString(stringbuilder.toString());
 
@@ -123,7 +130,7 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.TaskCardView
         //Setting the color spannable string
         holder.contextTextView.setText(spannableString);
 
-        // Setting the onClick listener
+        // Setting the onClick listener for each card
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 FragmentManager fragmentManager = inboxFragment.getFragmentManager();
