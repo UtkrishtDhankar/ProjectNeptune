@@ -1,10 +1,12 @@
 package utkrishtdhankar.projectneptune;
 
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
+import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -100,12 +102,13 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.TaskCardView
 
         // Importing the required fonts
         Typeface robotoLight = Typeface.createFromAsset(inboxFragment.getActivity().getAssets(), "fonts/Roboto-Light.ttf");
+        Typeface robotoLightItalic = Typeface.createFromAsset(inboxFragment.getActivity().getAssets(), "fonts/Roboto-LightItalic.ttf");
         Typeface robotoRegular = Typeface.createFromAsset(inboxFragment.getActivity().getAssets(), "fonts/Roboto-Regular.ttf");
 
         // Setting the fonts for all texts in the card
         holder.nameTextView.setTypeface(robotoRegular);
-        holder.statusTextView.setTypeface(robotoLight);
-        holder.contextTextView.setTypeface(robotoLight  );
+        holder.statusTextView.setTypeface(robotoLightItalic);
+        holder.contextTextView.setTypeface(robotoLight);
 
         // Getting elements from the dataset at this position
         // Replacing the contents of the elements
