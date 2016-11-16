@@ -38,6 +38,6 @@ public class Scheduled implements TaskStatus {
     @Override
     public String encode() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
-        return name + " " + sdf.format(scheduledForDate);
+        return name + " " + sdf.format(scheduledForDate.getTime());
     }
 }
