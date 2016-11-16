@@ -32,7 +32,7 @@ public class TaskStatusHelper {
             try {
                 Calendar cal = Calendar.getInstance();
 
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 cal.setTime(sdf.parse(encodedStatus.substring("Scheduled".length() + 1)));
                 status = new Scheduled(cal);
             } catch (ParseException e) {
