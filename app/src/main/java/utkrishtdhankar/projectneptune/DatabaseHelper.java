@@ -214,6 +214,16 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         task.changeStatus(
                 TaskStatusHelper.decode(tasksCursor.getString(tasksCursor.getColumnIndex(TASKS_KEY_STATUS))));
 
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+            Calendar cal = Calendar.getInstance();
+            cal.setTime((sdf.parse(tasksCursor.getString(tasksCursor.getColumnIndex(TASKS_KEY_DUE_DATE)))));
+            task.setDueDate(cal);
+        } catch (ParseException e) {
+            task.unsetDueDate();
+        }
+
         // Add all the contexts to the oldtask
         ArrayList<TaskContext> contexts = getAllContextsForTask(taskId);
         for (TaskContext context : contexts) {
