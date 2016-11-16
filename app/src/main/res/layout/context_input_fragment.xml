@@ -19,7 +19,7 @@
         android:id="@+id/addContextInput"
         android:layout_width="150sp"
         android:layout_height="wrap_content"
-        android:inputType="text"
+        android:inputType="textMultiLine"
         android:paddingTop="20sp" />
     <Spinner
         android:id="@+id/color_spinner"
