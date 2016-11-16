@@ -83,6 +83,7 @@ public class Filter {
         }
 
         whereClause.clause = clauseStringBuilder.toString();
+        return whereClause;
     }
 
     public class WhereClause {
