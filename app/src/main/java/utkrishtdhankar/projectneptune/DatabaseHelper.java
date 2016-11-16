@@ -242,7 +242,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         // This gets _all_ the tasks
         Cursor tasksCursor = db.query(
                 TASKS_TABLE_NAME,
-                new String[] {TASKS_KEY_ID, TASKS_KEY_NAME, TASKS_KEY_STATUS},
+                new String[] {TASKS_KEY_ID, TASKS_KEY_NAME, TASKS_KEY_STATUS, TASKS_KEY_DUE_DATE},
                 null, null, null, null, null, null);
 
         // TODO replace these return nulls with exceptions
@@ -272,7 +272,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             } catch (ParseException e) {
                 task.unsetDueDate();
             }
-            
+
             // Add all the contexts to the oldtask
             ArrayList<TaskContext> contexts = getAllContextsForTask(taskId);
             for (TaskContext context : contexts) {
