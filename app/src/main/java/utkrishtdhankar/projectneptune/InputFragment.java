@@ -157,7 +157,8 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
 
             task = new Task(getArguments().getString("taskText"));
             task.addContext(new TaskContext(getArguments().getString("taskContext")));
-            task.changeStatus(TaskStatus.valueOf(getArguments().getString("taskStatus")));
+            task.changeStatus(TaskStatusHelper.decode(getArguments().getString("taskStatus")));
+
             inboxEditText.setText(task.getName());
             for(int i = 0; i < contextsNames.length; i++){
                 if(contextsNames[i].equals(getArguments().getString("taskContext"))){
@@ -194,7 +195,7 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
         // Add the context for the task
         TaskContext taskContext = new TaskContext(newContextName);
         newTask.addContext(taskContext);
-        newTask.changeStatus(TaskStatus.valueOf(newStatusName));
+        newTask.changeStatus(TaskStatusHelper.decode(newStatusName));
 
         if(openedForEdit == 1){
             // Call the editing function use the task variable for old values
