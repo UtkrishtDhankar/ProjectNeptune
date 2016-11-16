@@ -175,6 +175,8 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
                 if(adapter.getItem(i).toString().equals(getArguments().getString("taskStatus"))){
                     statusDropDown.setSelection(i);
                     //TODO open corresponding fragment
+                    DatePickerFragment newFragment = new DatePickerFragment();
+                    newFragment.show(getFragmentManager(), "datePicker");
                 }
             }
 
