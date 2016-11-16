@@ -11,7 +11,7 @@ public class Scheduled implements TaskStatus {
 
     private Calendar scheduledForDate;
 
-    Scheduled(Calendar date) {
+    public Scheduled(Calendar date) {
         scheduledForDate = date;
     }
 
