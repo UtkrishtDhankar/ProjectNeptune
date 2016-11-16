@@ -199,7 +199,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         // Store the task name and status
         Task task = new Task(tasksCursor.getString(tasksCursor.getColumnIndex(TASKS_KEY_NAME)));
         task.changeStatus(
-                TaskStatus.valueOf(tasksCursor.getString(tasksCursor.getColumnIndex(TASKS_KEY_STATUS))));
+                TaskStatusHelper.decode(tasksCursor.getString(tasksCursor.getColumnIndex(TASKS_KEY_STATUS))));
 
         // Add all the contexts to the task
         ArrayList<TaskContext> contexts = getAllContextsForTask(taskId);
@@ -238,7 +238,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             // Store the task name and status
             Task task = new Task(tasksCursor.getString(tasksCursor.getColumnIndex(TASKS_KEY_NAME)));
             task.changeStatus(
-                    TaskStatus.valueOf(tasksCursor.getString(tasksCursor.getColumnIndex(TASKS_KEY_STATUS))));
+                    TaskStatusHelper.decode(tasksCursor.getString(tasksCursor.getColumnIndex(TASKS_KEY_STATUS))));
 
             // Add all the contexts to the task
             ArrayList<TaskContext> contexts = getAllContextsForTask(taskId);
