@@ -2,6 +2,7 @@ package utkrishtdhankar.projectneptune.TaskStatusPackage;
 
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
@@ -30,8 +31,9 @@ public class TaskStatusHelper {
         } else if(encodedStatus.startsWith("Scheduled")) {
             try {
                 Calendar cal = Calendar.getInstance();
-                cal.setTime(DateFormat.getDateInstance()
-                        .parse(encodedStatus.substring("Scheduled".length() + 1)));
+
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+                cal.setTime(sdf.parse(encodedStatus.substring("Scheduled".length() + 1)));
                 status = new Scheduled(cal);
             } catch (ParseException e) {
                 throw new IllegalArgumentException("Scheduled date format is illegal. Given substring is: "
