@@ -9,6 +9,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
 
+import utkrishtdhankar.projectneptune.TaskStatusPackage.TaskStatusHelper;
+
 /**
  * Created by utkrishtdhankar on 21/10/16.
  *
@@ -110,7 +112,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         // Put in the values for this oldtask into a contentvalues
         ContentValues taskValues = new ContentValues();
         taskValues.put(TASKS_KEY_NAME, task.getName());
-        taskValues.put(TASKS_KEY_STATUS, task.getStatus().name());
+        taskValues.put(TASKS_KEY_STATUS, task.getStatus().encode());
 
         // Insert the oldtask into the database and get it's id
         long newTaskId = db.insert(TASKS_TABLE_NAME, null, taskValues);
@@ -167,7 +169,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         // Put in the values for this oldtask into a contentvalues
         ContentValues taskValues = new ContentValues();
         taskValues.put(TASKS_KEY_NAME, newTask.getName());
-        taskValues.put(TASKS_KEY_STATUS, newTask.getStatus().name());
+        taskValues.put(TASKS_KEY_STATUS, newTask.getStatus().encode());
 
         // Update the values in the database
         db.update(TASKS_TABLE_NAME, taskValues, TASKS_KEY_ID + " = " + Long.toString(oldTask.getId()), null);
@@ -199,7 +201,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         // Store the oldtask name and status
         Task task = new Task(tasksCursor.getString(tasksCursor.getColumnIndex(TASKS_KEY_NAME)));
         task.changeStatus(
-                TaskStatus.valueOf(tasksCursor.getString(tasksCursor.getColumnIndex(TASKS_KEY_STATUS))));
+                TaskStatusHelper.decode(tasksCursor.getString(tasksCursor.getColumnIndex(TASKS_KEY_STATUS))));
 
         // Add all the contexts to the oldtask
         ArrayList<TaskContext> contexts = getAllContextsForTask(taskId);
@@ -238,8 +240,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             // Store the oldtask name and status
             Task task = new Task(tasksCursor.getString(tasksCursor.getColumnIndex(TASKS_KEY_NAME)));
             task.changeStatus(
-                    TaskStatus.valueOf(tasksCursor.getString(tasksCursor.getColumnIndex(TASKS_KEY_STATUS))));
-            task.setId(taskId);
+                    TaskStatusHelper.decode(tasksCursor.getString(tasksCursor.getColumnIndex(TASKS_KEY_STATUS))));
 
             // Add all the contexts to the oldtask
             ArrayList<TaskContext> contexts = getAllContextsForTask(taskId);

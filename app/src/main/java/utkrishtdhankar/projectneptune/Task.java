@@ -1,9 +1,10 @@
 package utkrishtdhankar.projectneptune;
 
-import android.graphics.Color;
-
 import java.util.ArrayList;
 import java.util.Collections;
+
+import utkrishtdhankar.projectneptune.TaskStatusPackage.Inbox;
+import utkrishtdhankar.projectneptune.TaskStatusPackage.TaskStatus;
 
 /**
  * Created by utkrishtdhankar on 21/10/16.
@@ -26,7 +27,7 @@ public class Task extends Identifiable {
     Task(String taskName) {
         name = taskName;
         contexts = new ArrayList<TaskContext>();
-        status = TaskStatus.Inbox;
+        status = new Inbox();
     }
 
     /**
