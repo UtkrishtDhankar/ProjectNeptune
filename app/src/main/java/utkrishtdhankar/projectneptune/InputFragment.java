@@ -1,7 +1,6 @@
 package utkrishtdhankar.projectneptune;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -17,6 +16,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
+
+import utkrishtdhankar.projectneptune.TaskStatusPackage.TaskStatusHelper;
 
 /**
  * Created by Shreyak Kumar on 28-10-2016.

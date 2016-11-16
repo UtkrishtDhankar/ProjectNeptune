@@ -1,12 +1,11 @@
-package utkrishtdhankar.projectneptune;
+package utkrishtdhankar.projectneptune.TaskStatusPackage;
 
 /**
  * Created by utkrishtdhankar on 15/11/16.
  */
 
-public class Inbox implements TaskStatus {
-
-    private static final String name = "Inbox";
+public class Someday implements TaskStatus {
+    private static final String name = "Someday";
     private static final String special = "";
 
     @Override
