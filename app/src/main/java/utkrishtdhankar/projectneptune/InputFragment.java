@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import utkrishtdhankar.projectneptune.TaskStatusPackage.Scheduled;
+import utkrishtdhankar.projectneptune.TaskStatusPackage.TaskStatus;
 import utkrishtdhankar.projectneptune.TaskStatusPackage.TaskStatusHelper;
 import utkrishtdhankar.projectneptune.TaskStatusPackage.Waiting;
 
@@ -246,7 +247,7 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
         } else if(newStatusName.equals("Scheduled")) {
             newTask.changeStatus(new Scheduled(calendar));
         } else {
-
+            newTask.changeStatus(TaskStatusHelper.decode(newStatusName));
         }
 
 
