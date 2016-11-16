@@ -79,7 +79,7 @@ public class Filter {
             }
             clauseStringBuilder.append(DatabaseHelper.TASKS_KEY_STATUS);
             clauseStringBuilder.append("=?");
-            whereClause.clauseArgs.add(taskStatus)
+            whereClause.clauseArgs.add(taskStatus);
         }
 
         whereClause.clause = clauseStringBuilder.toString();
