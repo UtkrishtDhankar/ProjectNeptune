@@ -32,6 +32,9 @@ public class Task extends Identifiable {
         name = taskName;
         contexts = new ArrayList<TaskContext>();
         status = new Inbox();
+
+        // This task does not have a due date now
+        dueDate = null;
     }
 
     /**
@@ -105,5 +108,12 @@ public class Task extends Identifiable {
      */
     public void setDueDate(Calendar dueDate) {
         this.dueDate = dueDate;
+    }
+
+    /**
+     * Unsets the due date. This task effectively does not have a due date now.
+     */
+    public void unsetDueDate() {
+        this.dueDate = null;
     }
 }
