@@ -7,7 +7,10 @@ import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import utkrishtdhankar.projectneptune.TaskStatusPackage.TaskStatusHelper;
 
@@ -20,7 +23,7 @@ import utkrishtdhankar.projectneptune.TaskStatusPackage.TaskStatusHelper;
 public class DatabaseHelper extends SQLiteOpenHelper{
     // The version of the database that ships with this version of the app
     // Update this if you make changes to the database so that it autoupdates the app
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2; // Last change: added due dates for task
 
     // The name of the database
     private static final String DATABASE_NAME = "projectNeptune";
@@ -30,6 +33,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     private static final String TASKS_KEY_ID = "id";
     private static final String TASKS_KEY_NAME = "name";
     private static final String TASKS_KEY_STATUS = "status";
+    private static final String TASKS_KEY_DUE_DATE = "due";
 
     // Parameters related to the contexts table. The name and all of it's column names go here.
     private static final String CONTEXTS_TABLE_NAME = "contexts";
@@ -59,13 +63,14 @@ public class DatabaseHelper extends SQLiteOpenHelper{
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
-        final String createInboxQuery = String.format(
+        final String createTaskQuery = String.format(
                 "CREATE TABLE %s (" +
                         "%s INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         "%s TEXT, " +
+                        "%s TEXT" +
                         "%s TEXT);",
-                TASKS_TABLE_NAME, TASKS_KEY_ID, TASKS_KEY_NAME, TASKS_KEY_STATUS);
-        db.execSQL(createInboxQuery);
+                TASKS_TABLE_NAME, TASKS_KEY_ID, TASKS_KEY_NAME, TASKS_KEY_DUE_DATE, TASKS_KEY_STATUS);
+        db.execSQL(createTaskQuery);
 
         final String createContextsQuery = String.format(
                 "CREATE TABLE %s (" +
@@ -113,6 +118,9 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         ContentValues taskValues = new ContentValues();
         taskValues.put(TASKS_KEY_NAME, task.getName());
         taskValues.put(TASKS_KEY_STATUS, task.getStatus().encode());
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        taskValues.put(TASKS_KEY_DUE_DATE, sdf.format(task.getDueDate().getTime()));
 
         // Insert the oldtask into the database and get it's id
         long newTaskId = db.insert(TASKS_TABLE_NAME, null, taskValues);
@@ -171,6 +179,9 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         taskValues.put(TASKS_KEY_NAME, newTask.getName());
         taskValues.put(TASKS_KEY_STATUS, newTask.getStatus().encode());
 
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        taskValues.put(TASKS_KEY_DUE_DATE, sdf.format(newTask.getDueDate().getTime()));
+
         // Update the values in the database
         db.update(TASKS_TABLE_NAME, taskValues, TASKS_KEY_ID + " = " + Long.toString(oldTask.getId()), null);
     }
@@ -185,7 +196,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         // Get a cursor pointing to this oldtask
         Cursor tasksCursor = db.query(
                 TASKS_TABLE_NAME,
-                new String[]{TASKS_KEY_ID, TASKS_KEY_NAME, TASKS_KEY_STATUS},
+                new String[]{TASKS_KEY_ID, TASKS_KEY_NAME, TASKS_KEY_STATUS, TASKS_KEY_DUE_DATE},
                 TASKS_KEY_ID + "=?",
                 new String[]{Long.toString(taskId)},
                 null, null, null, null);
