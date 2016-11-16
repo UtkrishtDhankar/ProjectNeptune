@@ -125,7 +125,14 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.TaskCardView
         holder.contextTextView.setText(" " + dataset.get(position).getAllContexts().get(0).getName() + " ");
         // Setting the context's background color
         holder.contextTextView.setBackgroundColor(dataset.get(position).getAllContexts().get(0).getColor());
-        // TODO Setting the context's text color according to the background color
+
+        // Setting the text color black if background is white , else text color is white
+        if(dataset.get(position).getAllContexts().get(0).getColor() == Color.parseColor("#ecf0f1")){
+            holder.contextTextView.setTextColor(Color.BLACK);
+        }else {
+            holder.contextTextView.setTextColor(Color.WHITE);
+        }
+
 
         // Setting the onClick listener for each card
         holder.cardView.setOnClickListener(new View.OnClickListener() {

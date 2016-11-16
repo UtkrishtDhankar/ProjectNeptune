@@ -1,5 +1,6 @@
 package utkrishtdhankar.projectneptune;
 
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.CardView;
@@ -93,7 +94,13 @@ public class ContextCardsAdapter extends RecyclerView.Adapter<ContextCardsAdapte
         // Setting the context's text and color
         holder.nameTextView.setText(dataset.get(position).getName());
         holder.cardView.setBackgroundColor(dataset.get(position).getColor());
+
         // TODO set context's text color according to the background color
+        if(dataset.get(position).getColor() == Color.parseColor("#ecf0f1")){
+            holder.nameTextView.setTextColor(Color.BLACK);
+        }else {
+            holder.nameTextView.setTextColor(Color.WHITE);
+        }
 
         // Setting the onClick listener
         holder.cardView.setOnClickListener(new View.OnClickListener() {
