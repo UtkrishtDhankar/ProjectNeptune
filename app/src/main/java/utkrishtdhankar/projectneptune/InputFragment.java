@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -139,7 +140,7 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
         statusDropDown = (Spinner) view.findViewById(R.id.statusSpinner);
 
         // Create an ArrayAdapter using the string array and a default colorDropDown layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+        final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.status_names, android.R.layout.simple_spinner_item);
 
         // Specify the layout to use when the list of choices appears
@@ -168,11 +169,32 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
             for(int i = 0; i < adapter.getCount(); i++){
                 if(adapter.getItem(i).toString().equals(getArguments().getString("taskStatus"))){
                     statusDropDown.setSelection(i);
+                    //TODO open corresponding fragment
                 }
             }
 
         }
 
+        statusDropDown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                if(adapter.getItem(position).toString().equals("Waiting") ){
+                    //open corresponding fragment
+                }
+
+                if(adapter.getItem(position).toString().equals("Scheduled") ){
+                    //open corresponding fragment
+                    DatePickerFragment newFragment = new DatePickerFragment();
+                    newFragment.show(getFragmentManager(), "datePicker");
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
         // Show soft keyboard automatically and request focus to field
         inboxEditText.requestFocus();
         getDialog().getWindow().setSoftInputMode(
@@ -201,7 +223,7 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
             // Call the editing function use the oldtask variable for old values
             databaseHelper.updateTask(oldtask,newTask);
         }else{
-            // Add said oldtask to the database
+            // Add said newtask to the database
             databaseHelper.addTask(newTask);
         }
 
