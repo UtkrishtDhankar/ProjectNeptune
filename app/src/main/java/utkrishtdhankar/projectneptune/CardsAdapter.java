@@ -1,5 +1,6 @@
 package utkrishtdhankar.projectneptune;
 
+import android.graphics.Typeface;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -96,8 +97,18 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.TaskCardView
      */
     @Override
     public void onBindViewHolder(TaskCardViewHolder holder, final int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view (TextView) with that element's info
+
+        // Importing the required fonts
+        Typeface robotoLight = Typeface.createFromAsset(inboxFragment.getActivity().getAssets(), "fonts/Roboto-Light.ttf");
+        Typeface robotoRegular = Typeface.createFromAsset(inboxFragment.getActivity().getAssets(), "fonts/Roboto-Regular.ttf");
+
+        // Setting the fonts for all texts in the card
+        holder.nameTextView.setTypeface(robotoRegular);
+        holder.statusTextView.setTypeface(robotoLight);
+        holder.contextTextView.setTypeface(robotoLight  );
+
+        // Getting elements from the dataset at this position
+        // Replacing the contents of the elements
         holder.nameTextView.setText(dataset.get(position).getName());
         if(dataset.get(position).getStatus().getName().equals("Scheduled") || dataset.get(position).getStatus().getName().equals("Waiting")){
             holder.statusTextView.setText(dataset.get(position).getStatus().getName() +
