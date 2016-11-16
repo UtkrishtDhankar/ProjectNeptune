@@ -31,12 +31,13 @@ public class Scheduled implements TaskStatus {
 
     @Override
     public String getSpecial() {
-        return scheduledForDate.toString();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy");
+        return sdf.format(scheduledForDate);
     }
 
     @Override
     public String encode() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-dd-mm");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
         return name + " " + sdf.format(scheduledForDate);
     }
 }
