@@ -6,7 +6,7 @@ import android.graphics.Color;
  * Created by utkrishtdhankar on 11/11/16.
  */
 
-public class TaskContext {
+public class TaskContext extends Identifiable {
 
     private static final int defaultColor = Color.LTGRAY;
     private static final String defaultName = "context";

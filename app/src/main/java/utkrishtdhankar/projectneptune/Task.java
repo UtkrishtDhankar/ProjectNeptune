@@ -1,36 +1,37 @@
 package utkrishtdhankar.projectneptune;
 
-import android.graphics.Color;
-
 import java.util.ArrayList;
 import java.util.Collections;
+
+import utkrishtdhankar.projectneptune.TaskStatusPackage.Inbox;
+import utkrishtdhankar.projectneptune.TaskStatusPackage.TaskStatus;
 
 /**
  * Created by utkrishtdhankar on 21/10/16.
  */
-public class Task {
-    // The name of this task, e.g "Do the laundry"
+public class Task extends Identifiable {
+    // The name of this oldtask, e.g "Do the laundry"
     private String name;
 
-    // The contexts list for this task
+    // The contexts list for this oldtask
     private ArrayList<TaskContext> contexts;
 
-    // What is the status of the task, e.g. Next, Waiting etc.
+    // What is the status of the oldtask, e.g. Next, Waiting etc.
     private TaskStatus status;
 
     /**
-     * Constructs a new task with the given parameters
+     * Constructs a new oldtask with the given parameters
      * Sets the tag list to empty and the status to inbox
-     * @param taskName Name for the task
+     * @param taskName Name for the oldtask
      */
     Task(String taskName) {
         name = taskName;
         contexts = new ArrayList<TaskContext>();
-        status = TaskStatus.Inbox;
+        status = new Inbox();
     }
 
     /**
-     * Returns the status of the task, e.g. Inbox, Next etc.
+     * Returns the status of the oldtask, e.g. Inbox, Next etc.
      * @return The status
      */
     TaskStatus getStatus() {
@@ -38,15 +39,15 @@ public class Task {
     }
 
     /**
-     * Changes the status of the task
-     * @param newStatus the new value of the status of this task
+     * Changes the status of the oldtask
+     * @param newStatus the new value of the status of this oldtask
      */
     void changeStatus(TaskStatus newStatus) {
         status = newStatus;
     }
 
     /**
-     * Adds a new context to the task
+     * Adds a new context to the oldtask
      * @param newContext The context to be added
      */
     public void addContext(TaskContext newContext) {
@@ -56,7 +57,7 @@ public class Task {
     }
 
     /**
-     * Removes a tag from the task.
+     * Removes a tag from the oldtask.
      * If the given tag exists, it will be removed.
      * @param contextToBeRemoved The tag that will be searched for and removed
      */
@@ -66,7 +67,7 @@ public class Task {
     }
 
     /**
-     * Returns all the contexts associated with this task
+     * Returns all the contexts associated with this oldtask
      * @return an array of all the contexts
      */
     public ArrayList<TaskContext> getAllContexts() {
@@ -75,7 +76,7 @@ public class Task {
 
     /**
      * Sets the name of the Task to newName
-     * @param newName The new name of the task
+     * @param newName The new name of the oldtask
      */
     public void modifyName(String newName) {
         name = newName;
@@ -83,7 +84,7 @@ public class Task {
 
     /**
      * Getter for name
-     * @return The name of the task
+     * @return The name of the oldtask
      */
     public String getName() {return name;}
 }

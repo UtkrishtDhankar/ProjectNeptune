@@ -1,9 +1,8 @@
 package utkrishtdhankar.projectneptune;
 
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +17,8 @@ import java.util.ArrayList;
  */
 public class ContextCardsAdapter extends RecyclerView.Adapter<ContextCardsAdapter.ContextCardViewHolder> {
 
+    ContextsFragment contextsFragment;
+
     /**
      * Class to hold a single Card instance.
      * Contains references to all the text views etc. inside the card
@@ -29,7 +30,7 @@ public class ContextCardsAdapter extends RecyclerView.Adapter<ContextCardsAdapte
         public CardView cardView;
 
         /**
-         * Constructor for this task
+         * Constructor for this oldtask
          * Sets the different views to their values for the view that was passed in
          * @param view
          */
@@ -48,9 +49,11 @@ public class ContextCardsAdapter extends RecyclerView.Adapter<ContextCardsAdapte
     /**
      * Constructs a new adapter, setting the dataset to the one supplied
      * @param newDataset The dataset to be inflated
+     * @param contextsFrag  The reference from calling fragment so that we can use it to replace fragments here
      */
-    public ContextCardsAdapter(ArrayList<TaskContext> newDataset) {
+    public ContextCardsAdapter(ArrayList<TaskContext> newDataset, ContextsFragment contextsFrag) {
         this.dataset = newDataset;
+        this.contextsFragment = contextsFrag;
     }
 
     /**
@@ -65,7 +68,6 @@ public class ContextCardsAdapter extends RecyclerView.Adapter<ContextCardsAdapte
         // create a new view
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.context_card_layout, parent, false);
-
         ContextCardViewHolder viewHolder = new ContextCardViewHolder(view);
         return viewHolder;
     }
@@ -77,11 +79,20 @@ public class ContextCardsAdapter extends RecyclerView.Adapter<ContextCardsAdapte
      * @param position the position for this data in the dataset
      */
     @Override
-    public void onBindViewHolder(ContextCardViewHolder holder, int position) {
+    public void onBindViewHolder(ContextCardViewHolder holder, final int position) {
         // get element from your dataset at this position
         // replace the contents of the view (TextView) with that element's info
         holder.nameTextView.setText(dataset.get(position).getName());
         holder.nameTextView.setTextColor(dataset.get(position).getColor());
+
+        // Setting the onClick listener
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                FragmentManager fragmentManager = contextsFragment.getFragmentManager();
+                ContextInputFragment contextInputFragment = ContextInputFragment.newInstance("edit",dataset.get(position).getName(),dataset.get(position).getColor(),dataset.get(position).getId());
+                contextInputFragment.show(fragmentManager, "fragment_edit_name");
+            }
+        });
     }
 
     /**
