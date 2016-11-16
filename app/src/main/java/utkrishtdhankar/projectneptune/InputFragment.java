@@ -39,6 +39,7 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
     private EditText cEditText;
     private Spinner contextDropDown;
     private Spinner statusDropDown;
+    private EditText waitingText;
 
     // For updating contexts
     int openedForEdit = 0;
@@ -124,6 +125,8 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
         // Get field from view
         inboxEditText = (EditText) view.findViewById(R.id.addTextInput);
         inboxAddButton = (Button) view.findViewById(R.id.addTaskbutton) ;
+        waitingText = (EditText) view.findViewById(R.id.waitingText);
+        waitingText.setVisibility(View.INVISIBLE);
         inboxAddButton.setOnClickListener(this);
 
         // Setting the context drop down menu
@@ -175,8 +178,14 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
                 if(adapter.getItem(i).toString().equals(getArguments().getString("taskStatus"))){
                     statusDropDown.setSelection(i);
                     //TODO open corresponding fragment
-                    DatePickerFragment newFragment = new DatePickerFragment();
-                    newFragment.show(getFragmentManager(), "datePicker");
+                    if(statusDropDown.getSelectedItem().toString().equals("Scheduled")){
+                        DatePickerFragment newFragment = new DatePickerFragment();
+                        newFragment.show(getFragmentManager(), "datePicker");
+                    }
+                    if(statusDropDown.getSelectedItem().toString().equals("Waiting")){
+                        waitingText.setVisibility(View.VISIBLE);
+                    }
+
                 }
             }
 
@@ -186,7 +195,10 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 if(adapter.getItem(position).toString().equals("Waiting") ){
-                    //open corresponding fragment
+                    //set visibility of Waiting for editText
+                    waitingText.setVisibility(View.VISIBLE);
+                }else{
+                    waitingText.setVisibility(View.INVISIBLE);
                 }
 
                 if(adapter.getItem(position).toString().equals("Scheduled") ){
