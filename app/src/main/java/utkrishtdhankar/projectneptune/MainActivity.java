@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setHomeButtonEnabled(false);
+        getSupportActionBar();
 
         // Setting the main layout
         // Create a new fragment and inserting the fragment by replacing view of FrameLayout in main_activity
