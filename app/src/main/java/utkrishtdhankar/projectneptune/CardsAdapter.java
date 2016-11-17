@@ -1,9 +1,12 @@
 package utkrishtdhankar.projectneptune;
 
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
+import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,7 +53,7 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.TaskCardView
             cardView = (CardView) view.findViewById(R.id.card_view);
             nameTextView = (TextView) view.findViewById(R.id.info_text);
             statusTextView = (TextView) view.findViewById(R.id.status_text);
-            contextTextView = (TextView) view.findViewById(R.id.context_text);
+            contextTextView = (TextView) view.findViewById(R.id.task_context_text);
         }
     }
 
@@ -80,7 +83,8 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.TaskCardView
      */
     @Override
     public TaskCardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        // create a new view
+
+        // Create a new view
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.card_layout, parent, false);
 
@@ -96,38 +100,52 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.TaskCardView
      */
     @Override
     public void onBindViewHolder(TaskCardViewHolder holder, final int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view (TextView) with that element's info
+
+        // Importing the required fonts
+        Typeface robotoLight = Typeface.createFromAsset(inboxFragment.getActivity().getAssets(), "fonts/Roboto-Light.ttf");
+        Typeface robotoLightItalic = Typeface.createFromAsset(inboxFragment.getActivity().getAssets(), "fonts/Roboto-LightItalic.ttf");
+        Typeface robotoRegular = Typeface.createFromAsset(inboxFragment.getActivity().getAssets(), "fonts/Roboto-Regular.ttf");
+
+        // Setting the fonts for all texts in the card
+        holder.nameTextView.setTypeface(robotoRegular);
+        holder.statusTextView.setTypeface(robotoLightItalic);
+        holder.contextTextView.setTypeface(robotoRegular);
+
+        // Getting elements from the dataset at this position
+        // Replacing the contents of the elements
         holder.nameTextView.setText(dataset.get(position).getName());
-        holder.statusTextView.setText(dataset.get(position).getStatus().getName());
-        StringBuilder stringbuilder = new StringBuilder();
-        SpannableString spannableString = new SpannableString(stringbuilder.toString());
-
-        // Setting the colors of contexts and displaying them
-        int lastContextIndex = 0;
-        stringbuilder = new StringBuilder();
-        ArrayList<TaskContext> taskContexts ;
-        taskContexts = dataset.get(position).getAllContexts();
-        for(int j = 0; j < taskContexts.size() - 1; j++) {
-            stringbuilder.append(taskContexts.get(j).getName());
-            stringbuilder.append(" · ");
-        }
-        stringbuilder.append(taskContexts.get(taskContexts.size() - 1).getName());
-        spannableString = new SpannableString(stringbuilder.toString());
-        for(int j = 0; j < taskContexts.size(); j++) {
-            Object colorSpan = new ForegroundColorSpan(taskContexts.get(j).getColor());
-            spannableString.setSpan(colorSpan, lastContextIndex, lastContextIndex + taskContexts.get(j).getName().length(), 0);
-            lastContextIndex = lastContextIndex + taskContexts.get(j).getName().length() + 3 ;
+        if(dataset.get(position).getStatus().getName().equals("Scheduled") || dataset.get(position).getStatus().getName().equals("Waiting")){
+            holder.statusTextView.setText(dataset.get(position).getStatus().getName() +
+                    " : " +
+                    dataset.get(position).getStatus().getSpecial());
+        }else {
+            holder.statusTextView.setText(dataset.get(position).getStatus().getName());
         }
 
-        //Setting the color spannable string
-        holder.contextTextView.setText(spannableString);
+        // Setting the context's text
+        holder.contextTextView.setText(" " + dataset.get(position).getAllContexts().get(0).getName() + " ");
 
-        // Setting the onClick listener
+        // Setting the context's background color
+        holder.contextTextView.setBackgroundColor(dataset.get(position).getAllContexts().get(0).getColor());
+
+        // Setting the text color black if background is white , else text color is white
+        if(dataset.get(position).getAllContexts().get(0).getColor() == Color.parseColor("#ecf0f1")){
+            holder.contextTextView.setTextColor(Color.BLACK);
+        }else {
+            holder.contextTextView.setTextColor(Color.WHITE);
+        }
+
+        // Setting the onClick listener for each card
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 FragmentManager fragmentManager = inboxFragment.getFragmentManager();
-                InputFragment inputFragment = InputFragment.newInstance("edit",dataset.get(position).getName(),dataset.get(position).getAllContexts().get(0).getName(),dataset.get(position).getStatus().toString(),dataset.get(position).getId());
+                InputFragment inputFragment = InputFragment.newInstance("edit",
+                        dataset.get(position).getName(),
+                        dataset.get(position).getAllContexts().get(0).getName(),
+                        dataset.get(position).getStatus().encode(),
+                        dataset.get(position).getStatus().getName(),
+                        dataset.get(position).getStatus().getSpecial(),
+                        dataset.get(position).getId());
                 inputFragment.show(fragmentManager, "fragment_edit_name");
             }
         });

@@ -1,5 +1,7 @@
 package utkrishtdhankar.projectneptune;
 
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -80,10 +82,25 @@ public class ContextCardsAdapter extends RecyclerView.Adapter<ContextCardsAdapte
      */
     @Override
     public void onBindViewHolder(ContextCardViewHolder holder, final int position) {
-        // get element from your dataset at this position
-        // replace the contents of the view (TextView) with that element's info
+        // Importing the required fonts
+        Typeface robotoLight = Typeface.createFromAsset(contextsFragment.getActivity().getAssets(), "fonts/Roboto-Light.ttf");
+        Typeface robotoLightItalic = Typeface.createFromAsset(contextsFragment.getActivity().getAssets(), "fonts/Roboto-LightItalic.ttf");
+        Typeface robotoRegular = Typeface.createFromAsset(contextsFragment.getActivity().getAssets(), "fonts/Roboto-Regular.ttf");
+
+        // Setting the fonts for all texts in the card
+        holder.nameTextView.setTypeface(robotoRegular);
+
+        // Getting elements from the dataset at this position
+        // Setting the context's text and color
         holder.nameTextView.setText(dataset.get(position).getName());
-        holder.nameTextView.setTextColor(dataset.get(position).getColor());
+        holder.cardView.setBackgroundColor(dataset.get(position).getColor());
+
+        // TODO set context's text color according to the background color
+        if(dataset.get(position).getColor() == Color.parseColor("#ecf0f1")){
+            holder.nameTextView.setTextColor(Color.BLACK);
+        }else {
+            holder.nameTextView.setTextColor(Color.WHITE);
+        }
 
         // Setting the onClick listener
         holder.cardView.setOnClickListener(new View.OnClickListener() {

@@ -7,40 +7,39 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="8sp"
     android:layout_marginBottom="8sp"
-    android:layout_marginLeft="10sp"
-    android:layout_marginRight="6sp"
-    card_view:cardElevation="6sp"
+    android:layout_marginLeft="16sp"
+    android:layout_marginRight="16sp"
+    card_view:cardElevation="2sp"
     card_view:cardCornerRadius="2sp">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="8sp">
 
         <TextView
             android:id="@+id/info_text"
             android:layout_width="match_parent"
             android:text="WTF"
-            android:textSize="25sp"
-            android:layout_height="wrap_content"
-            android:paddingLeft="6sp" />
+            android:textSize="24sp"
+            android:layout_height="wrap_content" />
 
         <TextView
             android:text="context"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/context_text"
-            android:textSize="15sp"
-            android:paddingLeft="6sp"
-            android:layout_below="@+id/info_text" />
+            android:id="@+id/task_context_text"
+            android:textSize="14sp"
+            android:layout_below="@+id/info_text"
+            android:layout_marginTop="16sp" />
         <TextView
             android:id="@+id/status_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="status"
             android:textColor="#777777"
-            android:textSize="15sp"
-            android:paddingLeft="6sp"
-            android:layout_below="@+id/context_text" />
+            android:textSize="13sp"
+            android:layout_below="@+id/task_context_text" />
 
 
 
