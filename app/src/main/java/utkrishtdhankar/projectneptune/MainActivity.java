@@ -106,41 +106,49 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_home:
                         navItemIndex = 0;
                         fragment = new HomeFragment();
+                        toolbar.setTitle("Home");
                         break;
 
                     case R.id.nav_context:
                         navItemIndex = 1;
                         fragment = new ContextsFragment();
+                        toolbar.setTitle("Contexts");
                         break;
 
                     case R.id.nav_inbox:
                         navItemIndex = 2;
                         fragment = new InboxFragment();
+                        toolbar.setTitle("Inbox");
                         break;
 
                     case R.id.nav_next:
                         navItemIndex = 3;
                         fragment = new NextFragment();
+                        toolbar.setTitle("Next");
                         break;
 
                     case R.id.nav_waiting:
                         navItemIndex = 4;
                         fragment = new WaitingFragment();
+                        toolbar.setTitle("Waiting");
                         break;
 
                     case R.id.nav_scheduled:
                         navItemIndex = 5;
                         fragment = new ScheduledFragment();
+                        toolbar.setTitle("Scheduled");
                         break;
 
                     case R.id.nav_someday:
                         navItemIndex = 6;
                         fragment = new SomedayFragment();
+                        toolbar.setTitle("Someday");
                         break;
 
                     case R.id.nav_settings:
                         navItemIndex = 7;
                         fragment = new SettingsFragment();
+                        toolbar.setTitle("Settings");
                         break;
                 }
 
