@@ -85,6 +85,24 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.TaskCardView
         this.dataset = newDataset;
     }
 
+    // When the Waiting fragment needs cards
+    public CardsAdapter(ArrayList<Task> newDataset,WaitingFragment nextfrag) {
+        this.inboxFragment = nextfrag;
+        this.dataset = newDataset;
+    }
+
+    // When the Scheduled fragment needs cards
+    public CardsAdapter(ArrayList<Task> newDataset,ScheduledFragment nextfrag) {
+        this.inboxFragment = nextfrag;
+        this.dataset = newDataset;
+    }
+
+    // When the Someday fragment needs cards
+    public CardsAdapter(ArrayList<Task> newDataset,SomedayFragment nextfrag) {
+        this.inboxFragment = nextfrag;
+        this.dataset = newDataset;
+    }
+
     /**
      * Creates a new card and inflates it
      * Called by inflater

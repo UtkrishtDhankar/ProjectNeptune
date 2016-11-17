@@ -25,6 +25,9 @@
         <item>Inbox</item>
         <item>Contexts</item>
         <item>Next</item>
+        <item>Waiting</item>
+        <item>Scheduled</item>
+        <item>Someday</item>
         <item>Settings</item>
     </string-array>
 

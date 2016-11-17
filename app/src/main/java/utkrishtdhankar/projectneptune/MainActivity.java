@@ -120,17 +120,17 @@ public class MainActivity extends AppCompatActivity {
 
                     case R.id.nav_waiting:
                         navItemIndex = 3;
-                        fragment = new NextFragment();
+                        fragment = new WaitingFragment();
                         break;
 
                     case R.id.nav_scheduled:
                         navItemIndex = 4;
-                        fragment = new NextFragment();
+                        fragment = new ScheduledFragment();
                         break;
 
                     case R.id.nav_someday:
                         navItemIndex = 5;
-                        fragment = new NextFragment();
+                        fragment = new SomedayFragment();
                         break;
 
                     case R.id.nav_settings:
