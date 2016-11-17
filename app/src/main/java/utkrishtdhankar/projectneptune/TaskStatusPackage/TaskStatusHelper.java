@@ -2,6 +2,7 @@ package utkrishtdhankar.projectneptune.TaskStatusPackage;
 
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
@@ -26,16 +27,17 @@ public class TaskStatusHelper {
             // The Waiting special string will follow the Waiting after a whitespace
             // So the starting index is length of waiting + 1 (whitespace)
             // + 1 (to get to the index of the starting position)
-            status = new Waiting(encodedStatus.substring("Waiting".length() + 2));
+            status = new Waiting(encodedStatus.substring("Waiting".length() + 1));
         } else if(encodedStatus.startsWith("Scheduled")) {
             try {
                 Calendar cal = Calendar.getInstance();
-                cal.setTime(DateFormat.getDateInstance()
-                        .parse(encodedStatus.substring("Scheduled".length() + 2)));
+
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                cal.setTime(sdf.parse(encodedStatus.substring("Scheduled".length() + 1)));
                 status = new Scheduled(cal);
             } catch (ParseException e) {
                 throw new IllegalArgumentException("Scheduled date format is illegal. Given substring is: "
-                        + encodedStatus.substring("Scheduled".length() + 2));
+                        + encodedStatus.substring("Scheduled".length() + 1));
             }
         } else if (encodedStatus.equals("Someday")) {
             status = new Someday();
