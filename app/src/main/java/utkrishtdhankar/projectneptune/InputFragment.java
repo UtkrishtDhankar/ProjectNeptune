@@ -253,12 +253,13 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
 
         // Add the context for the oldtask
         TaskContext taskContext = new TaskContext(newContextName);
+
         newTask.addContext(taskContext);
        // newTask.changeStatus(TaskStatusHelper.decode(newStatusName));
 
-        if(openedForEdit == 1){
+        if(openedForEdit == 1) {
             // Call the editing function use the oldtask variable for old values
-            databaseHelper.updateTask(oldtask,newTask);
+            databaseHelper.updateTask(oldtask, newTask);
         }else{
             // Add said newtask to the database
             databaseHelper.addTask(newTask);

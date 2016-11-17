@@ -164,6 +164,9 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             throw new IllegalArgumentException("oldTask should have a valid id.");
         }
 
+        newTask = setIdsForContexts(newTask);
+        oldTask = setIdsForContexts(oldTask);
+
         SQLiteDatabase db = this.getWritableDatabase();
 
         // Put in the values for this oldtask into a contentvalues
@@ -180,7 +183,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         // Delete all old context entries
         for(TaskContext context : oldTaskContexts) {
             db.delete(TASKS_CONTEXTS_JUNCTION_TABLE_NAME,
-                            TASKS_CONTEXTS_JUNCTION_KEY_CONTEXT_ID + " = " + context .getId() + " AND " +
+                            TASKS_CONTEXTS_JUNCTION_KEY_CONTEXT_ID + " = " + context.getId() + " AND " +
                             TASKS_CONTEXTS_JUNCTION_KEY_TASK_ID + " = " + oldTask.getId(), null);
         }
 
@@ -345,6 +348,25 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                 CONTEXTS_KEY_ID + " = " + Long.toString(oldContext.getId()), null);
     }
 
+    private Task setIdsForContexts(Task task) {
+        Task newTask = new Task(task.getName());
+        newTask.changeStatus(task.getStatus());
+        newTask.setId(task.getId());
+
+        ArrayList<TaskContext> allContexts = getAllContexts();
+        ArrayList<TaskContext> taskContexts = task.getAllContexts();
+
+        for (int i = 0; i < taskContexts.size(); i++) {
+            for (int j = 0; j < allContexts.size(); j++) {
+                if (taskContexts.get(i).getName().equals(allContexts.get(j).getName())) {
+                    newTask.addContext(allContexts.get(j));
+                }
+            }
+        }
+
+        return newTask;
+    }
+
     /**
      * @param taskId The id of the oldtask for which the contexts are needed
      * @return A list of all the contexts of the oldtask
@@ -356,10 +378,12 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         // Defining the query to get the contexts from the oldtask
         String contextQuery = String.format(
-                "SELECT %s, %s FROM %s LEFT JOIN %s " +
+                "SELECT %s, %s, %s " +
+                        "FROM %s LEFT JOIN %s " +
                         "ON %s.%s = %s.%s " +
                         "WHERE %s.%s = %s",
-                CONTEXTS_KEY_NAME, CONTEXTS_KEY_COLOR, CONTEXTS_TABLE_NAME, TASKS_CONTEXTS_JUNCTION_TABLE_NAME,
+                CONTEXTS_KEY_NAME, CONTEXTS_KEY_COLOR, CONTEXTS_KEY_ID,
+                CONTEXTS_TABLE_NAME, TASKS_CONTEXTS_JUNCTION_TABLE_NAME,
                 TASKS_CONTEXTS_JUNCTION_TABLE_NAME, TASKS_CONTEXTS_JUNCTION_KEY_CONTEXT_ID, CONTEXTS_TABLE_NAME, CONTEXTS_KEY_ID,
                 TASKS_CONTEXTS_JUNCTION_TABLE_NAME, TASKS_CONTEXTS_JUNCTION_KEY_TASK_ID, Long.toString(taskId));
 
@@ -373,6 +397,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                 TaskContext newContext = new TaskContext(
                         contextsCursor.getString(contextsCursor.getColumnIndex(CONTEXTS_KEY_NAME)));
                 newContext.setColor(contextsCursor.getInt(contextsCursor.getColumnIndex(CONTEXTS_KEY_COLOR)));
+                newContext.setId(contextsCursor.getLong(contextsCursor.getColumnIndex(CONTEXTS_KEY_ID)));
                 contexts.add(newContext);
             } while (contextsCursor.moveToNext());
         } catch(CursorIndexOutOfBoundsException exception) {
