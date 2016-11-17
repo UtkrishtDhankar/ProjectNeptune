@@ -82,11 +82,13 @@ public class WaitingFragment extends Fragment {
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                //Remove swiped item from list and notify the RecyclerView
+                // Updating the task's status
                 Task oldTask = tasksList.get(viewHolder.getAdapterPosition());
                 Task newTask = oldTask;
                 newTask.changeStatus(new Done());
                 databaseHelper.updateTask(oldTask,newTask);
+
+                // Reloading the fragment so that the filtering happens again (swiped card leaves no vacant space)
                 getFragmentManager().beginTransaction().detach(WaitingFragment.this).attach(WaitingFragment.this).commit();
             }
         };
