@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import utkrishtdhankar.projectneptune.TaskStatusPackage.Scheduled;
-import utkrishtdhankar.projectneptune.TaskStatusPackage.TaskStatus;
 import utkrishtdhankar.projectneptune.TaskStatusPackage.TaskStatusHelper;
 import utkrishtdhankar.projectneptune.TaskStatusPackage.Waiting;
 
@@ -113,7 +113,7 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
                              Bundle savedInstanceState) {
 
 
-        if(getArguments().getString("title") == "edit") {
+        if(getArguments().getString("title") != "title") {
             openedForEdit = 1;
         }else{
             openedForEdit = 0;
@@ -266,14 +266,37 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
         }
 
 
-
-        //Reloading the fragment so that values from tables are updated
-        //HOME fragment is opened
-        Fragment fragment = new InboxFragment();
+        // Reloading the appropriate fragment so that values from tables are updated
+        Fragment fragment;
+        switch(getArguments().getString("title")){
+            case "Home":
+                fragment = new HomeFragment();
+                break;
+            case "Inbox":
+                fragment = new InboxFragment();
+                break;
+            case "Next":
+                fragment = new NextFragment();
+                break;
+            case "Waiting":
+                fragment = new WaitingFragment();
+                break;
+            case "Scheduled":
+                fragment = new ScheduledFragment();
+                break;
+            case "Someday":
+                fragment = new SomedayFragment();
+                break;
+            default:
+                fragment = new HomeFragment();
+                break;
+        }
+        // The Fragment is opened
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame,fragment).addToBackStack(null).commit();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(getArguments().getString("title"));
 
-        //Closes the pop-up
+        // Closes the pop-up
         dismiss();
     }
 
