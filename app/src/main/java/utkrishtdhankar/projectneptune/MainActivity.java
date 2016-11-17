@@ -113,8 +113,13 @@ public class MainActivity extends AppCompatActivity {
                         fragment = new ContextsFragment();
                         break;
 
-                    case R.id.nav_settings:
+                    case R.id.nav_next:
                         navItemIndex = 2;
+                        fragment = new NextFragment();
+                        break;
+
+                    case R.id.nav_settings:
+                        navItemIndex = 3;
                         fragment = new SettingsFragment();
                         break;
                 }

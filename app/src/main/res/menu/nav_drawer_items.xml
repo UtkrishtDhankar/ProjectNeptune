@@ -11,6 +11,10 @@
                 android:id="@+id/nav_context"
                 android:icon="@drawable/ic_dns_black_36dp"
                 android:title="@string/nav_contexts" />
+            <item
+                android:id="@+id/nav_next"
+                android:icon="@drawable/ic_dns_black_36dp"
+                android:title="@string/nav_next" />
 
             <item
                 android:id="@+id/nav_settings"

@@ -2,6 +2,7 @@ package utkrishtdhankar.projectneptune;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +16,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import utkrishtdhankar.projectneptune.TaskStatusPackage.Next;
+
 /**
  * Created by Shreyak Kumar on 28-10-2016.
  *
@@ -22,7 +25,8 @@ import java.util.ArrayList;
  */
 public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.TaskCardViewHolder> {
 
-    InboxFragment inboxFragment;
+    Fragment inboxFragment;
+    NextFragment nextFragment;
 
     /**
      * Class to hold a single Card instance.
@@ -69,8 +73,15 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.TaskCardView
         this.dataset = newDataset;
     }
 
+    // When the Inbox fragment needs cards
     public CardsAdapter(ArrayList<Task> newDataset,InboxFragment inbfrag) {
         this.inboxFragment = inbfrag;
+        this.dataset = newDataset;
+    }
+
+    // When the Next fragment needs cards
+    public CardsAdapter(ArrayList<Task> newDataset,NextFragment nextfrag) {
+        this.inboxFragment = nextfrag;
         this.dataset = newDataset;
     }
 
