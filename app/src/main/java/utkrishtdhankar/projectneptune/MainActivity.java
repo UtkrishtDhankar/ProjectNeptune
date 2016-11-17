@@ -186,28 +186,6 @@ public class MainActivity extends AppCompatActivity {
         actionBarDrawerToggle.syncState();
     }
 
-    /**
-     * Uses selected item's index to return the fragment to be opened
-     * @return The fragment to be opened according to the item selected in the nav drawer
-     */
-    private Fragment getHomeFragment() {
-        switch (navItemIndex) {
-            case 0:
-                // Creating the Inbox Fragment
-                InboxFragment inboxFragment = new InboxFragment();
-                return inboxFragment;
-            case 1:
-                // Creating the Settings Fragment
-                ContextsFragment contextsFragment = new ContextsFragment();
-                return contextsFragment;
-            case 2:
-                // Creating the Settings Fragment
-                SettingsFragment settingsFragment = new SettingsFragment();
-                return settingsFragment;
-            default:
-                return new InboxFragment();
-        }
-    }
 
 
     /**
