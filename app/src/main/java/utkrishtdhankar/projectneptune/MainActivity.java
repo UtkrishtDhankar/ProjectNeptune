@@ -245,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void onFABPress(View view) {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        InputFragment inputFragment = InputFragment.newInstance("Some Title",getApplicationContext());
+        InputFragment inputFragment = InputFragment.newInstance("title",getApplicationContext());
         inputFragment.show(fragmentManager, "fragment_edit_name");
     }
 

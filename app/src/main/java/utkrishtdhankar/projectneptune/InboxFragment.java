@@ -60,7 +60,7 @@ public class InboxFragment extends Fragment {
 
         //Making the filter
         Filter filter = new Filter();
-        filter.setTaskStatus(new Inbox());
+        filter.setTaskStatusName("Inbox");
 
         // Fill the dataset from the database, and get the contexts list on the screen
         tasksList = databaseHelper.getTasksByFilter(filter);

@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.TaskCardViewHolder> {
 
     Fragment homeFragment;
-    NextFragment nextFragment;
+    String callingFragment;
 
     /**
      * Class to hold a single Card instance.
@@ -70,36 +70,42 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.TaskCardView
 
     // When the Home fragment needs cards
     public CardsAdapter(ArrayList<Task> newDataset,HomeFragment homefrag) {
+        callingFragment = "Home";
         this.homeFragment = homefrag;
         this.dataset = newDataset;
     }
 
     // When the Next fragment needs cards
     public CardsAdapter(ArrayList<Task> newDataset,InboxFragment nextfrag) {
+        callingFragment = "Inbox";
         this.homeFragment = nextfrag;
         this.dataset = newDataset;
     }
 
     // When the Next fragment needs cards
     public CardsAdapter(ArrayList<Task> newDataset,NextFragment nextfrag) {
+        callingFragment = "Next";
         this.homeFragment = nextfrag;
         this.dataset = newDataset;
     }
 
     // When the Waiting fragment needs cards
     public CardsAdapter(ArrayList<Task> newDataset,WaitingFragment nextfrag) {
+        callingFragment = "Waiting";
         this.homeFragment = nextfrag;
         this.dataset = newDataset;
     }
 
     // When the Scheduled fragment needs cards
     public CardsAdapter(ArrayList<Task> newDataset,ScheduledFragment nextfrag) {
+        callingFragment = "Scheduled";
         this.homeFragment = nextfrag;
         this.dataset = newDataset;
     }
 
     // When the Someday fragment needs cards
     public CardsAdapter(ArrayList<Task> newDataset,SomedayFragment nextfrag) {
+        callingFragment = "Someday";
         this.homeFragment = nextfrag;
         this.dataset = newDataset;
     }
@@ -169,7 +175,7 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.TaskCardView
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 FragmentManager fragmentManager = homeFragment.getFragmentManager();
-                InputFragment inputFragment = InputFragment.newInstance("edit",
+                InputFragment inputFragment = InputFragment.newInstance(callingFragment,
                         dataset.get(position).getName(),
                         dataset.get(position).getAllContexts().get(0).getName(),
                         dataset.get(position).getStatus().encode(),

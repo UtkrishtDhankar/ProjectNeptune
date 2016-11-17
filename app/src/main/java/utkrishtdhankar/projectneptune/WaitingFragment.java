@@ -58,7 +58,7 @@ public class WaitingFragment extends Fragment {
 
         //Making the filter
         Filter filter = new Filter();
-        filter.setTaskStatus(new Next());
+        filter.setTaskStatusName("Waiting");
 
         // Fill the dataset from the database, and get the contexts list on the screen
         tasksList = databaseHelper.getTasksByFilter(filter);
