@@ -99,7 +99,7 @@ public class Filter {
             // If the string builder already has something in it before this particular clause
             // Then we should add an "&&".
             if (addedAnyClausesYet) {
-                query.append(" && ");
+                query.append(" AND ");
             }
             query.append(DatabaseHelper.TASKS_TABLE_NAME);
             query.append(".");
