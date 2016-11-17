@@ -182,6 +182,7 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
             oldtask.changeStatus(TaskStatusHelper.decode(getArguments().getString("encodedStatus")));
             oldtask.setId(getArguments().getLong("taskId"));
             inboxEditText.setText(oldtask.getName());
+            //TODO make changes for presets here
             for(int i = 0; i < contextsNames.length; i++){
                 if(contextsNames[i].equals(getArguments().getString("oldContext"))){
                     contextDropDown.setSelection(i);
@@ -207,7 +208,7 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
 
                 if(adapter.getItem(position).toString().equals("Scheduled") ){
                     //open corresponding fragment
-                    DatePickerFragment newFragment = new DatePickerFragment();
+                    DatePickerFragment newFragment = DatePickerFragment.newInstance(getArguments().getString("taskStatusSpecial"));
                     newFragment.setTargetFragment(InputFragment.this,300);
                     newFragment.show(getFragmentManager(), "datePicker");
                 }

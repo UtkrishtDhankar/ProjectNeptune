@@ -51,10 +51,10 @@ public class DatePickerFragment extends DialogFragment {
         // Use the current time as the default values for the picker
         final Calendar c = Calendar.getInstance();
         String temp = null;
-        if(!getArguments().containsKey("ScheduledSpecial")){
-            DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        if(getArguments().containsKey("ScheduledSpecial")){
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             try {
-                c.setTime(df.parse(getArguments().getString("ScheduledSpecial")));
+                c.setTime(sdf.parse(getArguments().getString("ScheduledSpecial")));
             } catch (ParseException e) {
                 e.printStackTrace();
             }

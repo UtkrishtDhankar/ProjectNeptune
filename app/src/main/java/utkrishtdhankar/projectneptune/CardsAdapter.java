@@ -83,7 +83,8 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.TaskCardView
      */
     @Override
     public TaskCardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        // create a new view
+
+        // Create a new view
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.card_layout, parent, false);
 
@@ -123,6 +124,7 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.TaskCardView
 
         // Setting the context's text
         holder.contextTextView.setText(" " + dataset.get(position).getAllContexts().get(0).getName() + " ");
+
         // Setting the context's background color
         holder.contextTextView.setBackgroundColor(dataset.get(position).getAllContexts().get(0).getColor());
 
@@ -132,7 +134,6 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.TaskCardView
         }else {
             holder.contextTextView.setTextColor(Color.WHITE);
         }
-
 
         // Setting the onClick listener for each card
         holder.cardView.setOnClickListener(new View.OnClickListener() {
