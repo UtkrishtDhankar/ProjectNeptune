@@ -103,12 +103,16 @@ public class Task extends Identifiable {
     }
 
     /**
+     * TODO this needs to add this task to the project as well if it is not already added. Uncomment when that is done.
+     *
      * Sets the project to the supplied parameter
      * @param project
      */
-    public void setProject(Project project) {
-        this.project = project;
-    }
+//    public void setProject(Project project) {
+//        this.project = project;
+//
+//
+//    }
 
     /**
      * Makes this task not be a part of any project
