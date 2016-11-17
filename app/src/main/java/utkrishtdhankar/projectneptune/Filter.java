@@ -111,7 +111,13 @@ public class Filter {
         }
 
         if (context != null) {
-            query.append(String.format("WHERE %s.%s = %s", DatabaseHelper.TASKS_CONTEXTS_JUNCTION_TABLE_NAME, DatabaseHelper.TASKS_CONTEXTS_JUNCTION_KEY_CONTEXT_ID, Long.toString(context.getId())));
+            if (addedAnyClausesYet) {
+                query.append(" AND ");
+            }
+
+            query.append(String.format("%s.%s = %s", DatabaseHelper.TASKS_CONTEXTS_JUNCTION_TABLE_NAME, DatabaseHelper.TASKS_CONTEXTS_JUNCTION_KEY_CONTEXT_ID, Long.toString(context.getId())));
+
+            addedAnyClausesYet = true;
         }
 
         return query.toString();
