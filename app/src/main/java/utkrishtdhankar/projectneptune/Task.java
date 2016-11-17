@@ -32,7 +32,7 @@ public class Task extends Identifiable {
         name = taskName;
         contexts = new ArrayList<TaskContext>();
         status = new Inbox();
-        project = null
+        project = null;
     }
 
     /**
