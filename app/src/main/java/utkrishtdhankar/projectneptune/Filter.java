@@ -52,41 +52,6 @@ public class Filter {
     }
 
     /**
-     * Returns the whereclause bit for the database query
-     * @return
-     */
-    @Deprecated
-    public WhereClause getQueryWhereClause() {
-        WhereClause whereClause = new WhereClause();
-
-        if (!isAnythingSet()) {
-            return whereClause;
-        }
-
-        StringBuilder clauseStringBuilder = new StringBuilder();
-
-        if (taskPattern != null && !taskPattern.isEmpty()) {
-            clauseStringBuilder.append(DatabaseHelper.TASKS_KEY_NAME);
-            clauseStringBuilder.append(" LIKE ");
-            whereClause.clauseArgs.add(taskPattern);
-        }
-
-        if (taskStatus != null) {
-            // If the string builder already has something in it before this particular clause
-            // Then we should add an "&&".
-            if (clauseStringBuilder.length() > 0) {
-                clauseStringBuilder.append(" && ");
-            }
-            clauseStringBuilder.append(DatabaseHelper.TASKS_KEY_STATUS);
-            clauseStringBuilder.append("=?");
-            whereClause.clauseArgs.add(taskStatus.encode());
-        }
-
-        whereClause.clause = clauseStringBuilder.toString();
-        return whereClause;
-    }
-
-    /**
      * This gives a string for the SELECT * FROM * WHERE (* = *)* statements in the database
      * Automatically uses the join if needed
      * @return
@@ -125,17 +90,6 @@ public class Filter {
         }
 
         return query.toString();
-    }
-
-    @Deprecated
-    public class WhereClause {
-        public String clause;
-        public ArrayList<String> clauseArgs;
-
-        WhereClause() {
-            clause = new String();
-            clauseArgs = new ArrayList<>();
-        }
     }
 
     /**
