@@ -26,22 +26,22 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     private static final String DATABASE_NAME = "projectNeptune";
 
     // Parameters related to the tasks table. The name and all of it's column names go here.
-    private static final String TASKS_TABLE_NAME = "tasks";
-    private static final String TASKS_KEY_ID = "id";
-    private static final String TASKS_KEY_NAME = "name";
-    private static final String TASKS_KEY_STATUS = "status";
+    public static final String TASKS_TABLE_NAME = "tasks";
+    public static final String TASKS_KEY_ID = "id";
+    public static final String TASKS_KEY_NAME = "name";
+    public static final String TASKS_KEY_STATUS = "status";
 
     // Parameters related to the contexts table. The name and all of it's column names go here.
-    private static final String CONTEXTS_TABLE_NAME = "contexts";
-    private static final String CONTEXTS_KEY_ID = "id";
-    private static final String CONTEXTS_KEY_COLOR = "color";
-    private static final String CONTEXTS_KEY_NAME = "name";
+    public static final String CONTEXTS_TABLE_NAME = "contexts";
+    public static final String CONTEXTS_KEY_ID = "id";
+    public static final String CONTEXTS_KEY_COLOR = "color";
+    public static final String CONTEXTS_KEY_NAME = "name";
 
     // Parameters related to the tasks-contexts junction table.
     // The name and all of it's column names go here.
-    private static final String TASKS_CONTEXTS_JUNCTION_TABLE_NAME = "tasksContextsJunction";
-    private static final String TASKS_CONTEXTS_JUNCTION_KEY_TASK_ID = "taskId";
-    private static final String TASKS_CONTEXTS_JUNCTION_KEY_CONTEXT_ID = "contextId";
+    public static final String TASKS_CONTEXTS_JUNCTION_TABLE_NAME = "tasksContextsJunction";
+    public static final String TASKS_CONTEXTS_JUNCTION_KEY_TASK_ID = "taskId";
+    public static final String TASKS_CONTEXTS_JUNCTION_KEY_CONTEXT_ID = "contextId";
 
     /**
      * Creates a new DatabaseHelper
@@ -164,6 +164,9 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             throw new IllegalArgumentException("oldTask should have a valid id.");
         }
 
+        newTask = setIdsForContexts(newTask);
+        oldTask = setIdsForContexts(oldTask);
+
         SQLiteDatabase db = this.getWritableDatabase();
 
         // Put in the values for this oldtask into a contentvalues
@@ -173,6 +176,26 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         // Update the values in the database
         db.update(TASKS_TABLE_NAME, taskValues, TASKS_KEY_ID + " = " + Long.toString(oldTask.getId()), null);
+
+        ArrayList<TaskContext> oldTaskContexts = oldTask.getAllContexts();
+        ArrayList<TaskContext> newTaskContexts = newTask.getAllContexts();
+
+        // Delete all old context entries
+        for(TaskContext context : oldTaskContexts) {
+            db.delete(TASKS_CONTEXTS_JUNCTION_TABLE_NAME,
+                            TASKS_CONTEXTS_JUNCTION_KEY_CONTEXT_ID + " = " + context.getId() + " AND " +
+                            TASKS_CONTEXTS_JUNCTION_KEY_TASK_ID + " = " + oldTask.getId(), null);
+        }
+
+        // Add the new entries
+        for (TaskContext context : newTaskContexts) {
+            ContentValues contentValues = new ContentValues();
+
+            contentValues.put(TASKS_CONTEXTS_JUNCTION_KEY_TASK_ID, oldTask.getId());
+            contentValues.put(TASKS_CONTEXTS_JUNCTION_KEY_CONTEXT_ID, context.getId());
+
+            db.insert(TASKS_CONTEXTS_JUNCTION_TABLE_NAME, null, contentValues);
+        }
     }
 
     /**
@@ -212,6 +235,47 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         return task;
     }
 
+    public ArrayList<Task> getTasksByFilter(Filter filter) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // This gets _all_ the tasks
+        Cursor tasksCursor = db.rawQuery(filter.getSelectAndWhereStatements(), null);
+
+        // TODO replace these return nulls with exceptions
+        if (tasksCursor != null && tasksCursor.getCount() > 0)
+            tasksCursor.moveToFirst();
+        else
+            return null;
+
+        ArrayList<Task> tasks = new ArrayList<Task> ();
+
+        // Keep adding tasks to the list until we run out of tasks to add
+        do {
+            // Get the oldtask's id
+            long taskId = tasksCursor.getLong(tasksCursor.getColumnIndex(TASKS_KEY_ID));
+
+            // Store the oldtask name and status
+            Task task = new Task(tasksCursor.getString(tasksCursor.getColumnIndex(TASKS_KEY_NAME)));
+            task.changeStatus(
+                    TaskStatusHelper.decode(tasksCursor.getString(tasksCursor.getColumnIndex(TASKS_KEY_STATUS))));
+
+            // Set the id of the task
+            task.setId(tasksCursor.getLong(tasksCursor.getColumnIndex(TASKS_KEY_ID)));
+
+            // Add all the contexts to the oldtask
+            ArrayList<TaskContext> contexts = getAllContextsForTask(taskId);
+            for (TaskContext context : contexts) {
+                task.addContext(context);
+            }
+
+            tasks.add(task);
+        } while (tasksCursor.moveToNext());
+
+        // Close the inbox cursor and we're done
+        tasksCursor.close();
+        return tasks;
+    }
+
     /**
      * @return all the tasks in the database
      */
@@ -241,6 +305,9 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             Task task = new Task(tasksCursor.getString(tasksCursor.getColumnIndex(TASKS_KEY_NAME)));
             task.changeStatus(
                     TaskStatusHelper.decode(tasksCursor.getString(tasksCursor.getColumnIndex(TASKS_KEY_STATUS))));
+
+            // Set the id of the task
+            task.setId(tasksCursor.getLong(tasksCursor.getColumnIndex(TASKS_KEY_ID)));
 
             // Add all the contexts to the oldtask
             ArrayList<TaskContext> contexts = getAllContextsForTask(taskId);
@@ -322,6 +389,25 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                 CONTEXTS_KEY_ID + " = " + Long.toString(oldContext.getId()), null);
     }
 
+    private Task setIdsForContexts(Task task) {
+        Task newTask = new Task(task.getName());
+        newTask.changeStatus(task.getStatus());
+        newTask.setId(task.getId());
+
+        ArrayList<TaskContext> allContexts = getAllContexts();
+        ArrayList<TaskContext> taskContexts = task.getAllContexts();
+
+        for (int i = 0; i < taskContexts.size(); i++) {
+            for (int j = 0; j < allContexts.size(); j++) {
+                if (taskContexts.get(i).getName().equals(allContexts.get(j).getName())) {
+                    newTask.addContext(allContexts.get(j));
+                }
+            }
+        }
+
+        return newTask;
+    }
+
     /**
      * @param taskId The id of the oldtask for which the contexts are needed
      * @return A list of all the contexts of the oldtask
@@ -333,10 +419,12 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         // Defining the query to get the contexts from the oldtask
         String contextQuery = String.format(
-                "SELECT %s, %s FROM %s LEFT JOIN %s " +
+                "SELECT %s, %s, %s " +
+                        "FROM %s LEFT JOIN %s " +
                         "ON %s.%s = %s.%s " +
                         "WHERE %s.%s = %s",
-                CONTEXTS_KEY_NAME, CONTEXTS_KEY_COLOR, CONTEXTS_TABLE_NAME, TASKS_CONTEXTS_JUNCTION_TABLE_NAME,
+                CONTEXTS_KEY_NAME, CONTEXTS_KEY_COLOR, CONTEXTS_KEY_ID,
+                CONTEXTS_TABLE_NAME, TASKS_CONTEXTS_JUNCTION_TABLE_NAME,
                 TASKS_CONTEXTS_JUNCTION_TABLE_NAME, TASKS_CONTEXTS_JUNCTION_KEY_CONTEXT_ID, CONTEXTS_TABLE_NAME, CONTEXTS_KEY_ID,
                 TASKS_CONTEXTS_JUNCTION_TABLE_NAME, TASKS_CONTEXTS_JUNCTION_KEY_TASK_ID, Long.toString(taskId));
 
@@ -350,6 +438,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                 TaskContext newContext = new TaskContext(
                         contextsCursor.getString(contextsCursor.getColumnIndex(CONTEXTS_KEY_NAME)));
                 newContext.setColor(contextsCursor.getInt(contextsCursor.getColumnIndex(CONTEXTS_KEY_COLOR)));
+                newContext.setId(contextsCursor.getLong(contextsCursor.getColumnIndex(CONTEXTS_KEY_ID)));
                 contexts.add(newContext);
             } while (contextsCursor.moveToNext());
         } catch(CursorIndexOutOfBoundsException exception) {

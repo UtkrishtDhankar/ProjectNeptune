@@ -14,17 +14,4 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/addContextButton"
-        android:elevation="6sp"
-        android:onClick="onContextFABPress"
-        android:layout_marginBottom="24sp"
-        android:layout_marginRight="24sp"
-        android:src="@drawable/ic_add_white_48dp"
-        android:layout_gravity="bottom|right"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true" />
-
 </RelativeLayout>

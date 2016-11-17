@@ -58,10 +58,11 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setHomeButtonEnabled(false);
+        getSupportActionBar();
 
         // Setting the main layout
         // Create a new fragment and inserting the fragment by replacing view of FrameLayout in main_activity
-        fragment = new InboxFragment();
+        fragment = new HomeFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame,fragment).commit();
 
@@ -104,17 +105,50 @@ public class MainActivity extends AppCompatActivity {
                     // Setting the selected item's index
                     case R.id.nav_home:
                         navItemIndex = 0;
-                        fragment = new InboxFragment();
+                        fragment = new HomeFragment();
+                        toolbar.setTitle("Home");
                         break;
 
                     case R.id.nav_context:
                         navItemIndex = 1;
                         fragment = new ContextsFragment();
+                        toolbar.setTitle("Contexts");
+                        break;
+
+                    case R.id.nav_inbox:
+                        navItemIndex = 2;
+                        fragment = new InboxFragment();
+                        toolbar.setTitle("Inbox");
+                        break;
+
+                    case R.id.nav_next:
+                        navItemIndex = 3;
+                        fragment = new NextFragment();
+                        toolbar.setTitle("Next");
+                        break;
+
+                    case R.id.nav_waiting:
+                        navItemIndex = 4;
+                        fragment = new WaitingFragment();
+                        toolbar.setTitle("Waiting");
+                        break;
+
+                    case R.id.nav_scheduled:
+                        navItemIndex = 5;
+                        fragment = new ScheduledFragment();
+                        toolbar.setTitle("Scheduled");
+                        break;
+
+                    case R.id.nav_someday:
+                        navItemIndex = 6;
+                        fragment = new SomedayFragment();
+                        toolbar.setTitle("Someday");
                         break;
 
                     case R.id.nav_settings:
-                        navItemIndex = 2;
+                        navItemIndex = 7;
                         fragment = new SettingsFragment();
+                        toolbar.setTitle("Settings");
                         break;
                 }
 
@@ -130,7 +164,14 @@ public class MainActivity extends AppCompatActivity {
                 }
                 menuItem.setChecked(true);
 
-                loadHomeFragment();
+                // Toggle the fab
+                toggleFab();
+
+                // Closing drawerLayout on item click
+                drawerLayout.closeDrawers();
+
+                // Refresh toolbar menu
+                invalidateOptionsMenu();
 
                 return true;
             }
@@ -158,65 +199,6 @@ public class MainActivity extends AppCompatActivity {
         actionBarDrawerToggle.syncState();
     }
 
-    /**
-     *
-     */
-    private void loadHomeFragment() {
-
-        // Setting the selected Nav drawer item as checked
-        navigationDrawer.getMenu().getItem(navItemIndex).setChecked(true);
-
-        // Setting the Toolbar's Title
-        getSupportActionBar().setTitle(activityTitles[navItemIndex]);
-
-        // Sometimes, when fragment has huge data, screen seems hanging
-        // when switching between navigation menus
-        // So using runnable, the fragment is loaded with cross fade effect
-        // This effect can be seen in GMail app
-        Runnable mPendingRunnable = new Runnable() {
-            @Override
-            public void run() {
-                // Update the main content by replacing fragments
-                // Create a new fragment and specify the fragment to show based on position
-                Fragment fragment = getHomeFragment();
-
-                // Insert the fragment by replacing view of FrameLayout in main_activity
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.content_frame,fragment).commit();
-            }
-        };
-
-        toggleFab();
-
-        // Closing drawerLayout on item click
-        drawerLayout.closeDrawers();
-
-        // Refresh toolbar menu
-        invalidateOptionsMenu();
-    }
-
-    /**
-     * Uses selected item's index to return the fragment to be opened
-     * @return The fragment to be opened according to the item selected in the nav drawer
-     */
-    private Fragment getHomeFragment() {
-        switch (navItemIndex) {
-            case 0:
-                // Creating the Inbox Fragment
-                InboxFragment inboxFragment = new InboxFragment();
-                return inboxFragment;
-            case 1:
-                // Creating the Settings Fragment
-                ContextsFragment contextsFragment = new ContextsFragment();
-                return contextsFragment;
-            case 2:
-                // Creating the Settings Fragment
-                SettingsFragment settingsFragment = new SettingsFragment();
-                return settingsFragment;
-            default:
-                return new InboxFragment();
-        }
-    }
 
 
     /**
@@ -231,12 +213,12 @@ public class MainActivity extends AppCompatActivity {
 
     /** Swaps fragments in the main content view */
     private void selectItem(int position) {
-        Fragment fragment = new InboxFragment();
+        Fragment fragment = new HomeFragment();
         // Create a new fragment and specify the fragment to show based on position
         switch(position)
         {
             case 0:
-                fragment = new InboxFragment();
+                fragment = new HomeFragment();
                 break;
             case 1:
                 fragment = new ContextsFragment();
@@ -263,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void onFABPress(View view) {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        InputFragment inputFragment = InputFragment.newInstance("Some Title",getApplicationContext());
+        InputFragment inputFragment = InputFragment.newInstance("title",getApplicationContext());
         inputFragment.show(fragmentManager, "fragment_edit_name");
     }
 

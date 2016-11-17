@@ -12,14 +12,12 @@ import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 
-import utkrishtdhankar.projectneptune.TaskStatusPackage.Inbox;
 import utkrishtdhankar.projectneptune.TaskStatusPackage.Next;
-import utkrishtdhankar.projectneptune.TaskStatusPackage.Someday;
 
 /**
  * Created by Shreyak Kumar on 12-11-2016.
  */
-public class InboxFragment extends Fragment {
+public class ScheduledFragment extends Fragment {
 
     // The database that stores all of our tasks and contexts
     public DatabaseHelper databaseHelper;
@@ -60,13 +58,13 @@ public class InboxFragment extends Fragment {
 
         //Making the filter
         Filter filter = new Filter();
-        filter.setTaskStatusName("Inbox");
+        filter.setTaskStatusName("Scheduled");
 
         // Fill the dataset from the database, and get the contexts list on the screen
         tasksList = databaseHelper.getTasksByFilter(filter);
 
         // Passing the dataset and fragment reference to the adapter
-        recyclerViewAdapter = new CardsAdapter(tasksList,InboxFragment.this);
+        recyclerViewAdapter = new CardsAdapter(tasksList,ScheduledFragment.this);
         inboxRecyclerView.setAdapter(recyclerViewAdapter);
 
         // Inflate the layout for this fragment

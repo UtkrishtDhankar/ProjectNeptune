@@ -1,30 +1,37 @@
 package utkrishtdhankar.projectneptune;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
+import utkrishtdhankar.projectneptune.TaskStatusPackage.Scheduled;
 import utkrishtdhankar.projectneptune.TaskStatusPackage.TaskStatusHelper;
+import utkrishtdhankar.projectneptune.TaskStatusPackage.Waiting;
 
 /**
  * Created by Shreyak Kumar on 28-10-2016.
  * This pops up to let the player enter/edit the oldtask
  */
 
-public class InputFragment extends DialogFragment implements View.OnClickListener {
+public class InputFragment extends DialogFragment implements View.OnClickListener,DatePickerDialog.OnDateSetListener {
 
     // A reference to the database. Used when adding/editing tasks
     DatabaseHelper databaseHelper;
@@ -37,10 +44,13 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
     private EditText cEditText;
     private Spinner contextDropDown;
     private Spinner statusDropDown;
+    private EditText waitingText;
 
     // For updating contexts
     int openedForEdit = 0;
     Task oldtask;
+
+    Calendar calendar;
 
     /**
      * Default constructor
@@ -68,7 +78,13 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
         return frag;
     }
 
-    public static InputFragment newInstance(String title,String taskText,String taskContext,String taskStatus,long id) {
+    public static InputFragment newInstance(String title,
+                                            String taskText,
+                                            String taskContext,
+                                            String taskStatusEncoded,
+                                            String taskStatus,
+                                            String taskStatusSpecial,
+                                            long id) {
         InputFragment frag = new InputFragment();
 
         // Set the arguments for the fragment
@@ -77,6 +93,8 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
         args.putString("taskText", taskText);
         args.putString("oldContext", taskContext);
         args.putString("taskStatus", taskStatus);
+        args.putString("taskStatusSpecial", taskStatusSpecial);
+        args.putString("encodedStatus", taskStatusEncoded);
         args.putLong("taskId",id);
         frag.setArguments(args);
 
@@ -95,7 +113,7 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
                              Bundle savedInstanceState) {
 
 
-        if(getArguments().getString("title") == "edit") {
+        if(getArguments().getString("title") != "title") {
             openedForEdit = 1;
         }else{
             openedForEdit = 0;
@@ -120,6 +138,8 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
         // Get field from view
         inboxEditText = (EditText) view.findViewById(R.id.addTextInput);
         inboxAddButton = (Button) view.findViewById(R.id.addTaskbutton) ;
+        waitingText = (EditText) view.findViewById(R.id.waitingText);
+        waitingText.setVisibility(View.INVISIBLE);
         inboxAddButton.setOnClickListener(this);
 
         // Setting the context drop down menu
@@ -141,7 +161,7 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
         statusDropDown = (Spinner) view.findViewById(R.id.statusSpinner);
 
         // Create an ArrayAdapter using the string array and a default colorDropDown layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+        final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.status_names, android.R.layout.simple_spinner_item);
 
         // Specify the layout to use when the list of choices appears
@@ -159,9 +179,10 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
 
             oldtask = new Task(getArguments().getString("taskText"));
             oldtask.addContext(new TaskContext(getArguments().getString("oldContext")));
-            oldtask.changeStatus(TaskStatusHelper.decode(getArguments().getString("taskStatus")));
+            oldtask.changeStatus(TaskStatusHelper.decode(getArguments().getString("encodedStatus")));
             oldtask.setId(getArguments().getLong("taskId"));
             inboxEditText.setText(oldtask.getName());
+            //TODO make changes for presets here
             for(int i = 0; i < contextsNames.length; i++){
                 if(contextsNames[i].equals(getArguments().getString("oldContext"))){
                     contextDropDown.setSelection(i);
@@ -174,6 +195,33 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
             }
 
         }
+
+        statusDropDown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                if(adapter.getItem(position).toString().equals("Waiting") ){
+                    //set visibility of Waiting for editText
+                    waitingText.setVisibility(View.VISIBLE);
+                    waitingText.setText(getArguments().getString("taskStatusSpecial"));
+                }else{
+                    waitingText.setVisibility(View.INVISIBLE);
+                }
+
+                if(adapter.getItem(position).toString().equals("Scheduled") ){
+                    //open corresponding fragment
+                    DatePickerFragment newFragment = DatePickerFragment.newInstance(getArguments().getString("taskStatusSpecial"));
+                    newFragment.setTargetFragment(InputFragment.this,300);
+                    newFragment.show(getFragmentManager(), "datePicker");
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
+        //The Calendar variable is now set.
 
         // Show soft keyboard automatically and request focus to field
         inboxEditText.requestFocus();
@@ -194,28 +242,76 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
 
         Task newTask = new Task(newTaskName);
 
+        if(newStatusName.equals("Waiting")){
+            String waitingFor = waitingText.getText().toString();
+            newTask.changeStatus(new Waiting(waitingFor));
+        } else if(newStatusName.equals("Scheduled")) {
+            newTask.changeStatus(new Scheduled(calendar));
+        } else {
+            newTask.changeStatus(TaskStatusHelper.decode(newStatusName));
+        }
+
         // Add the context for the oldtask
         TaskContext taskContext = new TaskContext(newContextName);
-        newTask.addContext(taskContext);
-        newTask.changeStatus(TaskStatusHelper.decode(newStatusName));
 
-        if(openedForEdit == 1){
+        newTask.addContext(taskContext);
+       // newTask.changeStatus(TaskStatusHelper.decode(newStatusName));
+
+        if(openedForEdit == 1) {
             // Call the editing function use the oldtask variable for old values
-            databaseHelper.updateTask(oldtask,newTask);
+            databaseHelper.updateTask(oldtask, newTask);
         }else{
-            // Add said oldtask to the database
+            // Add said newtask to the database
             databaseHelper.addTask(newTask);
         }
 
 
-
-        //Reloading the fragment so that values from tables are updated
-        //HOME fragment is opened
-        Fragment fragment = new InboxFragment();
+        // Reloading the appropriate fragment so that values from tables are updated
+        Fragment fragment;
+        switch(getArguments().getString("title")){
+            case "Home":
+                fragment = new HomeFragment();
+                break;
+            case "Inbox":
+                fragment = new InboxFragment();
+                break;
+            case "Next":
+                fragment = new NextFragment();
+                break;
+            case "Waiting":
+                fragment = new WaitingFragment();
+                break;
+            case "Scheduled":
+                fragment = new ScheduledFragment();
+                break;
+            case "Someday":
+                fragment = new SomedayFragment();
+                break;
+            default:
+                fragment = new HomeFragment();
+                break;
+        }
+        // The Fragment is opened
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame,fragment).addToBackStack(null).commit();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(getArguments().getString("title"));
 
-        //Closes the pop-up
+        // Closes the pop-up
         dismiss();
+    }
+
+    /**
+     * @param view       the picker associated with the dialog
+     * @param year       the selected year
+     * @param month      the selected month (0-11 for compatibility with
+     *                   {@link Calendar#MONTH})
+     * @param dayOfMonth th selected day of the month (1-31, depending on
+     */
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR,year);
+        calendar.set(Calendar.MONTH,month);
+        calendar.set(Calendar.DAY_OF_MONTH,dayOfMonth);
     }
 }

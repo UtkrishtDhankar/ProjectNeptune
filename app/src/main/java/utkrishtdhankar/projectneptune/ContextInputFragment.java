@@ -2,6 +2,7 @@ package utkrishtdhankar.projectneptune;
 
 import android.content.Context;
 import android.graphics.Color;
+
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -33,6 +34,9 @@ public class ContextInputFragment extends DialogFragment implements View.OnClick
     // For updating contexts
     int openedForEdit = 0;
     TaskContext oldContext = new TaskContext();
+
+    // Bundle for storing colors' names and rgb values
+    private Bundle colors = new Bundle();
 
     /**
      * Default constructor
@@ -96,6 +100,15 @@ public class ContextInputFragment extends DialogFragment implements View.OnClick
         }else{
             openedForEdit = 0;
         }
+        // Setting the colors' rgb values
+        colors.putString("Emerland","#2ecc71");
+        colors.putString("Peterriver","#3498db");
+        colors.putString("Amethyst","#9b59b6");
+        colors.putString("Wetasphalt","#34495e");
+        colors.putString("Carrot","#e67e22");
+        colors.putString("Alizarin","#e74c3c");
+        colors.putString("Clouds","#ecf0f1");
+        colors.putString("Asbestos","#7f8c8d");
 
         return inflater.inflate(R.layout.context_input_fragment, container);
 
@@ -140,11 +153,28 @@ public class ContextInputFragment extends DialogFragment implements View.OnClick
             oldContext.setColor(getArguments().getInt("contextColor"));
             oldContext.setId(getArguments().getLong("contextId"));
             contextEditText.setText(oldContext.getName());
-            for(int i = 0; i < adapter.getCount(); i++){
-                if(Color.parseColor(adapter.getItem(i).toString()) == oldContext.getColor()){
+
+            // Populating the colors array according to the preset colors
+            int[] colorInts  = {Color.parseColor(colors.getString("Emerland")),
+                    Color.parseColor(colors.getString("Peterriver")),
+                    Color.parseColor(colors.getString("Amethyst")),
+                    Color.parseColor(colors.getString("Wetasphalt")),
+                    Color.parseColor(colors.getString("Carrot")),
+                    Color.parseColor(colors.getString("Alizarin")),
+                    Color.parseColor(colors.getString("Clouds")),
+                    Color.parseColor(colors.getString("Asbestos"))};
+
+            // Setting the colordropdown selection by comparing to the oldcontext's color
+            for(int i = 0; i < colorInts.length; i++){
+                if(colorInts[i] == oldContext.getColor()){
                     colorDropDown.setSelection(i);
                 }
             }
+//            for(int i = 0; i < adapter.getCount(); i++){
+//                if(Color.parseColor(adapter.getItem(i).toString()) == oldContext.getColor()){
+//                    colorDropDown.setSelection(i);
+//                }
+//            }
 
         }
 
@@ -163,7 +193,36 @@ public class ContextInputFragment extends DialogFragment implements View.OnClick
     public void onClick(View view) {
         // Fill out the new context
         String newContextName = contextEditText.getText().toString();
-        int newContextColor = Color.parseColor(colorDropDown.getSelectedItem().toString());
+        int newContextColor ;
+        switch (colorDropDown.getSelectedItem().toString())
+        {
+            case "Emerland" :
+                newContextColor = Color.parseColor(colors.getString("Emerland"));
+                break;
+            case "Peterriver" :
+                newContextColor = Color.parseColor(colors.getString("Peterriver"));
+                break;
+            case "Amethyst" :
+                newContextColor = Color.parseColor(colors.getString("Amethyst"));
+                break;
+            case "Wetasphalt" :
+                newContextColor = Color.parseColor(colors.getString("Wetasphalt"));
+                break;
+            case "Carrot" :
+                newContextColor = Color.parseColor(colors.getString("Carrot"));
+                break;
+            case "Alizarin" :
+                newContextColor = Color.parseColor(colors.getString("Alizarin"));
+                break;
+            case "Clouds" :
+                newContextColor = Color.parseColor(colors.getString("Clouds"));
+                break;
+            case "Asbestos" :
+                newContextColor = Color.parseColor(colors.getString("Asbestos"));
+                break;
+            default:
+                newContextColor = Color.parseColor(colors.getString("Carrot"));
+        }
         TaskContext newContext = new TaskContext(newContextName,newContextColor);
 
         if(openedForEdit == 1){
