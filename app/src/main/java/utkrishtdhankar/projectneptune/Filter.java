@@ -87,6 +87,47 @@ public class Filter {
         return whereClause;
     }
 
+    /**
+     * This gives a string for the SELECT * FROM * WHERE (* = *)* statements in the database
+     * Automatically uses the join if needed
+     * @return
+     */
+    public String getSelectAndWhereStatements() {
+        StringBuilder query = new StringBuilder();
+        query.append("SELECT * FROM " + DatabaseHelper.TASKS_TABLE_NAME);
+
+        if (isAnythingSet()) {
+            query.append(" WHERE ");
+        } else {
+            // Tracks whether or not I've added any clauses yet.
+            // Is set to true whenever the first clause has been added
+            boolean addedAnyClausesYet = false;
+
+            if (taskPattern != null && !taskPattern.isEmpty()) {
+                query.append(DatabaseHelper.TASKS_KEY_NAME);
+                query.append(" LIKE ");
+                query.append(taskPattern);
+
+                addedAnyClausesYet = true;
+            }
+
+            if (taskStatus != null && !taskStatus.isEmpty()) {
+                // If the string builder already has something in it before this particular clause
+                // Then we should add an "&&".
+                if (addedAnyClausesYet) {
+                    query.append(" && ");
+                }
+                query.append(DatabaseHelper.TASKS_KEY_STATUS);
+                query.append(" = ");
+                query.append(taskStatus);
+
+                addedAnyClausesYet = true;
+            }
+        }
+
+        return query.toString();
+    }
+
     @Deprecated
     public class WhereClause {
         public String clause;
