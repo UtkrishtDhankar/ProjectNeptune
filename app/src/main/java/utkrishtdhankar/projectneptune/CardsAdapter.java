@@ -6,17 +6,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.text.SpannableString;
-import android.text.style.BackgroundColorSpan;
-import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-
-import utkrishtdhankar.projectneptune.TaskStatusPackage.Next;
 
 /**
  * Created by Shreyak Kumar on 28-10-2016.
@@ -25,7 +20,7 @@ import utkrishtdhankar.projectneptune.TaskStatusPackage.Next;
  */
 public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.TaskCardViewHolder> {
 
-    Fragment inboxFragment;
+    Fragment homeFragment;
     NextFragment nextFragment;
 
     /**
@@ -73,33 +68,39 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.TaskCardView
         this.dataset = newDataset;
     }
 
-    // When the Inbox fragment needs cards
-    public CardsAdapter(ArrayList<Task> newDataset,InboxFragment inbfrag) {
-        this.inboxFragment = inbfrag;
+    // When the Home fragment needs cards
+    public CardsAdapter(ArrayList<Task> newDataset,HomeFragment homefrag) {
+        this.homeFragment = homefrag;
+        this.dataset = newDataset;
+    }
+
+    // When the Next fragment needs cards
+    public CardsAdapter(ArrayList<Task> newDataset,InboxFragment nextfrag) {
+        this.homeFragment = nextfrag;
         this.dataset = newDataset;
     }
 
     // When the Next fragment needs cards
     public CardsAdapter(ArrayList<Task> newDataset,NextFragment nextfrag) {
-        this.inboxFragment = nextfrag;
+        this.homeFragment = nextfrag;
         this.dataset = newDataset;
     }
 
     // When the Waiting fragment needs cards
     public CardsAdapter(ArrayList<Task> newDataset,WaitingFragment nextfrag) {
-        this.inboxFragment = nextfrag;
+        this.homeFragment = nextfrag;
         this.dataset = newDataset;
     }
 
     // When the Scheduled fragment needs cards
     public CardsAdapter(ArrayList<Task> newDataset,ScheduledFragment nextfrag) {
-        this.inboxFragment = nextfrag;
+        this.homeFragment = nextfrag;
         this.dataset = newDataset;
     }
 
     // When the Someday fragment needs cards
     public CardsAdapter(ArrayList<Task> newDataset,SomedayFragment nextfrag) {
-        this.inboxFragment = nextfrag;
+        this.homeFragment = nextfrag;
         this.dataset = newDataset;
     }
 
@@ -131,9 +132,9 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.TaskCardView
     public void onBindViewHolder(TaskCardViewHolder holder, final int position) {
 
         // Importing the required fonts
-        Typeface robotoLight = Typeface.createFromAsset(inboxFragment.getActivity().getAssets(), "fonts/Roboto-Light.ttf");
-        Typeface robotoLightItalic = Typeface.createFromAsset(inboxFragment.getActivity().getAssets(), "fonts/Roboto-LightItalic.ttf");
-        Typeface robotoRegular = Typeface.createFromAsset(inboxFragment.getActivity().getAssets(), "fonts/Roboto-Regular.ttf");
+        Typeface robotoLight = Typeface.createFromAsset(homeFragment.getActivity().getAssets(), "fonts/Roboto-Light.ttf");
+        Typeface robotoLightItalic = Typeface.createFromAsset(homeFragment.getActivity().getAssets(), "fonts/Roboto-LightItalic.ttf");
+        Typeface robotoRegular = Typeface.createFromAsset(homeFragment.getActivity().getAssets(), "fonts/Roboto-Regular.ttf");
 
         // Setting the fonts for all texts in the card
         holder.nameTextView.setTypeface(robotoRegular);
@@ -167,7 +168,7 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.TaskCardView
         // Setting the onClick listener for each card
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
-                FragmentManager fragmentManager = inboxFragment.getFragmentManager();
+                FragmentManager fragmentManager = homeFragment.getFragmentManager();
                 InputFragment inputFragment = InputFragment.newInstance("edit",
                         dataset.get(position).getName(),
                         dataset.get(position).getAllContexts().get(0).getName(),

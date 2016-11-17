@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Setting the main layout
         // Create a new fragment and inserting the fragment by replacing view of FrameLayout in main_activity
-        fragment = new InboxFragment();
+        fragment = new HomeFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame,fragment).commit();
 
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
                     // Setting the selected item's index
                     case R.id.nav_home:
                         navItemIndex = 0;
-                        fragment = new InboxFragment();
+                        fragment = new HomeFragment();
                         break;
 
                     case R.id.nav_context:
@@ -113,28 +113,33 @@ public class MainActivity extends AppCompatActivity {
                         fragment = new ContextsFragment();
                         break;
 
-                    case R.id.nav_next:
+                    case R.id.nav_inbox:
                         navItemIndex = 2;
+                        fragment = new InboxFragment();
+                        break;
+
+                    case R.id.nav_next:
+                        navItemIndex = 3;
                         fragment = new NextFragment();
                         break;
 
                     case R.id.nav_waiting:
-                        navItemIndex = 3;
+                        navItemIndex = 4;
                         fragment = new WaitingFragment();
                         break;
 
                     case R.id.nav_scheduled:
-                        navItemIndex = 4;
+                        navItemIndex = 5;
                         fragment = new ScheduledFragment();
                         break;
 
                     case R.id.nav_someday:
-                        navItemIndex = 5;
+                        navItemIndex = 6;
                         fragment = new SomedayFragment();
                         break;
 
                     case R.id.nav_settings:
-                        navItemIndex = 6;
+                        navItemIndex = 7;
                         fragment = new SettingsFragment();
                         break;
                 }
@@ -200,12 +205,12 @@ public class MainActivity extends AppCompatActivity {
 
     /** Swaps fragments in the main content view */
     private void selectItem(int position) {
-        Fragment fragment = new InboxFragment();
+        Fragment fragment = new HomeFragment();
         // Create a new fragment and specify the fragment to show based on position
         switch(position)
         {
             case 0:
-                fragment = new InboxFragment();
+                fragment = new HomeFragment();
                 break;
             case 1:
                 fragment = new ContextsFragment();

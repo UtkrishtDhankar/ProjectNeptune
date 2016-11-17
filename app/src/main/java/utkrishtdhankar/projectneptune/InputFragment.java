@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import utkrishtdhankar.projectneptune.TaskStatusPackage.Scheduled;
-import utkrishtdhankar.projectneptune.TaskStatusPackage.TaskStatus;
 import utkrishtdhankar.projectneptune.TaskStatusPackage.TaskStatusHelper;
 import utkrishtdhankar.projectneptune.TaskStatusPackage.Waiting;
 
@@ -268,7 +267,7 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
 
         //Reloading the fragment so that values from tables are updated
         //HOME fragment is opened
-        Fragment fragment = new InboxFragment();
+        Fragment fragment = new HomeFragment();
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame,fragment).addToBackStack(null).commit();
 

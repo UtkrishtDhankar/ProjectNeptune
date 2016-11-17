@@ -2,8 +2,9 @@
     <string name="app_name">Project Neptune</string>
     <string name="drawer_open">OpenDrawer</string>
     <string name="drawer_close">CloseDrawer</string>
-    <string name="nav_home">Inbox</string>
+    <string name="nav_home">Home</string>
     <string name="nav_contexts">Contexts</string>
+    <string name="nav_inbox">Inbox</string>
     <string name="nav_next">Next</string>
     <string name="nav_waiting">Waiting</string>
     <string name="nav_scheduled">Scheduled</string>

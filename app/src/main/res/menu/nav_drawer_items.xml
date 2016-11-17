@@ -6,11 +6,14 @@
                 android:id="@+id/nav_home"
                 android:icon="@drawable/ic_home_black_36dp"
                 android:title="@string/nav_home" />
-
             <item
                 android:id="@+id/nav_context"
                 android:icon="@drawable/ic_dns_black_36dp"
                 android:title="@string/nav_contexts" />
+            <item
+                android:id="@+id/nav_inbox"
+                android:icon="@drawable/ic_dns_black_36dp"
+                android:title="@string/nav_inbox" />
             <item
                 android:id="@+id/nav_next"
                 android:icon="@drawable/ic_dns_black_36dp"
