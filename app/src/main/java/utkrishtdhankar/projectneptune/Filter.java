@@ -74,7 +74,7 @@ public class Filter {
         } else {
             query.append("SELECT * FROM " + DatabaseHelper.TASKS_TABLE_NAME);
         }
-        
+
         if (isAnythingSet()) {
             query.append(" WHERE ");
         } else {
@@ -90,7 +90,7 @@ public class Filter {
             query.append(".");
             query.append(DatabaseHelper.TASKS_KEY_NAME);
             query.append(" LIKE ");
-            query.append(taskPattern);
+            query.append("\"" + taskPattern + "\"");
 
             addedAnyClausesYet = true;
         }
@@ -105,7 +105,7 @@ public class Filter {
             query.append(".");
             query.append(DatabaseHelper.TASKS_KEY_STATUS);
             query.append(" = ");
-            query.append(taskStatus.encode());
+            query.append("\"" + taskStatus.encode() + "\"");
 
             addedAnyClausesYet = true;
         }
