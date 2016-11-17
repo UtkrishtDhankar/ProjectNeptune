@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 
+import utkrishtdhankar.projectneptune.TaskStatusPackage.Done;
 import utkrishtdhankar.projectneptune.TaskStatusPackage.Next;
 
 /**
@@ -60,11 +61,12 @@ public class HomeFragment extends Fragment {
         // Fill the dataset from the database, and get the tasks list on the screen
         tasksList = databaseHelper.getAllTasks();
         recyclerViewAdapter = new CardsAdapter(tasksList,HomeFragment.this);
+
+        // Setting the adapter for the recycler view
         homeRecyclerView.setAdapter(recyclerViewAdapter);
 
         // The Swipe gesture
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-
 
             /**
              * If you don't support drag & drop, this method will never be called.
@@ -79,13 +81,17 @@ public class HomeFragment extends Fragment {
                 //Remove swiped item from list and notify the RecyclerView
                 Task oldTask = tasksList.get(viewHolder.getAdapterPosition());
                 Task newTask = oldTask;
-                newTask.changeStatus(new Next());
+                newTask.changeStatus(new Done());
                 databaseHelper.updateTask(oldTask,newTask);
+                getFragmentManager().beginTransaction().detach(HomeFragment.this).attach(HomeFragment.this).commit();
             }
         };
 
+        //Attaching the swipe gesture to the recycler view
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(homeRecyclerView);
+
+
 
         // Inflate the layout for this fragment
         return baseLayoutView ;
