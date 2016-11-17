@@ -202,6 +202,7 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
                 if(adapter.getItem(position).toString().equals("Waiting") ){
                     //set visibility of Waiting for editText
                     waitingText.setVisibility(View.VISIBLE);
+                    waitingText.setText(getArguments().getString("taskStatusSpecial"));
                 }else{
                     waitingText.setVisibility(View.INVISIBLE);
                 }
