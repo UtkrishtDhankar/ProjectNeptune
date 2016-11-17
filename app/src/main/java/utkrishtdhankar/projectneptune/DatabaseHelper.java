@@ -173,6 +173,26 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         // Update the values in the database
         db.update(TASKS_TABLE_NAME, taskValues, TASKS_KEY_ID + " = " + Long.toString(oldTask.getId()), null);
+
+        ArrayList<TaskContext> oldTaskContexts = oldTask.getAllContexts();
+        ArrayList<TaskContext> newTaskContexts = newTask.getAllContexts();
+
+        // Delete all old context entries
+        for(TaskContext context : oldTaskContexts) {
+            db.delete(TASKS_CONTEXTS_JUNCTION_TABLE_NAME,
+                            TASKS_CONTEXTS_JUNCTION_KEY_CONTEXT_ID + " = " + context .getId() + " AND " +
+                            TASKS_CONTEXTS_JUNCTION_KEY_TASK_ID + " = " + oldTask.getId(), null);
+        }
+
+        // Add the new entries
+        for (TaskContext context : newTaskContexts) {
+            ContentValues contentValues = new ContentValues();
+
+            contentValues.put(TASKS_CONTEXTS_JUNCTION_KEY_TASK_ID, oldTask.getId());
+            contentValues.put(TASKS_CONTEXTS_JUNCTION_KEY_CONTEXT_ID, context.getId());
+
+            db.insert(TASKS_CONTEXTS_JUNCTION_TABLE_NAME, null, contentValues);
+        }
     }
 
     /**
