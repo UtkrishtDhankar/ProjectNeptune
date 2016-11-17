@@ -17,7 +17,7 @@ public class Filter {
     private TaskContext context;
 
     // What status the task can have
-    private String taskStatus;
+    private TaskStatus taskStatus;
 
     /**
      * Initializes an empty filter
@@ -47,7 +47,7 @@ public class Filter {
     /**
      * @param status The status to look for
      */
-    public void setTaskStatus(String status) {
+    public void setTaskStatus(TaskStatus status) {
         taskStatus = status;
     }
 
@@ -71,7 +71,7 @@ public class Filter {
             whereClause.clauseArgs.add(taskPattern);
         }
 
-        if (taskStatus != null && !taskStatus.isEmpty()) {
+        if (taskStatus != null) {
             // If the string builder already has something in it before this particular clause
             // Then we should add an "&&".
             if (clauseStringBuilder.length() > 0) {
@@ -79,7 +79,7 @@ public class Filter {
             }
             clauseStringBuilder.append(DatabaseHelper.TASKS_KEY_STATUS);
             clauseStringBuilder.append("=?");
-            whereClause.clauseArgs.add(taskStatus);
+            whereClause.clauseArgs.add(taskStatus.encode());
         }
 
         whereClause.clause = clauseStringBuilder.toString();
@@ -110,7 +110,7 @@ public class Filter {
                 addedAnyClausesYet = true;
             }
 
-            if (taskStatus != null && !taskStatus.isEmpty()) {
+            if (taskStatus != null) {
                 // If the string builder already has something in it before this particular clause
                 // Then we should add an "&&".
                 if (addedAnyClausesYet) {
@@ -118,7 +118,7 @@ public class Filter {
                 }
                 query.append(DatabaseHelper.TASKS_KEY_STATUS);
                 query.append(" = ");
-                query.append(taskStatus);
+                query.append(taskStatus.encode());
 
                 addedAnyClausesYet = true;
             }
