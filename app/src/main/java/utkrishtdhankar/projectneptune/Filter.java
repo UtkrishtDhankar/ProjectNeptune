@@ -1,8 +1,10 @@
 package utkrishtdhankar.projectneptune;
 
-import java.util.ArrayList;
+import android.provider.ContactsContract;
 
 import utkrishtdhankar.projectneptune.TaskStatusPackage.TaskStatus;
+
+import utkrishtdhankar.projectneptune.DatabaseHelper;
 
 /**
  * Created by utkrishtdhankar on 15/11/16.
@@ -58,35 +60,58 @@ public class Filter {
      */
     public String getSelectAndWhereStatements() {
         StringBuilder query = new StringBuilder();
-        query.append("SELECT * FROM " + DatabaseHelper.TASKS_TABLE_NAME);
 
+        if (context != null) {
+            query.append(String.format(
+                    "SELECT * " +
+                            "FROM %s JOIN %s " +
+                            "ON %s.%s = " +
+                            "%s.%s ",
+                    DatabaseHelper.TASKS_TABLE_NAME, DatabaseHelper.TASKS_CONTEXTS_JUNCTION_TABLE_NAME,
+                    DatabaseHelper.TASKS_TABLE_NAME, DatabaseHelper.TASKS_KEY_ID,
+                    DatabaseHelper.TASKS_CONTEXTS_JUNCTION_TABLE_NAME, DatabaseHelper.TASKS_CONTEXTS_JUNCTION_KEY_TASK_ID
+                    ));
+        } else {
+            query.append("SELECT * FROM " + DatabaseHelper.TASKS_TABLE_NAME);
+        }
+        
         if (isAnythingSet()) {
             query.append(" WHERE ");
         } else {
-            // Tracks whether or not I've added any clauses yet.
-            // Is set to true whenever the first clause has been added
-            boolean addedAnyClausesYet = false;
+            return query.toString();
+        }
 
-            if (taskPattern != null && !taskPattern.isEmpty()) {
-                query.append(DatabaseHelper.TASKS_KEY_NAME);
-                query.append(" LIKE ");
-                query.append(taskPattern);
+        // Tracks whether or not I've added any clauses yet.
+        // Is set to true whenever the first clause has been added
+        boolean addedAnyClausesYet = false;
 
-                addedAnyClausesYet = true;
+        if (taskPattern != null && !taskPattern.isEmpty()) {
+            query.append(DatabaseHelper.TASKS_TABLE_NAME);
+            query.append(".");
+            query.append(DatabaseHelper.TASKS_KEY_NAME);
+            query.append(" LIKE ");
+            query.append(taskPattern);
+
+            addedAnyClausesYet = true;
+        }
+
+        if (taskStatus != null) {
+            // If the string builder already has something in it before this particular clause
+            // Then we should add an "&&".
+            if (addedAnyClausesYet) {
+                query.append(" && ");
             }
+            query.append(DatabaseHelper.TASKS_TABLE_NAME);
+            query.append(".");
+            query.append(DatabaseHelper.TASKS_KEY_STATUS);
+            query.append(" = ");
+            query.append(taskStatus.encode());
 
-            if (taskStatus != null) {
-                // If the string builder already has something in it before this particular clause
-                // Then we should add an "&&".
-                if (addedAnyClausesYet) {
-                    query.append(" && ");
-                }
-                query.append(DatabaseHelper.TASKS_KEY_STATUS);
-                query.append(" = ");
-                query.append(taskStatus.encode());
+            addedAnyClausesYet = true;
+        }
 
-                addedAnyClausesYet = true;
-            }
+        if (context != null) {
+            query.append(String.format("WHERE %s.%s = %s", DatabaseHelper.TASKS_CONTEXTS_JUNCTION_TABLE_NAME, DatabaseHelper.TASKS_CONTEXTS_JUNCTION_KEY_CONTEXT_ID, Long.toString(context.getId())));
         }
 
         return query.toString();
