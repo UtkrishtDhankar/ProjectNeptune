@@ -56,6 +56,7 @@ public class Filter {
      * Returns the whereclause bit for the database query
      * @return
      */
+    @Deprecated
     public WhereClause getQueryWhereClause() {
         WhereClause whereClause = new WhereClause();
 
@@ -86,6 +87,7 @@ public class Filter {
         return whereClause;
     }
 
+    @Deprecated
     public class WhereClause {
         public String clause;
         public ArrayList<String> clauseArgs;
