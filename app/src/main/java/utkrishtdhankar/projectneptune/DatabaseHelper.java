@@ -242,6 +242,9 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             task.changeStatus(
                     TaskStatusHelper.decode(tasksCursor.getString(tasksCursor.getColumnIndex(TASKS_KEY_STATUS))));
 
+            // Set the id of the task
+            task.setId(tasksCursor.getLong(tasksCursor.getColumnIndex(TASKS_KEY_ID)));
+
             // Add all the contexts to the oldtask
             ArrayList<TaskContext> contexts = getAllContextsForTask(taskId);
             for (TaskContext context : contexts) {
