@@ -1,9 +1,8 @@
 package utkrishtdhankar.projectneptune;
 
-import android.provider.ContactsContract;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+
+import utkrishtdhankar.projectneptune.TaskStatusPackage.TaskStatus;
 
 /**
  * Created by utkrishtdhankar on 15/11/16.
@@ -15,7 +14,7 @@ public class Filter {
     private String taskPattern;
 
     // What contexts to filter for
-    private String contextName;
+    private TaskContext context;
 
     // What status the task can have
     private String taskStatus;
@@ -27,7 +26,7 @@ public class Filter {
      */
     Filter() {
         taskPattern = null;
-        contextName = null;
+        context = null;
         taskStatus = null;
     }
 
@@ -39,10 +38,10 @@ public class Filter {
     }
 
     /**
-     * @param name The name to look for
+     * @param context The context to look for. _Must_ be Identifiable, ie, must have a valid id.
      */
-    public void setContextName(String name) {
-        contextName = name;
+    public void setContext(TaskContext context) {
+        this.context = context;
     }
 
     /**
@@ -143,6 +142,6 @@ public class Filter {
      * @return If someone has set any of the parameters, returns true. Otherwise returns false.
      */
     private boolean isAnythingSet() {
-        return taskPattern != null || taskStatus != null || contextName != null;
+        return taskPattern != null || taskStatus != null || context != null;
     }
 }
