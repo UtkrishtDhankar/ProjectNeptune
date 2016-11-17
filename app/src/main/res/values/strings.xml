@@ -28,13 +28,13 @@
     </string-array>
 
     <string-array name="color_titles">
-        <item>Red</item>
-        <item>Green</item>
-        <item>Blue</item>
-        <item>Black</item>
-        <item>gray</item>
-        <item>cyan</item>
-        <item>magenta</item>
-        <item>gray</item>
+        <item>Emerland</item>
+        <item>Peterriver</item>
+        <item>Amethyst</item>
+        <item>Wetasphalt</item>
+        <item>Carrot</item>
+        <item>Alizarin</item>
+        <item>Clouds</item>
+        <item>Asbestos</item>
     </string-array>
 </resources>

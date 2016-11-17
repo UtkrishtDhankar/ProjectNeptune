@@ -44,6 +44,12 @@
         android:id="@+id/statusSpinner"
         android:layout_height="40sp" />
 
+    <EditText
+        android:layout_width="150sp"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:id="@+id/waitingText" />
+
     <Button
         android:text="Add"
         android:layout_width="100sp"
