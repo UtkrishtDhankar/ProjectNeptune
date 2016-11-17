@@ -19,6 +19,10 @@ public class Task extends Identifiable {
     // What is the status of the oldtask, e.g. Next, Waiting etc.
     private TaskStatus status;
 
+    // This is the project that this task is assigned
+    // If this is null, then this task has no project assigned to it
+    private Project project;
+
     /**
      * Constructs a new oldtask with the given parameters
      * Sets the tag list to empty and the status to inbox
@@ -28,6 +32,7 @@ public class Task extends Identifiable {
         name = taskName;
         contexts = new ArrayList<TaskContext>();
         status = new Inbox();
+        project = null
     }
 
     /**
@@ -87,4 +92,28 @@ public class Task extends Identifiable {
      * @return The name of the oldtask
      */
     public String getName() {return name;}
+
+    /**
+     * Gets the project that this task is assigned to.
+     * Returns null if there is no project assigned
+     * @return
+     */
+    public Project getProject() {
+        return project;
+    }
+
+    /**
+     * Sets the project to the supplied parameter
+     * @param project
+     */
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    /**
+     * Makes this task not be a part of any project
+     */
+    public void unsetProject() {
+        this.project = null;
+    }
 }
