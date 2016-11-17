@@ -26,22 +26,22 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     private static final String DATABASE_NAME = "projectNeptune";
 
     // Parameters related to the tasks table. The name and all of it's column names go here.
-    private static final String TASKS_TABLE_NAME = "tasks";
-    private static final String TASKS_KEY_ID = "id";
-    private static final String TASKS_KEY_NAME = "name";
-    private static final String TASKS_KEY_STATUS = "status";
+    public static final String TASKS_TABLE_NAME = "tasks";
+    public static final String TASKS_KEY_ID = "id";
+    public static final String TASKS_KEY_NAME = "name";
+    public static final String TASKS_KEY_STATUS = "status";
 
     // Parameters related to the contexts table. The name and all of it's column names go here.
-    private static final String CONTEXTS_TABLE_NAME = "contexts";
-    private static final String CONTEXTS_KEY_ID = "id";
-    private static final String CONTEXTS_KEY_COLOR = "color";
-    private static final String CONTEXTS_KEY_NAME = "name";
+    public static final String CONTEXTS_TABLE_NAME = "contexts";
+    public static final String CONTEXTS_KEY_ID = "id";
+    public static final String CONTEXTS_KEY_COLOR = "color";
+    public static final String CONTEXTS_KEY_NAME = "name";
 
     // Parameters related to the tasks-contexts junction table.
     // The name and all of it's column names go here.
-    private static final String TASKS_CONTEXTS_JUNCTION_TABLE_NAME = "tasksContextsJunction";
-    private static final String TASKS_CONTEXTS_JUNCTION_KEY_TASK_ID = "taskId";
-    private static final String TASKS_CONTEXTS_JUNCTION_KEY_CONTEXT_ID = "contextId";
+    public static final String TASKS_CONTEXTS_JUNCTION_TABLE_NAME = "tasksContextsJunction";
+    public static final String TASKS_CONTEXTS_JUNCTION_KEY_TASK_ID = "taskId";
+    public static final String TASKS_CONTEXTS_JUNCTION_KEY_CONTEXT_ID = "contextId";
 
     /**
      * Creates a new DatabaseHelper
@@ -233,6 +233,47 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         }
 
         return task;
+    }
+
+    public ArrayList<Task> getTasksByFilter(Filter filter) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // This gets _all_ the tasks
+        Cursor tasksCursor = db.rawQuery(filter.getSelectAndWhereStatements(), null);
+
+        // TODO replace these return nulls with exceptions
+        if (tasksCursor != null && tasksCursor.getCount() > 0)
+            tasksCursor.moveToFirst();
+        else
+            return null;
+
+        ArrayList<Task> tasks = new ArrayList<Task> ();
+
+        // Keep adding tasks to the list until we run out of tasks to add
+        do {
+            // Get the oldtask's id
+            long taskId = tasksCursor.getLong(tasksCursor.getColumnIndex(TASKS_KEY_ID));
+
+            // Store the oldtask name and status
+            Task task = new Task(tasksCursor.getString(tasksCursor.getColumnIndex(TASKS_KEY_NAME)));
+            task.changeStatus(
+                    TaskStatusHelper.decode(tasksCursor.getString(tasksCursor.getColumnIndex(TASKS_KEY_STATUS))));
+
+            // Set the id of the task
+            task.setId(tasksCursor.getLong(tasksCursor.getColumnIndex(TASKS_KEY_ID)));
+
+            // Add all the contexts to the oldtask
+            ArrayList<TaskContext> contexts = getAllContextsForTask(taskId);
+            for (TaskContext context : contexts) {
+                task.addContext(context);
+            }
+
+            tasks.add(task);
+        } while (tasksCursor.moveToNext());
+
+        // Close the inbox cursor and we're done
+        tasksCursor.close();
+        return tasks;
     }
 
     /**

@@ -6,11 +6,30 @@
                 android:id="@+id/nav_home"
                 android:icon="@drawable/ic_home_black_36dp"
                 android:title="@string/nav_home" />
-
             <item
                 android:id="@+id/nav_context"
                 android:icon="@drawable/ic_dns_black_36dp"
                 android:title="@string/nav_contexts" />
+            <item
+                android:id="@+id/nav_inbox"
+                android:icon="@drawable/ic_dns_black_36dp"
+                android:title="@string/nav_inbox" />
+            <item
+                android:id="@+id/nav_next"
+                android:icon="@drawable/ic_dns_black_36dp"
+                android:title="@string/nav_next" />
+            <item
+                android:id="@+id/nav_waiting"
+                android:icon="@drawable/ic_dns_black_36dp"
+                android:title="@string/nav_waiting" />
+            <item
+                android:id="@+id/nav_scheduled"
+                android:icon="@drawable/ic_dns_black_36dp"
+                android:title="@string/nav_scheduled" />
+            <item
+                android:id="@+id/nav_someday"
+                android:icon="@drawable/ic_dns_black_36dp"
+                android:title="@string/nav_someday" />
 
             <item
                 android:id="@+id/nav_settings"
