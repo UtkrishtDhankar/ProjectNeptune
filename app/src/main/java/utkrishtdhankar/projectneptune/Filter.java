@@ -1,10 +1,6 @@
 package utkrishtdhankar.projectneptune;
 
-import android.provider.ContactsContract;
-
 import utkrishtdhankar.projectneptune.TaskStatusPackage.TaskStatus;
-
-import utkrishtdhankar.projectneptune.DatabaseHelper;
 
 /**
  * Created by utkrishtdhankar on 15/11/16.
@@ -19,7 +15,7 @@ public class Filter {
     private TaskContext context;
 
     // What status the task can have
-    private TaskStatus taskStatus;
+    private String taskStatusName;
 
     /**
      * Initializes an empty filter
@@ -29,7 +25,7 @@ public class Filter {
     Filter() {
         taskPattern = null;
         context = null;
-        taskStatus = null;
+        taskStatusName = null;
     }
 
     /**
@@ -49,8 +45,8 @@ public class Filter {
     /**
      * @param status The status to look for
      */
-    public void setTaskStatus(TaskStatus status) {
-        taskStatus = status;
+    public void setTaskStatusName(String status) {
+        taskStatusName = status;
     }
 
     /**
@@ -95,7 +91,7 @@ public class Filter {
             addedAnyClausesYet = true;
         }
 
-        if (taskStatus != null) {
+        if (taskStatusName != null) {
             // If the string builder already has something in it before this particular clause
             // Then we should add an "&&".
             if (addedAnyClausesYet) {
@@ -104,8 +100,8 @@ public class Filter {
             query.append(DatabaseHelper.TASKS_TABLE_NAME);
             query.append(".");
             query.append(DatabaseHelper.TASKS_KEY_STATUS);
-            query.append(" = ");
-            query.append("\"" + taskStatus.encode() + "\"");
+            query.append(" LIKE ");
+            query.append("\"" + taskStatusName + "%\"");
 
             addedAnyClausesYet = true;
         }
@@ -127,6 +123,6 @@ public class Filter {
      * @return If someone has set any of the parameters, returns true. Otherwise returns false.
      */
     private boolean isAnythingSet() {
-        return taskPattern != null || taskStatus != null || context != null;
+        return taskPattern != null || taskStatusName != null || context != null;
     }
 }
