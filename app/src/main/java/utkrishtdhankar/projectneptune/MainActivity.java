@@ -118,8 +118,23 @@ public class MainActivity extends AppCompatActivity {
                         fragment = new NextFragment();
                         break;
 
-                    case R.id.nav_settings:
+                    case R.id.nav_waiting:
                         navItemIndex = 3;
+                        fragment = new NextFragment();
+                        break;
+
+                    case R.id.nav_scheduled:
+                        navItemIndex = 4;
+                        fragment = new NextFragment();
+                        break;
+
+                    case R.id.nav_someday:
+                        navItemIndex = 5;
+                        fragment = new NextFragment();
+                        break;
+
+                    case R.id.nav_settings:
+                        navItemIndex = 6;
                         fragment = new SettingsFragment();
                         break;
                 }
@@ -136,7 +151,14 @@ public class MainActivity extends AppCompatActivity {
                 }
                 menuItem.setChecked(true);
 
-                loadHomeFragment();
+                // Toggle the fab
+                toggleFab();
+
+                // Closing drawerLayout on item click
+                drawerLayout.closeDrawers();
+
+                // Refresh toolbar menu
+                invalidateOptionsMenu();
 
                 return true;
             }
@@ -162,43 +184,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Calling sync state to set the hamburger icon
         actionBarDrawerToggle.syncState();
-    }
-
-    /**
-     *
-     */
-    private void loadHomeFragment() {
-
-        // Setting the selected Nav drawer item as checked
-        navigationDrawer.getMenu().getItem(navItemIndex).setChecked(true);
-
-        // Setting the Toolbar's Title
-        getSupportActionBar().setTitle(activityTitles[navItemIndex]);
-
-        // Sometimes, when fragment has huge data, screen seems hanging
-        // when switching between navigation menus
-        // So using runnable, the fragment is loaded with cross fade effect
-        // This effect can be seen in GMail app
-        Runnable mPendingRunnable = new Runnable() {
-            @Override
-            public void run() {
-                // Update the main content by replacing fragments
-                // Create a new fragment and specify the fragment to show based on position
-                Fragment fragment = getHomeFragment();
-
-                // Insert the fragment by replacing view of FrameLayout in main_activity
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.content_frame,fragment).commit();
-            }
-        };
-
-        toggleFab();
-
-        // Closing drawerLayout on item click
-        drawerLayout.closeDrawers();
-
-        // Refresh toolbar menu
-        invalidateOptionsMenu();
     }
 
     /**

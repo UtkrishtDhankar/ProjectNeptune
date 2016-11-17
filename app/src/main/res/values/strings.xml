@@ -5,6 +5,9 @@
     <string name="nav_home">Inbox</string>
     <string name="nav_contexts">Contexts</string>
     <string name="nav_next">Next</string>
+    <string name="nav_waiting">Waiting</string>
+    <string name="nav_scheduled">Scheduled</string>
+    <string name="nav_someday">Someday</string>
     <string name="nav_settings">Settings</string>
     <string name="openDrawer">OpenDrawer</string>
     <string name="closeDrawer">CloseDrawer</string>
@@ -12,6 +15,9 @@
         <item>Inbox</item>
         <item>Contexts</item>
         <item>Next</item>
+        <item>Waiting</item>
+        <item>Scheduled</item>
+        <item>Someday</item>
         <item>Settings</item>
     </string-array>
 

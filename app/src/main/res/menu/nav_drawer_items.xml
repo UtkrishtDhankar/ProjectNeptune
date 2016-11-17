@@ -15,6 +15,18 @@
                 android:id="@+id/nav_next"
                 android:icon="@drawable/ic_dns_black_36dp"
                 android:title="@string/nav_next" />
+            <item
+                android:id="@+id/nav_waiting"
+                android:icon="@drawable/ic_dns_black_36dp"
+                android:title="@string/nav_waiting" />
+            <item
+                android:id="@+id/nav_scheduled"
+                android:icon="@drawable/ic_dns_black_36dp"
+                android:title="@string/nav_scheduled" />
+            <item
+                android:id="@+id/nav_someday"
+                android:icon="@drawable/ic_dns_black_36dp"
+                android:title="@string/nav_someday" />
 
             <item
                 android:id="@+id/nav_settings"

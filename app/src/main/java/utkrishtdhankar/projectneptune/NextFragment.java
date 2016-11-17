@@ -42,7 +42,7 @@ public class NextFragment extends Fragment {
                              Bundle savedInstanceState) {
         // inflate the layout for this Context's fragment
         RelativeLayout baseLayoutView = (RelativeLayout) inflater
-                .inflate(R.layout.contexts_fragment,container,false);
+                .inflate(R.layout.status_fragments,container,false);
 
         // Get a reference to the recycler view.
         // Also, set it's size to fixed to improve performance
