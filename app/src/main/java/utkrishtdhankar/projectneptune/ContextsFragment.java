@@ -9,6 +9,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
@@ -82,6 +83,8 @@ public class ContextsFragment extends Fragment {
                 TaskContext oldContext = tasksList.get(viewHolder.getAdapterPosition());
                 oldContext.setId(databaseHelper.getContextId(oldContext));
                 databaseHelper.deleteContext(oldContext);
+                // Updating the contexts names array so that the spinner is updated
+                updateContextFilterSpinner();
                 getFragmentManager().beginTransaction().detach(ContextsFragment.this).attach(ContextsFragment.this).commit();
             }
         };
@@ -95,5 +98,22 @@ public class ContextsFragment extends Fragment {
 
         // Inflate the layout for this fragment
         return baseLayoutView ;
+    }
+
+    private void updateContextFilterSpinner() {
+
+        // Fetching all contexts from table
+        final ArrayList<TaskContext> contextsArray = databaseHelper.getAllContexts();
+        final String[] contextsNames= new String[contextsArray.size() + 1];
+        contextsNames[0] = "All";
+        for (int i = 1; i <= contextsArray.size(); i++) {
+            contextsNames[i] = contextsArray.get(i - 1).getName();
+        }
+
+        // Populating the drop down menu
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(getActivity().getApplicationContext(), android.R.layout.simple_spinner_item, contextsNames); //selected item will look like a spinner set from XML
+        spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
+        ((Spinner) getActivity().findViewById(R.id.toolbar_context_spinner)).setAdapter(spinnerArrayAdapter);
+
     }
 }
