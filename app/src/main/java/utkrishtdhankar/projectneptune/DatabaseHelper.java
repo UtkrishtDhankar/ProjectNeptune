@@ -430,6 +430,22 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         db.close();
     }
 
+    /**
+     * Deletes the context given from the database. It _must_ be identifiable.
+     * @param contextToDelete
+     */
+    public void deleteContext(TaskContext contextToDelete) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        long id = contextToDelete.getId();
+
+        db.delete(TASKS_CONTEXTS_JUNCTION_TABLE_NAME, TASKS_CONTEXTS_JUNCTION_KEY_CONTEXT_ID
+                + "=" + Long.toString(id), null);
+        db.delete(CONTEXTS_TABLE_NAME, CONTEXTS_KEY_ID + "=" + Long.toString(id), null);
+
+        db.close();
+    }
+
     private Task setIdsForContexts(Task task) {
         Task newTask = new Task(task.getName());
         newTask.changeStatus(task.getStatus());
