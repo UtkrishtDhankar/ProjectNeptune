@@ -8,7 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
+import utkrishtdhankar.projectneptune.TaskStatusPackage.Scheduled;
 import utkrishtdhankar.projectneptune.TaskStatusPackage.TaskStatusHelper;
 
 /**
@@ -99,6 +101,30 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         db.execSQL("DROP TABLE IF EXISTS " + CONTEXTS_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS" + TASKS_CONTEXTS_JUNCTION_TABLE_NAME);
         onCreate(db);
+    }
+
+    /**
+     * Updates all the tasks in the database. Right now, this moves up scheduled tasks to next action tasks
+     */
+    public void updateAll() {
+        SQLiteDatabase db = getWritableDatabase();
+
+        Filter filter = new Filter();
+        filter.setTaskStatusName("Scheduled");
+
+        ArrayList<Task> tasks = getTasksByFilter(filter);
+        if (tasks == null) {
+            return;
+        }
+
+        for (Task task : tasks) {
+            if (((Scheduled) task.getStatus()).getScheduledForDate().compareTo(Calendar.getInstance()) < 0) {
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(TASKS_KEY_STATUS, "Next");
+
+                db.update(TASKS_TABLE_NAME, contentValues, TASKS_KEY_ID + "=?", new String[]{Long.toString(task.getId())});
+            }
+        }
     }
 
     /**

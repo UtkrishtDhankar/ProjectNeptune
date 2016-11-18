@@ -78,6 +78,9 @@ public class MainActivity extends AppCompatActivity {
         // Load toolbar titles from string resources
         activityTitles = getResources().getStringArray(R.array.nav_item_toolbar_titles);
 
+        databaseHelper = new DatabaseHelper(getApplicationContext());
+        databaseHelper.updateAll();
+
         // Load nav menu header data
         loadNavHeader();
 
