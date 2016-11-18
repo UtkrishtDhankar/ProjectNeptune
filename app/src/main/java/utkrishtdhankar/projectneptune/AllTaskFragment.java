@@ -43,7 +43,7 @@ public class AllTaskFragment extends Fragment {
 
         // inflate the layout for this Inbox
         RelativeLayout baseLayoutView = (RelativeLayout) inflater
-                .inflate(R.layout.status_fragments,container,false);
+                .inflate(R.layout.status_fragment_layout,container,false);
 
         // Get a reference to the recycler view.
         // Also, set it's size to fixed to improve performance

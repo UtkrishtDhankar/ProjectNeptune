@@ -269,7 +269,7 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
         // Reloading the appropriate fragment so that values from tables are updated
         Fragment fragment;
         switch(getArguments().getString("title")){
-            case "Home":
+            case "All Tasks":
                 fragment = new AllTaskFragment();
                 break;
             case "Inbox":
@@ -288,7 +288,7 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
                 fragment = new SomedayFragment();
                 break;
             default:
-                fragment = new AllTaskFragment();
+                fragment = new InboxFragment();
                 break;
         }
         // The Fragment is opened
