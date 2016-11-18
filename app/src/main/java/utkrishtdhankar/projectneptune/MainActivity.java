@@ -1,5 +1,6 @@
 package utkrishtdhankar.projectneptune;
 
+import android.content.Context;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     Fragment fragment;
     FloatingActionButton fab;
     //-----------------
+
 
 
     /**
@@ -111,10 +113,17 @@ public class MainActivity extends AppCompatActivity {
         context_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                TaskContext taskContext = new TaskContext(contextsNames[position]);
+                long contextId = databaseHelper.getContextId(taskContext);
                 switch(navItemIndex){
                     case 0:
-                        // Do corresponding context filtering
+                        fragment = InboxFragment.newInstance(contextsNames[position],contextId);
+                        break;
                 }
+
+                // Reloading the current fragment
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.content_frame,fragment).commit();
             }
 
             @Override
@@ -146,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
                     // Setting the selected item's index
                     case R.id.nav_inbox:
                         navItemIndex = 0;
-                        fragment = new InboxFragment();
+                        fragment = InboxFragment.newInstance();
                         toolbar.setTitle("Inbox");
                         break;
 
