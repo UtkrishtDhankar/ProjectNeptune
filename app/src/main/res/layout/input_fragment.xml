@@ -9,51 +9,65 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:gravity="center">
 
-    <TextView
-        android:id="@+id/lbl_your_name"
-        android:text="Enter Task :"
-        android:layout_width="150sp"
-        android:layout_height="wrap_content" />
-
-    <EditText
-        android:id="@+id/addTextInput"
-        android:layout_width="150sp"
-        android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
-        android:paddingTop="20sp" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:text="Select Context :"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent">
 
-    <Spinner
-        android:layout_width="150sp"
-        android:id="@+id/contextSpinner"
-        android:layout_height="40sp" />
+        <TextView
+            android:id="@+id/lbl_your_name"
+            android:text="Enter Task :"
+            android:layout_width="150sp"
+            android:layout_height="wrap_content" />
 
-    <TextView
-        android:id="@+id/textView4"
-        android:text="Select Status :"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/addTextInput"
+            android:layout_width="150sp"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:layout_below="@+id/lbl_your_name"
+            android:paddingTop="20sp" />
 
-    <Spinner
-        android:layout_width="150sp"
-        android:id="@+id/statusSpinner"
-        android:layout_height="40sp" />
+        <TextView
+            android:id="@+id/textView3"
+            android:text="Select Context :"
+            android:layout_below="@+id/addTextInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-    <EditText
-        android:layout_width="150sp"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:id="@+id/waitingText" />
+        <Spinner
+            android:layout_below="@+id/textView3"
+            android:layout_width="150sp"
+            android:id="@+id/contextSpinner"
+            android:layout_height="40sp" />
 
-    <Button
-        android:text="Add"
-        android:layout_width="100sp"
-        android:layout_height="wrap_content"
-        android:id="@+id/addTaskbutton" />
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_below="@+id/contextSpinner"
+            android:text="Select Status :"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Spinner
+            android:layout_below="@+id/textView4"
+            android:layout_width="150sp"
+            android:id="@+id/statusSpinner"
+            android:layout_height="40sp" />
+
+        <EditText
+            android:layout_below="@+id/statusSpinner"
+            android:layout_width="150sp"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:id="@+id/waitingText" />
+
+        <Button
+            android:layout_below="@+id/waitingText"
+            android:text="Add"
+            android:layout_width="100sp"
+            android:layout_height="wrap_content"
+            android:id="@+id/addTaskbutton" />
+
+
+    </RelativeLayout>
 
 </LinearLayout>
