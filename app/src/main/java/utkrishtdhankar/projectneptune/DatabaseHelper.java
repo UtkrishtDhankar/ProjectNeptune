@@ -125,6 +125,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                 db.update(TASKS_TABLE_NAME, contentValues, TASKS_KEY_ID + "=?", new String[]{Long.toString(task.getId())});
             }
         }
+
+        db.close();
     }
 
     /**
@@ -222,6 +224,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
             db.insert(TASKS_CONTEXTS_JUNCTION_TABLE_NAME, null, contentValues);
         }
+
+        db.close();
     }
 
     /**
@@ -244,6 +248,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             tasksCursor.moveToFirst();
         } else {
             tasksCursor.close();
+            db.close();
             return null;
         }
 
@@ -257,6 +262,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         for (TaskContext context : contexts) {
             task.addContext(context);
         }
+
+        db.close();
 
         return task;
     }
@@ -299,6 +306,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         // Close the inbox cursor and we're done
         tasksCursor.close();
+        db.close();
         return tasks;
     }
 
@@ -345,6 +353,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         } while (tasksCursor.moveToNext());
 
         // Close the inbox cursor and we're done
+        db.close();
         tasksCursor.close();
         return tasks;
     }
@@ -380,6 +389,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             contextsCursor.close();
         }
 
+        db.close();
+
         return contexts;
     }
 
@@ -395,6 +406,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         contextValues.put(CONTEXTS_KEY_COLOR, context.getColor());
 
         db.insert(CONTEXTS_TABLE_NAME, null, contextValues);
+
+        db.close();
     }
 
     /**
@@ -413,6 +426,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         // Update the value
         db.update(CONTEXTS_TABLE_NAME, contextValues,
                 CONTEXTS_KEY_ID + " = " + Long.toString(oldContext.getId()), null);
+
+        db.close();
     }
 
     private Task setIdsForContexts(Task task) {
@@ -472,6 +487,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             // TODO maybe make this a little more robust? Use a custom exception?
         } finally {
             contextsCursor.close();
+            db.close();
         }
 
         return contexts;
