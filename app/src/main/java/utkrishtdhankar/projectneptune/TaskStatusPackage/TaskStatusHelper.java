@@ -41,6 +41,8 @@ public class TaskStatusHelper {
             }
         } else if (encodedStatus.equals("Someday")) {
             status = new Someday();
+        } else if (encodedStatus.equals("Done")) {
+            status = new Done();
         } else {
             throw new IllegalArgumentException("encodedStatus is not a legal status");
         }

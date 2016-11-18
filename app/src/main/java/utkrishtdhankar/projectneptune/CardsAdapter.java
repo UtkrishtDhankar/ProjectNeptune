@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -185,6 +186,8 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.TaskCardView
                 inputFragment.show(fragmentManager, "fragment_edit_name");
             }
         });
+
+
     }
 
     /**

@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 
+import utkrishtdhankar.projectneptune.TaskStatusPackage.Done;
 import utkrishtdhankar.projectneptune.TaskStatusPackage.Inbox;
 import utkrishtdhankar.projectneptune.TaskStatusPackage.Next;
 import utkrishtdhankar.projectneptune.TaskStatusPackage.Someday;
@@ -68,6 +70,33 @@ public class InboxFragment extends Fragment {
         // Passing the dataset and fragment reference to the adapter
         recyclerViewAdapter = new CardsAdapter(tasksList,InboxFragment.this);
         inboxRecyclerView.setAdapter(recyclerViewAdapter);
+
+        // The Swipe gesture
+        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+
+            /**
+             * If you don't support drag & drop, this method will never be called.
+             */
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                //Remove swiped item from list and notify the RecyclerView
+                Task oldTask = tasksList.get(viewHolder.getAdapterPosition());
+                Task newTask = oldTask;
+                newTask.changeStatus(new Done());
+                databaseHelper.updateTask(oldTask,newTask);
+                getFragmentManager().beginTransaction().detach(InboxFragment.this).attach(InboxFragment.this).commit();
+            }
+        };
+
+        //Attaching the swipe gesture to the recycler view
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+        itemTouchHelper.attachToRecyclerView(inboxRecyclerView);
+
 
         // Inflate the layout for this fragment
         return baseLayoutView ;

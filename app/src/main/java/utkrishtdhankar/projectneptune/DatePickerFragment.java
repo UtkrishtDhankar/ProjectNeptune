@@ -36,6 +36,7 @@ public class DatePickerFragment extends DialogFragment {
      * @return The new input fragment that we created
      */
     public static DatePickerFragment newInstance(String special) {
+        // Making the fragment
         DatePickerFragment frag = new DatePickerFragment();
 
         // Set the arguments for the fragment
@@ -48,6 +49,7 @@ public class DatePickerFragment extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+
         // Use the current time as the default values for the picker
         final Calendar c = Calendar.getInstance();
         String temp = null;

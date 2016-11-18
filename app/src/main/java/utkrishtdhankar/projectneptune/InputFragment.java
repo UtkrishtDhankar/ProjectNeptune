@@ -139,7 +139,7 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
         inboxEditText = (EditText) view.findViewById(R.id.addTextInput);
         inboxAddButton = (Button) view.findViewById(R.id.addTaskbutton) ;
         waitingText = (EditText) view.findViewById(R.id.waitingText);
-        waitingText.setVisibility(View.INVISIBLE);
+        waitingText.setVisibility(View.GONE);
         inboxAddButton.setOnClickListener(this);
 
         // Setting the context drop down menu
@@ -204,7 +204,7 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
                     waitingText.setVisibility(View.VISIBLE);
                     waitingText.setText(getArguments().getString("taskStatusSpecial"));
                 }else{
-                    waitingText.setVisibility(View.INVISIBLE);
+                    waitingText.setVisibility(View.GONE);
                 }
 
                 if(adapter.getItem(position).toString().equals("Scheduled") ){
