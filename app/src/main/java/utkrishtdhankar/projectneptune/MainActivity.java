@@ -1,5 +1,7 @@
 package utkrishtdhankar.projectneptune;
 
+import android.content.Context;
+import android.graphics.Color;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -14,8 +16,17 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+
+import utkrishtdhankar.projectneptune.TaskStatusPackage.Scheduled;
+import utkrishtdhankar.projectneptune.TaskStatusPackage.Someday;
+import utkrishtdhankar.projectneptune.TaskStatusPackage.Waiting;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -23,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
     public DatabaseHelper databaseHelper;
 
     private Toolbar toolbar;
+    private TextView toolbar_title;
+    private Spinner context_spinner;
     private View navHeader;
     private NavigationView navigationDrawer;
     private String[] navDrawerItemNames;
@@ -55,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Setting the custom toolbar as the Action Bar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar_title = (TextView) findViewById(R.id.toolbar_title);
+        context_spinner = (Spinner) findViewById(R.id.toolbar_context_spinner);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setHomeButtonEnabled(false);
@@ -87,6 +102,101 @@ public class MainActivity extends AppCompatActivity {
         // Initializing navigation menu
         setUpNavigationView();
         Log.d("MainActivity.java","WE REACHED THIS POINT");
+
+        // Fetching all contexts from table
+        databaseHelper = new DatabaseHelper(getApplicationContext());
+        final ArrayList<TaskContext> contextsArray = databaseHelper.getAllContexts();
+        final String[] contextsNames= new String[contextsArray.size() + 1];
+        contextsNames[0] = "All";
+        for (int i = 1; i <= contextsArray.size(); i++) {
+            contextsNames[i] = contextsArray.get(i - 1).getName();
+        }
+
+        // populating the drop down menu
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, contextsNames); //selected item will look like a spinner set from XML
+        spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
+        context_spinner.setAdapter(spinnerArrayAdapter);
+
+        // The on item seleted listener
+        context_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+
+                // Setting the selected item's color to white
+                ((TextView) parentView.getChildAt(0)).setTextColor(Color.WHITE);
+
+                if(position != 0){
+                    TaskContext taskContext = new TaskContext(contextsNames[position]);
+                    long contextId = databaseHelper.getContextId(taskContext);
+                    switch(navItemIndex){
+                        case 0:
+                            fragment = InboxFragment.newInstance(contextsNames[position],contextId);
+                            break;
+                        case 1:
+                            fragment = NextFragment.newInstance(contextsNames[position],contextId);
+                            break;
+                        case 2:
+                            fragment = WaitingFragment.newInstance(contextsNames[position],contextId);
+                            break;
+                        case 3:
+                            fragment = ScheduledFragment.newInstance(contextsNames[position],contextId);
+                            break;
+                        case 4:
+                            fragment = SomedayFragment.newInstance(contextsNames[position],contextId);
+                            break;
+                        case 5:
+                            fragment = AllTaskFragment.newInstance(contextsNames[position],contextId);
+                            break;
+                        default:
+                            fragment = InboxFragment.newInstance(contextsNames[position],contextId);
+                            break;
+                    }
+
+                    // Reloading the current fragment
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.content_frame,fragment).commit();
+
+                }else{
+                    switch(navItemIndex){
+                        case 0:
+                            fragment = InboxFragment.newInstance();
+                            break;
+                        case 1:
+                            fragment = NextFragment.newInstance();
+                            break;
+                        case 2:
+                            fragment = WaitingFragment.newInstance();
+                            break;
+                        case 3:
+                            fragment = ScheduledFragment.newInstance();
+                            break;
+                        case 4:
+                            fragment = SomedayFragment.newInstance();
+                            break;
+                        case 5:
+                            fragment = AllTaskFragment.newInstance();
+                            break;
+                        default:
+                            fragment = InboxFragment.newInstance();
+                            break;
+                    }
+
+                    // Reloading the current fragment
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.content_frame,fragment).commit();
+                }
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
+
+
     }
 
     /**
@@ -108,37 +218,37 @@ public class MainActivity extends AppCompatActivity {
                     // Setting the selected item's index
                     case R.id.nav_inbox:
                         navItemIndex = 0;
-                        fragment = new InboxFragment();
+                        fragment = InboxFragment.newInstance();
                         toolbar.setTitle("Inbox");
                         break;
 
                     case R.id.nav_next:
                         navItemIndex = 1;
-                        fragment = new NextFragment();
+                        fragment = NextFragment.newInstance();
                         toolbar.setTitle("Next");
                         break;
 
                     case R.id.nav_waiting:
                         navItemIndex = 2;
-                        fragment = new WaitingFragment();
+                        fragment = WaitingFragment.newInstance();
                         toolbar.setTitle("Waiting");
                         break;
 
                     case R.id.nav_scheduled:
                         navItemIndex = 3;
-                        fragment = new ScheduledFragment();
+                        fragment = ScheduledFragment.newInstance();
                         toolbar.setTitle("Scheduled");
                         break;
 
                     case R.id.nav_someday:
                         navItemIndex = 4;
-                        fragment = new SomedayFragment();
+                        fragment = SomedayFragment.newInstance();
                         toolbar.setTitle("Someday");
                         break;
 
                     case R.id.nav_all_tasks:
                         navItemIndex = 5;
-                        fragment = new DoneFragment();
+                        fragment = AllTaskFragment.newInstance();
                         toolbar.setTitle("All Tasks");
                         break;
 
@@ -199,24 +309,16 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    /**
-     * Setting Nav header and subtext
-     */
-    private void loadNavHeader() {
-        // Setting the respective Textviews
-        navHeaderName.setText("Shreyak Kumar");
-        navHeaderSubText.setText("kumarshreyak@gmail.com");
-    }
 
 
     /** Swaps fragments in the main content view */
 //    private void selectItem(int position) {
-//        Fragment fragment = new DoneFragment();
+//        Fragment fragment = new AllTaskFragment();
 //        // Create a new fragment and specify the fragment to show based on position
 //        switch(position)
 //        {
 //            case 0:
-//                fragment = new DoneFragment();
+//                fragment = new AllTaskFragment();
 //                break;
 //            case 1:
 //                fragment = new ContextsFragment();
