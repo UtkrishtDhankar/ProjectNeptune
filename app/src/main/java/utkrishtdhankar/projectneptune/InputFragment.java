@@ -209,9 +209,16 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
 
                 if(adapter.getItem(position).toString().equals("Scheduled") ){
                     //open corresponding fragment
-                    DatePickerFragment newFragment = DatePickerFragment.newInstance(getArguments().getString("taskStatusSpecial"));
-                    newFragment.setTargetFragment(InputFragment.this,300);
-                    newFragment.show(getFragmentManager(), "datePicker");
+                    if(openedForEdit == 1){
+                        DatePickerFragment newFragment = DatePickerFragment.newInstance(getArguments().getString("taskStatusSpecial"));
+                        newFragment.setTargetFragment(InputFragment.this,300);
+                        newFragment.show(getFragmentManager(), "datePicker");
+                    }else{
+                        DatePickerFragment newFragment = DatePickerFragment.newInstance();
+                        newFragment.setTargetFragment(InputFragment.this,300);
+                        newFragment.show(getFragmentManager(), "datePicker");
+                    }
+
                 }
             }
 
