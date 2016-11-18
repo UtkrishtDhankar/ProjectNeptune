@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -272,7 +273,6 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
             databaseHelper.addTask(newTask);
         }
 
-
         // Reloading the appropriate fragment so that values from tables are updated
         Fragment fragment;
         switch(getArguments().getString("title")){
@@ -302,6 +302,9 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame,fragment).addToBackStack(null).commit();
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(getArguments().getString("title"));
+
+        // Setting the apt. toolbar title after reloading
+        ((TextView) getActivity().findViewById(R.id.toolbar_title)).setText(getArguments().getString("title"));
 
         // Closes the pop-up
         dismiss();

@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         activityTitles = getResources().getStringArray(R.array.nav_item_toolbar_titles);
 
         databaseHelper = new DatabaseHelper(getApplicationContext());
-        databaseHelper.updateAll();
+        //databaseHelper.updateAll();
 
 
 
@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d("MainActivity.java","WE REACHED THIS POINT");
 
         // Fetching all contexts from table
-        databaseHelper = new DatabaseHelper(getApplicationContext());
+
         final ArrayList<TaskContext> contextsArray = databaseHelper.getAllContexts();
         final String[] contextsNames= new String[contextsArray.size() + 1];
         contextsNames[0] = "All";
@@ -128,24 +128,31 @@ public class MainActivity extends AppCompatActivity {
                     switch(navItemIndex){
                         case 0:
                             fragment = InboxFragment.newInstance(contextsNames[position],contextId);
+                            toolbar_title.setText("Inbox");
                             break;
                         case 1:
                             fragment = NextFragment.newInstance(contextsNames[position],contextId);
+                            toolbar_title.setText("Next");
                             break;
                         case 2:
                             fragment = WaitingFragment.newInstance(contextsNames[position],contextId);
+                            toolbar_title.setText("Waiting");
                             break;
                         case 3:
                             fragment = ScheduledFragment.newInstance(contextsNames[position],contextId);
+                            toolbar_title.setText("Scheduled");
                             break;
                         case 4:
                             fragment = SomedayFragment.newInstance(contextsNames[position],contextId);
+                            toolbar_title.setText("Someday");
                             break;
                         case 5:
                             fragment = AllTaskFragment.newInstance(contextsNames[position],contextId);
+                            toolbar_title.setText("All Tasks");
                             break;
                         default:
                             fragment = InboxFragment.newInstance(contextsNames[position],contextId);
+                            toolbar_title.setText("Inbox");
                             break;
                     }
 
@@ -157,24 +164,31 @@ public class MainActivity extends AppCompatActivity {
                     switch(navItemIndex){
                         case 0:
                             fragment = InboxFragment.newInstance();
+                            toolbar_title.setText("Inbox");
                             break;
                         case 1:
                             fragment = NextFragment.newInstance();
+                            toolbar_title.setText("Next");
                             break;
                         case 2:
                             fragment = WaitingFragment.newInstance();
+                            toolbar_title.setText("Waiting");
                             break;
                         case 3:
                             fragment = ScheduledFragment.newInstance();
+                            toolbar_title.setText("Scheduled");
                             break;
                         case 4:
                             fragment = SomedayFragment.newInstance();
+                            toolbar_title.setText("Someday");
                             break;
                         case 5:
                             fragment = AllTaskFragment.newInstance();
+                            toolbar_title.setText("All tasks");
                             break;
                         default:
                             fragment = InboxFragment.newInstance();
+                            toolbar_title.setText("Inbox");
                             break;
                     }
 
@@ -216,43 +230,43 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_inbox:
                         navItemIndex = 0;
                         fragment = InboxFragment.newInstance();
-                        toolbar.setTitle("Inbox");
+                        toolbar_title.setText("Inbox");
                         break;
 
                     case R.id.nav_next:
                         navItemIndex = 1;
                         fragment = NextFragment.newInstance();
-                        toolbar.setTitle("Next");
+                        toolbar_title.setText("Next");
                         break;
 
                     case R.id.nav_waiting:
                         navItemIndex = 2;
                         fragment = WaitingFragment.newInstance();
-                        toolbar.setTitle("Waiting");
+                        toolbar_title.setText("Waiting");
                         break;
 
                     case R.id.nav_scheduled:
                         navItemIndex = 3;
                         fragment = ScheduledFragment.newInstance();
-                        toolbar.setTitle("Scheduled");
+                        toolbar_title.setText("Scheduled");
                         break;
 
                     case R.id.nav_someday:
                         navItemIndex = 4;
                         fragment = SomedayFragment.newInstance();
-                        toolbar.setTitle("Someday");
+                        toolbar_title.setText("Someday");
                         break;
 
                     case R.id.nav_all_tasks:
                         navItemIndex = 5;
                         fragment = AllTaskFragment.newInstance();
-                        toolbar.setTitle("All Tasks");
+                        toolbar_title.setText("All Tasks");
                         break;
 
                     case R.id.nav_context:
                         navItemIndex = 6;
                         fragment = new ContextsFragment();
-                        toolbar.setTitle("Contexts");
+                        toolbar_title.setText("Contexts");
                         break;
 
                 }
@@ -304,36 +318,6 @@ public class MainActivity extends AppCompatActivity {
         actionBarDrawerToggle.syncState();
     }
 
-
-
-
-
-    /** Swaps fragments in the main content view */
-//    private void selectItem(int position) {
-//        Fragment fragment = new AllTaskFragment();
-//        // Create a new fragment and specify the fragment to show based on position
-//        switch(position)
-//        {
-//            case 0:
-//                fragment = new AllTaskFragment();
-//                break;
-//            case 1:
-//                fragment = new ContextsFragment();
-//                break;
-//            case 2:
-//                fragment = new SettingsFragment();
-//                break;
-//        }
-//
-//        // Insert the fragment by replacing any existing fragment
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//        fragmentManager.beginTransaction().replace(R.id.content_frame,fragment).commit();
-//
-//        // Highlight the selected item, update the title, and close the drawerLayout
-//        navDrawerMenuList.setItemChecked(position, true);
-//        setTitle(navDrawerItemNames[position]);
-//        drawerLayout.closeDrawer(navDrawerMenuList);
-//    }
 
 
     /**
