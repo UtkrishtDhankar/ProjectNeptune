@@ -57,40 +57,17 @@ public class AllTaskFragment extends Fragment {
         // Get the database
         databaseHelper = new DatabaseHelper(getActivity());
 
-        // Fill the dataset from the database, and get the tasks list on the screen
-        tasksList = databaseHelper.getAllTasks();
+        //Making the filter
+        Filter filter = new Filter();
+        filter.setTaskStatusName("Done");
+
+        // Fill the dataset from the database, and get the contexts list on the screen
+        tasksList = databaseHelper.getTasksByFilter(filter);
+
         recyclerViewAdapter = new CardsAdapter(tasksList,AllTaskFragment.this);
 
         // Setting the adapter for the recycler view
         allTasksRecyclerView.setAdapter(recyclerViewAdapter);
-
-        // The Swipe gesture
-        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-
-            /**
-             * If you don't support drag & drop, this method will never be called.
-             */
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                //Remove swiped item from list and notify the RecyclerView
-                Task oldTask = tasksList.get(viewHolder.getAdapterPosition());
-                Task newTask = oldTask;
-                newTask.changeStatus(new Done());
-                databaseHelper.updateTask(oldTask,newTask);
-                getFragmentManager().beginTransaction().detach(AllTaskFragment.this).attach(AllTaskFragment.this).commit();
-            }
-        };
-
-        //Attaching the swipe gesture to the recycler view
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
-        itemTouchHelper.attachToRecyclerView(allTasksRecyclerView);
-
-
 
         // Inflate the layout for this fragment
         return baseLayoutView ;
