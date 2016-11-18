@@ -46,6 +46,7 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
     private Spinner contextDropDown;
     private Spinner statusDropDown;
     private EditText waitingText;
+    private TextView waitingTextView;
 
     // For updating contexts
     int openedForEdit = 0;
@@ -140,7 +141,9 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
         inboxEditText = (EditText) view.findViewById(R.id.addTextInput);
         inboxAddButton = (Button) view.findViewById(R.id.addTaskbutton) ;
         waitingText = (EditText) view.findViewById(R.id.waitingText);
+        waitingTextView = (TextView) view.findViewById(R.id.waitingFor);
         waitingText.setVisibility(View.GONE);
+        waitingTextView.setVisibility(View.GONE);
         inboxAddButton.setOnClickListener(this);
 
         // Setting the context drop down menu
@@ -203,9 +206,11 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
                 if(adapter.getItem(position).toString().equals("Waiting") ){
                     //set visibility of Waiting for editText
                     waitingText.setVisibility(View.VISIBLE);
+                    waitingTextView.setVisibility(View.VISIBLE);
                     waitingText.setText(getArguments().getString("taskStatusSpecial"));
                 }else{
                     waitingText.setVisibility(View.GONE);
+                    waitingTextView.setVisibility(View.GONE);
                 }
 
                 if(adapter.getItem(position).toString().equals("Scheduled") ){
