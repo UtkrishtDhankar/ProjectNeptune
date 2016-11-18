@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 
 import java.util.ArrayList;
 
@@ -88,6 +89,9 @@ public class ContextsFragment extends Fragment {
         //Attaching the swipe gesture to the recycler view
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(inboxRecyclerView);
+
+        //Remove the context filtering in this fragment
+        ((Spinner) getActivity().findViewById(R.id.toolbar_context_spinner)).setVisibility(View.GONE);
 
         // Inflate the layout for this fragment
         return baseLayoutView ;

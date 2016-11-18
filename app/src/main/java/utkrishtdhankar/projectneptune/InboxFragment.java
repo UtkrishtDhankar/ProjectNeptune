@@ -131,6 +131,8 @@ public class InboxFragment extends Fragment {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(inboxRecyclerView);
 
+        //Show the context filtering in this fragment
+        ((Spinner) getActivity().findViewById(R.id.toolbar_context_spinner)).setVisibility(View.VISIBLE);
 
         // Inflate the layout for this fragment
         return baseLayoutView ;
