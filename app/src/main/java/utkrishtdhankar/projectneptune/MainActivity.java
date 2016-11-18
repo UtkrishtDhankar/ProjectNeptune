@@ -86,15 +86,10 @@ public class MainActivity extends AppCompatActivity {
         navDrawerItemNames = getResources().getStringArray(R.array.nav_item_titles);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navHeader = navigationDrawer.getHeaderView(0);
-        navHeaderName = (TextView) navHeader.findViewById(R.id.name);
-        navHeaderSubText = (TextView) navHeader.findViewById(R.id.website);
         fab = (FloatingActionButton) findViewById(R.id.addButton);
 
         // Load toolbar titles from string resources
         activityTitles = getResources().getStringArray(R.array.nav_item_toolbar_titles);
-
-        // Load nav menu header data
-        loadNavHeader();
 
         // Initializing navigation menu
         setUpNavigationView();
@@ -265,17 +260,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Calling sync state to set the hamburger icon
         actionBarDrawerToggle.syncState();
-    }
-
-
-
-    /**
-     * Setting Nav header and subtext
-     */
-    private void loadNavHeader() {
-        // Setting the respective Textviews
-        navHeaderName.setText("Shreyak Kumar");
-        navHeaderSubText.setText("kumarshreyak@gmail.com");
     }
 
 
