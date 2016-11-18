@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 
 import java.util.ArrayList;
 
@@ -91,6 +92,8 @@ public class AllTaskFragment extends Fragment {
             tasksList = databaseHelper.getTasksByFilter(filter);
         }else {
             tasksList = databaseHelper.getAllTasks();
+            // Setting selection = 0 for "All" option in context filtering
+            ((Spinner) getActivity().findViewById(R.id.toolbar_context_spinner)).setSelection(0);
         }
 
         // Fill the dataset from the database, and get the tasks list on the screen

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 
 import java.util.ArrayList;
 
@@ -90,6 +91,9 @@ public class WaitingFragment extends Fragment {
             taskContext.setName(getArguments().getString("contextFilter"));
             taskContext.setId(getArguments().getLong("contextId"));
             filter.setContext(taskContext);
+        }else{
+            // Setting selection = 0 for "All" option in context filtering
+            ((Spinner) getActivity().findViewById(R.id.toolbar_context_spinner)).setSelection(0);
         }
 
         // Fill the dataset from the database, and get the contexts list on the screen
