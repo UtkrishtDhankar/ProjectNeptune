@@ -170,12 +170,6 @@ public class ContextInputFragment extends DialogFragment implements View.OnClick
                     colorDropDown.setSelection(i);
                 }
             }
-//            for(int i = 0; i < adapter.getCount(); i++){
-//                if(Color.parseColor(adapter.getItem(i).toString()) == oldContext.getColor()){
-//                    colorDropDown.setSelection(i);
-//                }
-//            }
-
         }
 
 

@@ -101,7 +101,6 @@ public class MainActivity extends AppCompatActivity {
         Log.d("MainActivity.java","WE REACHED THIS POINT");
 
         // Fetching all contexts from table
-
         final ArrayList<TaskContext> contextsArray = databaseHelper.getAllContexts();
         final String[] contextsNames= new String[contextsArray.size() + 1];
         contextsNames[0] = "All";
@@ -109,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
             contextsNames[i] = contextsArray.get(i - 1).getName();
         }
 
-        // populating the drop down menu
+        // Populating the drop down menu
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, contextsNames); //selected item will look like a spinner set from XML
         spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
         context_spinner.setAdapter(spinnerArrayAdapter);

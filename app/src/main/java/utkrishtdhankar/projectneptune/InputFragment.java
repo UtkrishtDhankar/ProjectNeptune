@@ -301,10 +301,15 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
         // The Fragment is opened
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame,fragment).addToBackStack(null).commit();
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(getArguments().getString("title"));
+
 
         // Setting the apt. toolbar title after reloading
-        ((TextView) getActivity().findViewById(R.id.toolbar_title)).setText(getArguments().getString("title"));
+        if(openedForEdit == 0){
+            ((TextView) getActivity().findViewById(R.id.toolbar_title)).setText("Inbox");
+        }else{
+            ((TextView) getActivity().findViewById(R.id.toolbar_title)).setText(getArguments().getString("title"));
+        }
+
 
         // Closes the pop-up
         dismiss();
