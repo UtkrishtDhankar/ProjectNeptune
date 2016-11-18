@@ -270,7 +270,7 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
         Fragment fragment;
         switch(getArguments().getString("title")){
             case "All Tasks":
-                fragment = new AllTaskFragment();
+                fragment = new DoneFragment();
                 break;
             case "Inbox":
                 fragment = new InboxFragment();

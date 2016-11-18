@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +11,10 @@ import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 
-import utkrishtdhankar.projectneptune.TaskStatusPackage.Done;
-
 /**
  * Created by Shreyak Kumar on 07-11-2016.
  */
-public class AllTaskFragment extends Fragment {
+public class DoneFragment extends Fragment {
 
     // The database that stores all of our tasks and contexts
     public DatabaseHelper databaseHelper;
@@ -26,9 +23,9 @@ public class AllTaskFragment extends Fragment {
     private ArrayList<Task> tasksList = new ArrayList<Task>();
 
     // The view that contains the cards
-    private RecyclerView allTasksRecyclerView;
+    private RecyclerView doneRecyclerView;
     private RecyclerView.Adapter recyclerViewAdapter;
-    private RecyclerView.LayoutManager allTasksLayoutManager;
+    private RecyclerView.LayoutManager doneLayoutManager;
 
     /**
      * Inflates this layout and puts up all the tasks cards etc. on the screen
@@ -47,12 +44,12 @@ public class AllTaskFragment extends Fragment {
 
         // Get a reference to the recycler view.
         // Also, set it's size to fixed to improve performance
-        allTasksRecyclerView = (RecyclerView) baseLayoutView.findViewById(R.id.contexts_recycler_view);
-        allTasksRecyclerView.setHasFixedSize(true);
+        doneRecyclerView = (RecyclerView) baseLayoutView.findViewById(R.id.contexts_recycler_view);
+        doneRecyclerView.setHasFixedSize(true);
 
         // Set a layout manager for our tasks list displaying recycler view
-        allTasksLayoutManager = new LinearLayoutManager(getActivity());
-        allTasksRecyclerView.setLayoutManager(allTasksLayoutManager);
+        doneLayoutManager = new LinearLayoutManager(getActivity());
+        doneRecyclerView.setLayoutManager(doneLayoutManager);
 
         // Get the database
         databaseHelper = new DatabaseHelper(getActivity());
@@ -64,10 +61,10 @@ public class AllTaskFragment extends Fragment {
         // Fill the dataset from the database, and get the contexts list on the screen
         tasksList = databaseHelper.getTasksByFilter(filter);
 
-        recyclerViewAdapter = new CardsAdapter(tasksList,AllTaskFragment.this);
+        recyclerViewAdapter = new CardsAdapter(tasksList,DoneFragment.this);
 
         // Setting the adapter for the recycler view
-        allTasksRecyclerView.setAdapter(recyclerViewAdapter);
+        doneRecyclerView.setAdapter(recyclerViewAdapter);
 
         // Inflate the layout for this fragment
         return baseLayoutView ;
