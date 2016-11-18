@@ -14,8 +14,11 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -84,6 +87,19 @@ public class MainActivity extends AppCompatActivity {
         // Initializing navigation menu
         setUpNavigationView();
         Log.d("MainActivity.java","WE REACHED THIS POINT");
+
+        // Fetching all contexts from table
+        ArrayList<TaskContext> contextsArray = databaseHelper.getAllContexts();
+        String[] contextsNames= new String[contextsArray.size()];
+        for (int i = 0; i < contextsArray.size(); i++) {
+            contextsNames[i] = contextsArray.get(i).getName();
+        }
+
+        // populating the drop down menu
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, contextsNames); //selected item will look like a spinner set from XML
+        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        context.setAdapter(spinnerArrayAdapter);
+
     }
 
     /**
