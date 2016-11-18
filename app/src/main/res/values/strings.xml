@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Project Neptune</string>
+    <string name="app_name">Neptune</string>
     <string name="drawer_open">OpenDrawer</string>
     <string name="drawer_close">CloseDrawer</string>
     <string name="nav_contexts">Contexts</string>
