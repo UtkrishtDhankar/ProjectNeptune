@@ -1,36 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-        <group android:checkableBehavior="single">
+        <group
+            android:id="@+id/grp1"
+            android:checkableBehavior="single">
             <item
                 android:id="@+id/nav_inbox"
-                android:icon="@drawable/ic_dns_black_36dp"
+                android:icon="@drawable/ic_inbox_black_36dp"
                 android:title="@string/nav_inbox" />
             <item
                 android:id="@+id/nav_next"
-                android:icon="@drawable/ic_dns_black_36dp"
+                android:icon="@drawable/ic_play_arrow_black_36dp"
                 android:title="@string/nav_next" />
             <item
                 android:id="@+id/nav_waiting"
-                android:icon="@drawable/ic_dns_black_36dp"
+                android:icon="@drawable/ic_person_pin_black_36dp"
                 android:title="@string/nav_waiting" />
             <item
                 android:id="@+id/nav_scheduled"
-                android:icon="@drawable/ic_dns_black_36dp"
+                android:icon="@drawable/ic_schedule_black_36dp"
                 android:title="@string/nav_scheduled" />
             <item
                 android:id="@+id/nav_someday"
-                android:icon="@drawable/ic_dns_black_36dp"
+                android:icon="@drawable/ic_brightness_3_black_36dp"
                 android:title="@string/nav_someday" />
+        </group>
 
+        <group
+            android:id="@+id/grp2"
+            android:checkableBehavior="single">
             <item
                 android:id="@+id/nav_all_tasks"
-                android:icon="@drawable/ic_dns_black_36dp"
-                android:title="@string/nav_all_tasks" />
+                android:icon="@drawable/ic_check_circle_black_36dp"
+                android:title="@string/nav_done" />
             <item
                 android:id="@+id/nav_context"
-                android:icon="@drawable/ic_dns_black_36dp"
+                android:icon="@drawable/ic_place_black_36dp"
                 android:title="@string/nav_contexts" />
         </group>
+
+
 
 </menu>

@@ -8,7 +8,7 @@
     <string name="nav_waiting">Waiting</string>
     <string name="nav_scheduled">Scheduled</string>
     <string name="nav_someday">Someday</string>
-    <string name="nav_all_tasks">All tasks</string>
+    <string name="nav_done">Done</string>
     <string name="openDrawer">OpenDrawer</string>
     <string name="closeDrawer">CloseDrawer</string>
     <string-array name="nav_item_titles">

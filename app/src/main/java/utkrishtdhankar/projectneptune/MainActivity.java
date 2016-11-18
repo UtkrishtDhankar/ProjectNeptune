@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
 
                     case R.id.nav_all_tasks:
                         navItemIndex = 5;
-                        fragment = new AllTaskFragment();
+                        fragment = new DoneFragment();
                         toolbar.setTitle("All Tasks");
                         break;
 
@@ -208,12 +208,12 @@ public class MainActivity extends AppCompatActivity {
 
     /** Swaps fragments in the main content view */
 //    private void selectItem(int position) {
-//        Fragment fragment = new AllTaskFragment();
+//        Fragment fragment = new DoneFragment();
 //        // Create a new fragment and specify the fragment to show based on position
 //        switch(position)
 //        {
 //            case 0:
-//                fragment = new AllTaskFragment();
+//                fragment = new DoneFragment();
 //                break;
 //            case 1:
 //                fragment = new ContextsFragment();
