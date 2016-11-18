@@ -158,30 +158,47 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.TaskCardView
             holder.statusTextView.setText(dataset.get(position).getStatus().getName());
         }
 
-        // Setting the context's text
-        holder.contextTextView.setText(" " + dataset.get(position).getAllContexts().get(0).getName() + " ");
-
-        // Setting the context's background color
-        holder.contextTextView.setBackgroundColor(dataset.get(position).getAllContexts().get(0).getColor());
-
-        // Setting the text color black if background is white , else text color is white
-        if(dataset.get(position).getAllContexts().get(0).getColor() == Color.parseColor("#ecf0f1")){
-            holder.contextTextView.setTextColor(Color.BLACK);
+        if(dataset.get(position).getAllContexts().isEmpty()){
+            holder.contextTextView.setText("");
         }else {
-            holder.contextTextView.setTextColor(Color.WHITE);
+
+            // Setting the context's text
+            holder.contextTextView.setText(" " + dataset.get(position).getAllContexts().get(0).getName() + " ");
+
+            // Setting the context's background color
+            holder.contextTextView.setBackgroundColor(dataset.get(position).getAllContexts().get(0).getColor());
+
+            // Setting the text color black if background is white , else text color is white
+            if (dataset.get(position).getAllContexts().get(0).getColor() == Color.parseColor("#ecf0f1")) {
+                holder.contextTextView.setTextColor(Color.BLACK);
+            } else {
+                holder.contextTextView.setTextColor(Color.WHITE);
+            }
         }
 
         // Setting the onClick listener for each card
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 FragmentManager fragmentManager = fragment.getFragmentManager();
-                InputFragment inputFragment = InputFragment.newInstance(callingFragment,
-                        dataset.get(position).getName(),
-                        dataset.get(position).getAllContexts().get(0).getName(),
-                        dataset.get(position).getStatus().encode(),
-                        dataset.get(position).getStatus().getName(),
-                        dataset.get(position).getStatus().getSpecial(),
-                        dataset.get(position).getId());
+                InputFragment inputFragment;
+                if(dataset.get(position).getAllContexts().isEmpty()){
+                    inputFragment = InputFragment.newInstance(callingFragment,
+                            dataset.get(position).getName(),
+                            "",
+                            dataset.get(position).getStatus().encode(),
+                            dataset.get(position).getStatus().getName(),
+                            dataset.get(position).getStatus().getSpecial(),
+                            dataset.get(position).getId());
+                }else{
+                    inputFragment = InputFragment.newInstance(callingFragment,
+                            dataset.get(position).getName(),
+                            dataset.get(position).getAllContexts().get(0).getName(),
+                            dataset.get(position).getStatus().encode(),
+                            dataset.get(position).getStatus().getName(),
+                            dataset.get(position).getStatus().getSpecial(),
+                            dataset.get(position).getId());
+                }
+
                 inputFragment.show(fragmentManager, "fragment_edit_name");
             }
         });
