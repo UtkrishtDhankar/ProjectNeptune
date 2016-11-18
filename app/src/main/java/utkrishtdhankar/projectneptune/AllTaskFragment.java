@@ -16,25 +16,25 @@ import java.util.ArrayList;
 import utkrishtdhankar.projectneptune.TaskStatusPackage.Done;
 
 /**
- * Created by Shreyak Kumar on 12-11-2016.
+ * Created by Shreyak Kumar on 07-11-2016.
  */
-public class InboxFragment extends Fragment {
+public class AllTaskFragment extends Fragment {
 
     // The database that stores all of our tasks and contexts
     public DatabaseHelper databaseHelper;
 
     int filterSpecProvided = 0;
 
-    // Contains a list of all the Contexts in the inbox
+    // Contains a list of all the tasks in the inbox
     private ArrayList<Task> tasksList = new ArrayList<Task>();
 
     // The view that contains the cards
-    private RecyclerView inboxRecyclerView;
+    private RecyclerView allTasksRecyclerView;
     private RecyclerView.Adapter recyclerViewAdapter;
-    private RecyclerView.LayoutManager inboxLayoutManager;
+    private RecyclerView.LayoutManager allTasksLayoutManager;
 
-    public static InboxFragment newInstance(String contextFilterSpec, long contextId) {
-        InboxFragment frag = new InboxFragment();
+    public static AllTaskFragment newInstance(String contextFilterSpec, long contextId) {
+        AllTaskFragment frag = new AllTaskFragment();
 
         // Set the arguments for the fragment
         Bundle args = new Bundle();
@@ -45,25 +45,23 @@ public class InboxFragment extends Fragment {
         return frag;
     }
 
-    public static InboxFragment newInstance() {
-        InboxFragment frag = new InboxFragment();
+    public static AllTaskFragment newInstance() {
+        AllTaskFragment frag = new AllTaskFragment();
         return frag;
     }
 
-
-
-
     /**
-     *
-     * @param inflater inflater to use to inflate this
+     * Inflates this layout and puts up all the tasks cards etc. on the screen
+     * @param inflater the inflater to use to inflate this
      * @param container the container for this
      * @param savedInstanceState
-     * @return the view for Contexts fragment
+     * @return
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // inflate the layout for this Context's fragment
+
+        // inflate the layout for this Inbox
         RelativeLayout baseLayoutView = (RelativeLayout) inflater
                 .inflate(R.layout.status_fragment_layout,container,false);
 
@@ -75,35 +73,35 @@ public class InboxFragment extends Fragment {
 
         // Get a reference to the recycler view.
         // Also, set it's size to fixed to improve performance
-        inboxRecyclerView = (RecyclerView) baseLayoutView.findViewById(R.id.contexts_recycler_view);
-        inboxRecyclerView.setHasFixedSize(true);
+        allTasksRecyclerView = (RecyclerView) baseLayoutView.findViewById(R.id.contexts_recycler_view);
+        allTasksRecyclerView.setHasFixedSize(true);
 
         // Set a layout manager for our tasks list displaying recycler view
-        inboxLayoutManager = new LinearLayoutManager(getActivity());
-        inboxRecyclerView.setLayoutManager(inboxLayoutManager);
+        allTasksLayoutManager = new LinearLayoutManager(getActivity());
+        allTasksRecyclerView.setLayoutManager(allTasksLayoutManager);
 
         // Get the database
         databaseHelper = new DatabaseHelper(getActivity());
 
-        //Making the filter
-        Filter filter = new Filter();
-        filter.setTaskStatusName("Inbox");
-
         if(filterSpecProvided == 1){
+            Filter filter = new Filter();
             TaskContext taskContext = new TaskContext();
             taskContext.setName(getArguments().getString("contextFilter"));
             taskContext.setId(getArguments().getLong("contextId"));
             filter.setContext(taskContext);
-        }else{
+            tasksList = databaseHelper.getTasksByFilter(filter);
+        }else {
+            tasksList = databaseHelper.getAllTasks();
             // Setting selection = 0 for "All" option in context filtering
             ((Spinner) getActivity().findViewById(R.id.toolbar_context_spinner)).setSelection(0);
         }
-        // Fill the dataset from the database, and get the contexts list on the screen
-        tasksList = databaseHelper.getTasksByFilter(filter);
 
-        // Passing the dataset and fragment reference to the adapter
-        recyclerViewAdapter = new CardsAdapter(tasksList,InboxFragment.this);
-        inboxRecyclerView.setAdapter(recyclerViewAdapter);
+        // Fill the dataset from the database, and get the tasks list on the screen
+
+        recyclerViewAdapter = new CardsAdapter(tasksList,AllTaskFragment.this);
+
+        // Setting the adapter for the recycler view
+        allTasksRecyclerView.setAdapter(recyclerViewAdapter);
 
         // The Swipe gesture
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -123,13 +121,14 @@ public class InboxFragment extends Fragment {
                 Task newTask = oldTask;
                 newTask.changeStatus(new Done());
                 databaseHelper.updateTask(oldTask,newTask);
-                getFragmentManager().beginTransaction().detach(InboxFragment.this).attach(InboxFragment.this).commit();
+                getFragmentManager().beginTransaction().detach(AllTaskFragment.this).attach(AllTaskFragment.this).commit();
             }
         };
 
         //Attaching the swipe gesture to the recycler view
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
-        itemTouchHelper.attachToRecyclerView(inboxRecyclerView);
+        itemTouchHelper.attachToRecyclerView(allTasksRecyclerView);
+
 
 
         // Inflate the layout for this fragment

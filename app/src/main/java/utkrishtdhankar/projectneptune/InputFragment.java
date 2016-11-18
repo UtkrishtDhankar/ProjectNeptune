@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -272,36 +273,38 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
             databaseHelper.addTask(newTask);
         }
 
-
         // Reloading the appropriate fragment so that values from tables are updated
         Fragment fragment;
         switch(getArguments().getString("title")){
             case "All Tasks":
-                fragment = new DoneFragment();
+                fragment = AllTaskFragment.newInstance();
                 break;
             case "Inbox":
-                fragment = new InboxFragment();
+                fragment = InboxFragment.newInstance();
                 break;
             case "Next":
-                fragment = new NextFragment();
+                fragment = NextFragment.newInstance();
                 break;
             case "Waiting":
-                fragment = new WaitingFragment();
+                fragment = WaitingFragment.newInstance();
                 break;
             case "Scheduled":
-                fragment = new ScheduledFragment();
+                fragment = ScheduledFragment.newInstance();
                 break;
             case "Someday":
-                fragment = new SomedayFragment();
+                fragment = SomedayFragment.newInstance();
                 break;
             default:
-                fragment = new InboxFragment();
+                fragment = InboxFragment.newInstance();
                 break;
         }
         // The Fragment is opened
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame,fragment).addToBackStack(null).commit();
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(getArguments().getString("title"));
+
+        // Setting the apt. toolbar title after reloading
+        ((TextView) getActivity().findViewById(R.id.toolbar_title)).setText(getArguments().getString("title"));
 
         // Closes the pop-up
         dismiss();
