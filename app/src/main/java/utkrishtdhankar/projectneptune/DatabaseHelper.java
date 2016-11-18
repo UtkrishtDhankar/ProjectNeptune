@@ -358,6 +358,27 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     }
 
     /**
+     * Given a context, returns the id associated with it. If the context does not exist in the
+     * database, returns -1.
+     * @param context
+     * @return
+     */
+    public long getContextId(TaskContext context) {
+        ArrayList<TaskContext> allContexts = getAllContexts();
+
+        context.unsetId();
+
+        for (int i = 0; i < allContexts.size(); i++) {
+            if (context.getName().equals(allContexts.get(i).getName())) {
+                context.setId(allContexts.get(i).getId());
+                break;
+            }
+        }
+
+        return;
+    }
+
+    /**
      * Adds a new context to the contexts table
      * @param context The context to be added
      */
