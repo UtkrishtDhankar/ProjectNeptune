@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Setting the main layout
         // Create a new fragment and inserting the fragment by replacing view of FrameLayout in main_activity
-        fragment = new HomeFragment();
+        fragment = new InboxFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame,fragment).commit();
 
@@ -103,53 +103,48 @@ public class MainActivity extends AppCompatActivity {
 
                     // Creating the fragment which will replace the current fragment
                     // Setting the selected item's index
-                    case R.id.nav_home:
-                        navItemIndex = 0;
-                        fragment = new HomeFragment();
-                        toolbar.setTitle("Home");
-                        break;
-
-                    case R.id.nav_context:
-                        navItemIndex = 1;
-                        fragment = new ContextsFragment();
-                        toolbar.setTitle("Contexts");
-                        break;
-
                     case R.id.nav_inbox:
-                        navItemIndex = 2;
+                        navItemIndex = 0;
                         fragment = new InboxFragment();
                         toolbar.setTitle("Inbox");
                         break;
 
                     case R.id.nav_next:
-                        navItemIndex = 3;
+                        navItemIndex = 1;
                         fragment = new NextFragment();
                         toolbar.setTitle("Next");
                         break;
 
                     case R.id.nav_waiting:
-                        navItemIndex = 4;
+                        navItemIndex = 2;
                         fragment = new WaitingFragment();
                         toolbar.setTitle("Waiting");
                         break;
 
                     case R.id.nav_scheduled:
-                        navItemIndex = 5;
+                        navItemIndex = 3;
                         fragment = new ScheduledFragment();
                         toolbar.setTitle("Scheduled");
                         break;
 
                     case R.id.nav_someday:
-                        navItemIndex = 6;
+                        navItemIndex = 4;
                         fragment = new SomedayFragment();
                         toolbar.setTitle("Someday");
                         break;
 
-                    case R.id.nav_settings:
-                        navItemIndex = 7;
-                        fragment = new SettingsFragment();
-                        toolbar.setTitle("Settings");
+                    case R.id.nav_all_tasks:
+                        navItemIndex = 5;
+                        fragment = new AllTaskFragment();
+                        toolbar.setTitle("All Tasks");
                         break;
+
+                    case R.id.nav_context:
+                        navItemIndex = 6;
+                        fragment = new ContextsFragment();
+                        toolbar.setTitle("Contexts");
+                        break;
+
                 }
 
                 // Replacing the current fragment
@@ -212,31 +207,31 @@ public class MainActivity extends AppCompatActivity {
 
 
     /** Swaps fragments in the main content view */
-    private void selectItem(int position) {
-        Fragment fragment = new HomeFragment();
-        // Create a new fragment and specify the fragment to show based on position
-        switch(position)
-        {
-            case 0:
-                fragment = new HomeFragment();
-                break;
-            case 1:
-                fragment = new ContextsFragment();
-                break;
-            case 2:
-                fragment = new SettingsFragment();
-                break;
-        }
-
-        // Insert the fragment by replacing any existing fragment
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame,fragment).commit();
-
-        // Highlight the selected item, update the title, and close the drawerLayout
-        navDrawerMenuList.setItemChecked(position, true);
-        setTitle(navDrawerItemNames[position]);
-        drawerLayout.closeDrawer(navDrawerMenuList);
-    }
+//    private void selectItem(int position) {
+//        Fragment fragment = new AllTaskFragment();
+//        // Create a new fragment and specify the fragment to show based on position
+//        switch(position)
+//        {
+//            case 0:
+//                fragment = new AllTaskFragment();
+//                break;
+//            case 1:
+//                fragment = new ContextsFragment();
+//                break;
+//            case 2:
+//                fragment = new SettingsFragment();
+//                break;
+//        }
+//
+//        // Insert the fragment by replacing any existing fragment
+//        FragmentManager fragmentManager = getSupportFragmentManager();
+//        fragmentManager.beginTransaction().replace(R.id.content_frame,fragment).commit();
+//
+//        // Highlight the selected item, update the title, and close the drawerLayout
+//        navDrawerMenuList.setItemChecked(position, true);
+//        setTitle(navDrawerItemNames[position]);
+//        drawerLayout.closeDrawer(navDrawerMenuList);
+//    }
 
 
     /**

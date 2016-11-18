@@ -2,7 +2,6 @@ package utkrishtdhankar.projectneptune;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -14,8 +13,6 @@ import android.widget.RelativeLayout;
 import java.util.ArrayList;
 
 import utkrishtdhankar.projectneptune.TaskStatusPackage.Done;
-import utkrishtdhankar.projectneptune.TaskStatusPackage.Next;
-import utkrishtdhankar.projectneptune.TaskStatusPackage.Someday;
 
 /**
  * Created by Shreyak Kumar on 12-11-2016.
@@ -45,7 +42,7 @@ public class SomedayFragment extends Fragment {
                              Bundle savedInstanceState) {
         // inflate the layout for this Context's fragment
         RelativeLayout baseLayoutView = (RelativeLayout) inflater
-                .inflate(R.layout.status_fragments,container,false);
+                .inflate(R.layout.status_fragment_layout,container,false);
 
         // Get a reference to the recycler view.
         // Also, set it's size to fixed to improve performance

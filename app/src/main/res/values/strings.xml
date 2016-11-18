@@ -2,14 +2,13 @@
     <string name="app_name">Project Neptune</string>
     <string name="drawer_open">OpenDrawer</string>
     <string name="drawer_close">CloseDrawer</string>
-    <string name="nav_home">Home</string>
     <string name="nav_contexts">Contexts</string>
     <string name="nav_inbox">Inbox</string>
     <string name="nav_next">Next</string>
     <string name="nav_waiting">Waiting</string>
     <string name="nav_scheduled">Scheduled</string>
     <string name="nav_someday">Someday</string>
-    <string name="nav_settings">Settings</string>
+    <string name="nav_all_tasks">All tasks</string>
     <string name="openDrawer">OpenDrawer</string>
     <string name="closeDrawer">CloseDrawer</string>
     <string-array name="nav_item_titles">
