@@ -14,8 +14,10 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -26,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     public DatabaseHelper databaseHelper;
 
     private Toolbar toolbar;
+    private TextView toolbar_title;
+    private Spinner context_spinner;
     private View navHeader;
     private NavigationView navigationDrawer;
     private String[] navDrawerItemNames;
@@ -58,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Setting the custom toolbar as the Action Bar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar_title = (TextView) findViewById(R.id.toolbar_title);
+        context_spinner = (Spinner) findViewById(R.id.toolbar_context_spinner);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setHomeButtonEnabled(false);
@@ -89,16 +95,35 @@ public class MainActivity extends AppCompatActivity {
         Log.d("MainActivity.java","WE REACHED THIS POINT");
 
         // Fetching all contexts from table
-        ArrayList<TaskContext> contextsArray = databaseHelper.getAllContexts();
-        String[] contextsNames= new String[contextsArray.size()];
+        databaseHelper = new DatabaseHelper(getApplicationContext());
+        final ArrayList<TaskContext> contextsArray = databaseHelper.getAllContexts();
+        final String[] contextsNames= new String[contextsArray.size()];
         for (int i = 0; i < contextsArray.size(); i++) {
             contextsNames[i] = contextsArray.get(i).getName();
         }
 
         // populating the drop down menu
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, contextsNames); //selected item will look like a spinner set from XML
-        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        context.setAdapter(spinnerArrayAdapter);
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, contextsNames); //selected item will look like a spinner set from XML
+        spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
+        context_spinner.setAdapter(spinnerArrayAdapter);
+
+        // The on item seleted listener
+        context_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                switch(navItemIndex){
+                    case 0:
+                        // Do corresponding context filtering
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
+
 
     }
 
@@ -279,5 +304,6 @@ public class MainActivity extends AppCompatActivity {
         else
             fab.hide();
     }
+
 
 }
