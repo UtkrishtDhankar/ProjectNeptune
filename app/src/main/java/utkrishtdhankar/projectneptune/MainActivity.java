@@ -139,10 +139,10 @@ public class MainActivity extends AppCompatActivity {
                         toolbar.setTitle("Someday");
                         break;
 
-                    case R.id.nav_settings:
+                    case R.id.nav_all_tasks:
                         navItemIndex = 6;
-                        fragment = new SettingsFragment();
-                        toolbar.setTitle("Settings");
+                        fragment = new AllTaskFragment();
+                        toolbar.setTitle("All Tasks");
                         break;
                 }
 
@@ -207,12 +207,12 @@ public class MainActivity extends AppCompatActivity {
 
     /** Swaps fragments in the main content view */
 //    private void selectItem(int position) {
-//        Fragment fragment = new HomeFragment();
+//        Fragment fragment = new AllTaskFragment();
 //        // Create a new fragment and specify the fragment to show based on position
 //        switch(position)
 //        {
 //            case 0:
-//                fragment = new HomeFragment();
+//                fragment = new AllTaskFragment();
 //                break;
 //            case 1:
 //                fragment = new ContextsFragment();

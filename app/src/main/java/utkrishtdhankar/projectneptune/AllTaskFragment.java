@@ -13,12 +13,11 @@ import android.widget.RelativeLayout;
 import java.util.ArrayList;
 
 import utkrishtdhankar.projectneptune.TaskStatusPackage.Done;
-import utkrishtdhankar.projectneptune.TaskStatusPackage.Next;
 
 /**
  * Created by Shreyak Kumar on 07-11-2016.
  */
-public class HomeFragment extends Fragment {
+public class AllTaskFragment extends Fragment {
 
     // The database that stores all of our tasks and contexts
     public DatabaseHelper databaseHelper;
@@ -27,9 +26,9 @@ public class HomeFragment extends Fragment {
     private ArrayList<Task> tasksList = new ArrayList<Task>();
 
     // The view that contains the cards
-    private RecyclerView homeRecyclerView;
+    private RecyclerView allTasksRecyclerView;
     private RecyclerView.Adapter recyclerViewAdapter;
-    private RecyclerView.LayoutManager homeLayoutManager;
+    private RecyclerView.LayoutManager allTasksLayoutManager;
 
     /**
      * Inflates this layout and puts up all the tasks cards etc. on the screen
@@ -44,26 +43,26 @@ public class HomeFragment extends Fragment {
 
         // inflate the layout for this Inbox
         RelativeLayout baseLayoutView = (RelativeLayout) inflater
-                .inflate(R.layout.inbox_fragment,container,false);
+                .inflate(R.layout.status_fragments,container,false);
 
         // Get a reference to the recycler view.
         // Also, set it's size to fixed to improve performance
-        homeRecyclerView = (RecyclerView) baseLayoutView.findViewById(R.id.my_recycler_view);
-        homeRecyclerView.setHasFixedSize(true);
+        allTasksRecyclerView = (RecyclerView) baseLayoutView.findViewById(R.id.contexts_recycler_view);
+        allTasksRecyclerView.setHasFixedSize(true);
 
         // Set a layout manager for our tasks list displaying recycler view
-        homeLayoutManager = new LinearLayoutManager(getActivity());
-        homeRecyclerView.setLayoutManager(homeLayoutManager);
+        allTasksLayoutManager = new LinearLayoutManager(getActivity());
+        allTasksRecyclerView.setLayoutManager(allTasksLayoutManager);
 
         // Get the database
         databaseHelper = new DatabaseHelper(getActivity());
 
         // Fill the dataset from the database, and get the tasks list on the screen
         tasksList = databaseHelper.getAllTasks();
-        recyclerViewAdapter = new CardsAdapter(tasksList,HomeFragment.this);
+        recyclerViewAdapter = new CardsAdapter(tasksList,AllTaskFragment.this);
 
         // Setting the adapter for the recycler view
-        homeRecyclerView.setAdapter(recyclerViewAdapter);
+        allTasksRecyclerView.setAdapter(recyclerViewAdapter);
 
         // The Swipe gesture
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -83,13 +82,13 @@ public class HomeFragment extends Fragment {
                 Task newTask = oldTask;
                 newTask.changeStatus(new Done());
                 databaseHelper.updateTask(oldTask,newTask);
-                getFragmentManager().beginTransaction().detach(HomeFragment.this).attach(HomeFragment.this).commit();
+                getFragmentManager().beginTransaction().detach(AllTaskFragment.this).attach(AllTaskFragment.this).commit();
             }
         };
 
         //Attaching the swipe gesture to the recycler view
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
-        itemTouchHelper.attachToRecyclerView(homeRecyclerView);
+        itemTouchHelper.attachToRecyclerView(allTasksRecyclerView);
 
 
 
