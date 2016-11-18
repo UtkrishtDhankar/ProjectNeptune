@@ -1,6 +1,7 @@
 package utkrishtdhankar.projectneptune;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -98,9 +99,10 @@ public class MainActivity extends AppCompatActivity {
         // Fetching all contexts from table
         databaseHelper = new DatabaseHelper(getApplicationContext());
         final ArrayList<TaskContext> contextsArray = databaseHelper.getAllContexts();
-        final String[] contextsNames= new String[contextsArray.size()];
-        for (int i = 0; i < contextsArray.size(); i++) {
-            contextsNames[i] = contextsArray.get(i).getName();
+        final String[] contextsNames= new String[contextsArray.size() + 1];
+        contextsNames[0] = "All";
+        for (int i = 1; i <= contextsArray.size(); i++) {
+            contextsNames[i] = contextsArray.get(i - 1).getName();
         }
 
         // populating the drop down menu
@@ -112,36 +114,72 @@ public class MainActivity extends AppCompatActivity {
         context_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                TaskContext taskContext = new TaskContext(contextsNames[position]);
-                long contextId = databaseHelper.getContextId(taskContext);
-                switch(navItemIndex){
-                    case 0:
-                        fragment = InboxFragment.newInstance(contextsNames[position],contextId);
-                        break;
-                    case 1:
-                        fragment = NextFragment.newInstance(contextsNames[position],contextId);
-                        break;
-                    case 2:
-                        fragment = WaitingFragment.newInstance(contextsNames[position],contextId);
-                        break;
-                    case 3:
-                        fragment = ScheduledFragment.newInstance(contextsNames[position],contextId);
-                        break;
-                    case 4:
-                        fragment = SomedayFragment.newInstance(contextsNames[position],contextId);
-                        break;
-                    case 5:
-                        fragment = AllTaskFragment.newInstance(contextsNames[position],contextId);
-                        break;
-                    default:
-                        fragment = InboxFragment.newInstance(contextsNames[position],contextId);
-                        break;
 
+                // Setting the selected item's color to white
+                ((TextView) parentView.getChildAt(0)).setTextColor(Color.WHITE);
+
+                if(position != 0){
+                    TaskContext taskContext = new TaskContext(contextsNames[position]);
+                    long contextId = databaseHelper.getContextId(taskContext);
+                    switch(navItemIndex){
+                        case 0:
+                            fragment = InboxFragment.newInstance(contextsNames[position],contextId);
+                            break;
+                        case 1:
+                            fragment = NextFragment.newInstance(contextsNames[position],contextId);
+                            break;
+                        case 2:
+                            fragment = WaitingFragment.newInstance(contextsNames[position],contextId);
+                            break;
+                        case 3:
+                            fragment = ScheduledFragment.newInstance(contextsNames[position],contextId);
+                            break;
+                        case 4:
+                            fragment = SomedayFragment.newInstance(contextsNames[position],contextId);
+                            break;
+                        case 5:
+                            fragment = AllTaskFragment.newInstance(contextsNames[position],contextId);
+                            break;
+                        default:
+                            fragment = InboxFragment.newInstance(contextsNames[position],contextId);
+                            break;
+                    }
+
+                    // Reloading the current fragment
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.content_frame,fragment).commit();
+
+                }else{
+                    switch(navItemIndex){
+                        case 0:
+                            fragment = InboxFragment.newInstance();
+                            break;
+                        case 1:
+                            fragment = NextFragment.newInstance();
+                            break;
+                        case 2:
+                            fragment = WaitingFragment.newInstance();
+                            break;
+                        case 3:
+                            fragment = ScheduledFragment.newInstance();
+                            break;
+                        case 4:
+                            fragment = SomedayFragment.newInstance();
+                            break;
+                        case 5:
+                            fragment = AllTaskFragment.newInstance();
+                            break;
+                        default:
+                            fragment = InboxFragment.newInstance();
+                            break;
+                    }
+
+                    // Reloading the current fragment
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.content_frame,fragment).commit();
                 }
 
-                // Reloading the current fragment
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.content_frame,fragment).commit();
+
             }
 
             @Override
