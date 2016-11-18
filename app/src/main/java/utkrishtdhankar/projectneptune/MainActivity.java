@@ -109,41 +109,42 @@ public class MainActivity extends AppCompatActivity {
                         toolbar.setTitle("Inbox");
                         break;
 
-                    case R.id.nav_context:
-                        navItemIndex = 1;
-                        fragment = new ContextsFragment();
-                        toolbar.setTitle("Contexts");
-                        break;
-
                     case R.id.nav_next:
-                        navItemIndex = 2;
+                        navItemIndex = 1;
                         fragment = new NextFragment();
                         toolbar.setTitle("Next");
                         break;
 
                     case R.id.nav_waiting:
-                        navItemIndex = 3;
+                        navItemIndex = 2;
                         fragment = new WaitingFragment();
                         toolbar.setTitle("Waiting");
                         break;
 
                     case R.id.nav_scheduled:
-                        navItemIndex = 4;
+                        navItemIndex = 3;
                         fragment = new ScheduledFragment();
                         toolbar.setTitle("Scheduled");
                         break;
 
                     case R.id.nav_someday:
-                        navItemIndex = 5;
+                        navItemIndex = 4;
                         fragment = new SomedayFragment();
                         toolbar.setTitle("Someday");
                         break;
 
                     case R.id.nav_all_tasks:
-                        navItemIndex = 6;
+                        navItemIndex = 5;
                         fragment = new AllTaskFragment();
                         toolbar.setTitle("All Tasks");
                         break;
+
+                    case R.id.nav_context:
+                        navItemIndex = 6;
+                        fragment = new ContextsFragment();
+                        toolbar.setTitle("Contexts");
+                        break;
+
                 }
 
                 // Replacing the current fragment

@@ -7,11 +7,6 @@
                 android:icon="@drawable/ic_dns_black_36dp"
                 android:title="@string/nav_inbox" />
             <item
-                android:id="@+id/nav_context"
-                android:icon="@drawable/ic_dns_black_36dp"
-                android:title="@string/nav_contexts" />
-
-            <item
                 android:id="@+id/nav_next"
                 android:icon="@drawable/ic_dns_black_36dp"
                 android:title="@string/nav_next" />
@@ -30,8 +25,12 @@
 
             <item
                 android:id="@+id/nav_all_tasks"
-                android:icon="@drawable/ic_settings_black_36dp"
+                android:icon="@drawable/ic_dns_black_36dp"
                 android:title="@string/nav_all_tasks" />
+            <item
+                android:id="@+id/nav_context"
+                android:icon="@drawable/ic_dns_black_36dp"
+                android:title="@string/nav_contexts" />
         </group>
 
 </menu>
