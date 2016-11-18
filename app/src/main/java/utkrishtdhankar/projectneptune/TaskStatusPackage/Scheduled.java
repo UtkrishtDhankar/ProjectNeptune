@@ -16,6 +16,21 @@ public class Scheduled implements TaskStatus {
         scheduledForDate = date;
     }
 
+    /**
+     * This returns a status. If scheduled is scheduled for a later date, then it returns it back.
+     * Otherwise
+     * @param scheduled
+     * @return
+     */
+    public static TaskStatus updateScheduledStatus(Scheduled scheduled) {
+        // If the time has passed, then return a next status, otherwise return scheduled
+        if (scheduled.getScheduledForDate().compareTo(Calendar.getInstance()) <  0) {
+            return new Next();
+        } else {
+            return scheduled;
+        }
+    }
+
     public Calendar getScheduledForDate() {
         return scheduledForDate;
     }
