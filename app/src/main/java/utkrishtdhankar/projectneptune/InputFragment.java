@@ -277,25 +277,25 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
         Fragment fragment;
         switch(getArguments().getString("title")){
             case "All Tasks":
-                fragment = new DoneFragment();
+                fragment = AllTaskFragment.newInstance();
                 break;
             case "Inbox":
-                fragment = new InboxFragment();
+                fragment = InboxFragment.newInstance();
                 break;
             case "Next":
-                fragment = new NextFragment();
+                fragment = NextFragment.newInstance();
                 break;
             case "Waiting":
-                fragment = new WaitingFragment();
+                fragment = WaitingFragment.newInstance();
                 break;
             case "Scheduled":
-                fragment = new ScheduledFragment();
+                fragment = ScheduledFragment.newInstance();
                 break;
             case "Someday":
-                fragment = new SomedayFragment();
+                fragment = SomedayFragment.newInstance();
                 break;
             default:
-                fragment = new InboxFragment();
+                fragment = InboxFragment.newInstance();
                 break;
         }
         // The Fragment is opened

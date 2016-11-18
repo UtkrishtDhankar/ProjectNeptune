@@ -86,8 +86,6 @@ public class MainActivity extends AppCompatActivity {
         navDrawerItemNames = getResources().getStringArray(R.array.nav_item_titles);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navHeader = navigationDrawer.getHeaderView(0);
-        navHeaderName = (TextView) navHeader.findViewById(R.id.name);
-        navHeaderSubText = (TextView) navHeader.findViewById(R.id.website);
         fab = (FloatingActionButton) findViewById(R.id.addButton);
 
         // Load toolbar titles from string resources
@@ -96,8 +94,7 @@ public class MainActivity extends AppCompatActivity {
         databaseHelper = new DatabaseHelper(getApplicationContext());
         databaseHelper.updateAll();
 
-        // Load nav menu header data
-        loadNavHeader();
+
 
         // Initializing navigation menu
         setUpNavigationView();

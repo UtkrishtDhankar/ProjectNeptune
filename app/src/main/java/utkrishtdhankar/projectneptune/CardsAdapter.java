@@ -69,7 +69,7 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.TaskCardView
     }
 
     // When the Home fragment needs cards
-    public CardsAdapter(ArrayList<Task> newDataset,DoneFragment homefrag) {
+    public CardsAdapter(ArrayList<Task> newDataset,AllTaskFragment homefrag) {
         callingFragment = "All Tasks";
         this.fragment = homefrag;
         this.dataset = newDataset;
