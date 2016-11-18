@@ -22,6 +22,8 @@ public class AllTaskFragment extends Fragment {
     // The database that stores all of our tasks and contexts
     public DatabaseHelper databaseHelper;
 
+    int filterSpecProvided = 0;
+
     // Contains a list of all the tasks in the inbox
     private ArrayList<Task> tasksList = new ArrayList<Task>();
 
@@ -29,6 +31,23 @@ public class AllTaskFragment extends Fragment {
     private RecyclerView allTasksRecyclerView;
     private RecyclerView.Adapter recyclerViewAdapter;
     private RecyclerView.LayoutManager allTasksLayoutManager;
+
+    public static AllTaskFragment newInstance(String contextFilterSpec, long contextId) {
+        AllTaskFragment frag = new AllTaskFragment();
+
+        // Set the arguments for the fragment
+        Bundle args = new Bundle();
+        args.putString("contextFilter",contextFilterSpec);
+        args.putLong("contextId",contextId);
+        frag.setArguments(args);
+
+        return frag;
+    }
+
+    public static AllTaskFragment newInstance() {
+        AllTaskFragment frag = new AllTaskFragment();
+        return frag;
+    }
 
     /**
      * Inflates this layout and puts up all the tasks cards etc. on the screen
@@ -45,6 +64,12 @@ public class AllTaskFragment extends Fragment {
         RelativeLayout baseLayoutView = (RelativeLayout) inflater
                 .inflate(R.layout.status_fragment_layout,container,false);
 
+        if(getArguments() != null) {
+            filterSpecProvided = 1;
+        }else {
+            filterSpecProvided = 0;
+        }
+
         // Get a reference to the recycler view.
         // Also, set it's size to fixed to improve performance
         allTasksRecyclerView = (RecyclerView) baseLayoutView.findViewById(R.id.contexts_recycler_view);
@@ -57,8 +82,19 @@ public class AllTaskFragment extends Fragment {
         // Get the database
         databaseHelper = new DatabaseHelper(getActivity());
 
+        if(filterSpecProvided == 1){
+            Filter filter = new Filter();
+            TaskContext taskContext = new TaskContext();
+            taskContext.setName(getArguments().getString("contextFilter"));
+            taskContext.setId(getArguments().getLong("contextId"));
+            filter.setContext(taskContext);
+            tasksList = databaseHelper.getTasksByFilter(filter);
+        }else {
+            tasksList = databaseHelper.getAllTasks();
+        }
+
         // Fill the dataset from the database, and get the tasks list on the screen
-        tasksList = databaseHelper.getAllTasks();
+
         recyclerViewAdapter = new CardsAdapter(tasksList,AllTaskFragment.this);
 
         // Setting the adapter for the recycler view

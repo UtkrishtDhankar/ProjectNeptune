@@ -22,6 +22,8 @@ public class WaitingFragment extends Fragment {
     // The database that stores all of our tasks and contexts
     public DatabaseHelper databaseHelper;
 
+    int filterSpecProvided = 0;
+
     // Contains a list of all the Contexts in the inbox
     private ArrayList<Task> tasksList = new ArrayList<Task>();
 
@@ -29,6 +31,23 @@ public class WaitingFragment extends Fragment {
     private RecyclerView inboxRecyclerView;
     private RecyclerView.Adapter recyclerViewAdapter;
     private RecyclerView.LayoutManager inboxLayoutManager;
+
+    public static WaitingFragment newInstance(String contextFilterSpec, long contextId) {
+        WaitingFragment frag = new WaitingFragment();
+
+        // Set the arguments for the fragment
+        Bundle args = new Bundle();
+        args.putString("contextFilter",contextFilterSpec);
+        args.putLong("contextId",contextId);
+        frag.setArguments(args);
+
+        return frag;
+    }
+
+    public static WaitingFragment newInstance() {
+        WaitingFragment frag = new WaitingFragment();
+        return frag;
+    }
 
     /**
      *
@@ -43,6 +62,12 @@ public class WaitingFragment extends Fragment {
         // inflate the layout for this Context's fragment
         RelativeLayout baseLayoutView = (RelativeLayout) inflater
                 .inflate(R.layout.status_fragment_layout,container,false);
+
+        if(getArguments() != null) {
+            filterSpecProvided = 1;
+        }else {
+            filterSpecProvided = 0;
+        }
 
         // Get a reference to the recycler view.
         // Also, set it's size to fixed to improve performance
@@ -59,6 +84,13 @@ public class WaitingFragment extends Fragment {
         //Making the filter
         Filter filter = new Filter();
         filter.setTaskStatusName("Waiting");
+
+        if(filterSpecProvided == 1){
+            TaskContext taskContext = new TaskContext();
+            taskContext.setName(getArguments().getString("contextFilter"));
+            taskContext.setId(getArguments().getLong("contextId"));
+            filter.setContext(taskContext);
+        }
 
         // Fill the dataset from the database, and get the contexts list on the screen
         tasksList = databaseHelper.getTasksByFilter(filter);

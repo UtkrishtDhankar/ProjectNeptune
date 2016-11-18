@@ -23,6 +23,10 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import utkrishtdhankar.projectneptune.TaskStatusPackage.Scheduled;
+import utkrishtdhankar.projectneptune.TaskStatusPackage.Someday;
+import utkrishtdhankar.projectneptune.TaskStatusPackage.Waiting;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -119,6 +123,25 @@ public class MainActivity extends AppCompatActivity {
                     case 0:
                         fragment = InboxFragment.newInstance(contextsNames[position],contextId);
                         break;
+                    case 1:
+                        fragment = NextFragment.newInstance(contextsNames[position],contextId);
+                        break;
+                    case 2:
+                        fragment = WaitingFragment.newInstance(contextsNames[position],contextId);
+                        break;
+                    case 3:
+                        fragment = ScheduledFragment.newInstance(contextsNames[position],contextId);
+                        break;
+                    case 4:
+                        fragment = SomedayFragment.newInstance(contextsNames[position],contextId);
+                        break;
+                    case 5:
+                        fragment = AllTaskFragment.newInstance(contextsNames[position],contextId);
+                        break;
+                    default:
+                        fragment = InboxFragment.newInstance(contextsNames[position],contextId);
+                        break;
+
                 }
 
                 // Reloading the current fragment
@@ -161,31 +184,31 @@ public class MainActivity extends AppCompatActivity {
 
                     case R.id.nav_next:
                         navItemIndex = 1;
-                        fragment = new NextFragment();
+                        fragment = NextFragment.newInstance();
                         toolbar.setTitle("Next");
                         break;
 
                     case R.id.nav_waiting:
                         navItemIndex = 2;
-                        fragment = new WaitingFragment();
+                        fragment = WaitingFragment.newInstance();
                         toolbar.setTitle("Waiting");
                         break;
 
                     case R.id.nav_scheduled:
                         navItemIndex = 3;
-                        fragment = new ScheduledFragment();
+                        fragment = ScheduledFragment.newInstance();
                         toolbar.setTitle("Scheduled");
                         break;
 
                     case R.id.nav_someday:
                         navItemIndex = 4;
-                        fragment = new SomedayFragment();
+                        fragment = SomedayFragment.newInstance();
                         toolbar.setTitle("Someday");
                         break;
 
                     case R.id.nav_all_tasks:
                         navItemIndex = 5;
-                        fragment = new AllTaskFragment();
+                        fragment = AllTaskFragment.newInstance();
                         toolbar.setTitle("All Tasks");
                         break;
 
