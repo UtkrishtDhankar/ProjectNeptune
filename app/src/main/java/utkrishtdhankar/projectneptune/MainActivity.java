@@ -2,6 +2,7 @@ package utkrishtdhankar.projectneptune;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -66,9 +67,18 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.main_activity);
 
+        // Importing the required fonts
+        Typeface robotoLight = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf");
+        Typeface robotoLightItalic = Typeface.createFromAsset(getAssets(), "fonts/Roboto-LightItalic.ttf");
+        Typeface robotoRegular = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Regular.ttf");
+
         // Setting the custom toolbar as the Action Bar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar_title = (TextView) findViewById(R.id.toolbar_title);
+
+        // Setting the toolbar's font
+        toolbar_title.setTypeface(robotoRegular);
+
         context_spinner = (Spinner) findViewById(R.id.toolbar_context_spinner);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
