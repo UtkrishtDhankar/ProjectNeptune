@@ -366,16 +366,16 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     public long getContextId(TaskContext context) {
         ArrayList<TaskContext> allContexts = getAllContexts();
 
-        context.unsetId();
+        long id = Identifiable.INVALID_ID;
 
         for (int i = 0; i < allContexts.size(); i++) {
             if (context.getName().equals(allContexts.get(i).getName())) {
-                context.setId(allContexts.get(i).getId());
+                id = allContexts.get(i).getId();
                 break;
             }
         }
 
-        return;
+        return id;
     }
 
     /**
