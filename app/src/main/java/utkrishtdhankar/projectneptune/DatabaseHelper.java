@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Color;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -86,6 +87,25 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                 TASKS_CONTEXTS_JUNCTION_KEY_CONTEXT_ID, TASKS_CONTEXTS_JUNCTION_KEY_TASK_ID,
                 TASKS_CONTEXTS_JUNCTION_KEY_CONTEXT_ID);
         db.execSQL(createJunctionQuery);
+
+        addDefaultContexts();
+    }
+
+    private void addDefaultContexts() {
+        TaskContext homeContext = new TaskContext();
+        homeContext.setName("Home");
+        homeContext.setColor(Color.parseColor("#2ecc71")); // Emerland
+        addContext(homeContext);
+
+        TaskContext errandsContext = new TaskContext();
+        errandsContext.setName("Errands");
+        errandsContext.setColor(Color.parseColor("#e67e22")); // Carrot
+        addContext(errandsContext);
+
+        TaskContext workContext = new TaskContext();
+        workContext.setName("Work");
+        workContext.setColor(Color.parseColor("#34495e")); // Wet Asphalt
+        addContext(workContext);
     }
 
     /**
@@ -124,7 +144,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
                 db.update(TASKS_TABLE_NAME, contentValues, TASKS_KEY_ID + "=?",
                         new String[]{Long.toString(task.getId())});
-                
+
                 db.close();
             }
         }
