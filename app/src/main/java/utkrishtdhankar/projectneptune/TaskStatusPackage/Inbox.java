@@ -4,6 +4,9 @@ package utkrishtdhankar.projectneptune.TaskStatusPackage;
  * Created by utkrishtdhankar on 15/11/16.
  */
 
+/**
+ * This represents an unprocessed task that the user is not sure about.
+ */
 public class Inbox implements TaskStatus {
 
     private static final String name = "Inbox";

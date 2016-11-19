@@ -8,6 +8,8 @@ import utkrishtdhankar.projectneptune.TaskStatusPackage.TaskStatus;
 
 /**
  * Created by utkrishtdhankar on 21/10/16.
+ *
+ * This represents a task in the GTD sense.
  */
 public class Task extends Identifiable {
     // The name of this oldtask, e.g "Do the laundry"

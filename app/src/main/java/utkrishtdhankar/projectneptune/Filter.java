@@ -6,6 +6,10 @@ import utkrishtdhankar.projectneptune.TaskStatusPackage.TaskStatus;
  * Created by utkrishtdhankar on 15/11/16.
  */
 
+/**
+ * This class is used to filter the results of a DatabaseHelper query request. Compose a filter
+ * out of the given functions and pass it to DatabaseHelper.getTasksByFilter.
+ */
 public class Filter {
     // This stores what name the task will be like, in the SQL format,
     // e.g. "_Hello"
