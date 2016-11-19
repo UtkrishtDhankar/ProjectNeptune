@@ -186,7 +186,6 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
             oldtask.changeStatus(TaskStatusHelper.decode(getArguments().getString("encodedStatus")));
             oldtask.setId(getArguments().getLong("taskId"));
             inboxEditText.setText(oldtask.getName());
-            //TODO make changes for presets here
             for(int i = 0; i < contextsNames.length; i++){
                 if(contextsNames[i].equals(getArguments().getString("oldContext"))){
                     contextDropDown.setSelection(i);

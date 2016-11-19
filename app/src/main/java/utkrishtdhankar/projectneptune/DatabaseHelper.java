@@ -88,10 +88,9 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                 TASKS_CONTEXTS_JUNCTION_KEY_CONTEXT_ID);
         db.execSQL(createJunctionQuery);
 
-        addDefaultContexts();
     }
 
-    private void addDefaultContexts() {
+    public void addDefaultContexts() {
         TaskContext homeContext = new TaskContext();
         homeContext.setName("Home");
         homeContext.setColor(Color.parseColor("#2ecc71")); // Emerland

@@ -1,6 +1,7 @@
 package utkrishtdhankar.projectneptune;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Handler;
@@ -67,6 +68,20 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.main_activity);
 
+        databaseHelper = new DatabaseHelper(getApplicationContext());
+
+        // Making the default contexts for the first time
+        SharedPreferences settings = getSharedPreferences("PREFS_NAME", 0);
+        Boolean mboolean = settings.getBoolean("FIRST_RUN", false);
+        if (!mboolean) {
+            // do the thing for the first time
+            databaseHelper.addDefaultContexts();
+            settings = getSharedPreferences("PREFS_NAME", 0);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putBoolean("FIRST_RUN", true);
+            editor.commit();
+        }
+
         // Importing the required fonts
         Typeface robotoLight = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf");
         Typeface robotoLightItalic = Typeface.createFromAsset(getAssets(), "fonts/Roboto-LightItalic.ttf");
@@ -101,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
         // Load toolbar titles from string resources
         activityTitles = getResources().getStringArray(R.array.nav_item_toolbar_titles);
 
-        databaseHelper = new DatabaseHelper(getApplicationContext());
+
         databaseHelper.updateAll();
 
 
@@ -217,8 +232,8 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-
     }
+
 
     /**
      *
