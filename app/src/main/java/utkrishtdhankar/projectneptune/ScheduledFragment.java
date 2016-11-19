@@ -33,6 +33,12 @@ public class ScheduledFragment extends Fragment {
     private RecyclerView.Adapter recyclerViewAdapter;
     private RecyclerView.LayoutManager inboxLayoutManager;
 
+    /**
+     *
+     * @param contextFilterSpec Holds the contexts name to be applied in filter
+     * @param contextId Holds the contexts id to be applied in filter
+     * @return Return the fragment to bew return
+     */
     public static ScheduledFragment newInstance(String contextFilterSpec, long contextId) {
         ScheduledFragment frag = new ScheduledFragment();
 
@@ -45,6 +51,11 @@ public class ScheduledFragment extends Fragment {
         return frag;
     }
 
+    /**
+     * Called when Input dialog needs to be opened to add new things
+     * rather than opening for edit
+     * @return
+     */
     public static ScheduledFragment newInstance() {
         ScheduledFragment frag = new ScheduledFragment();
         return frag;
@@ -114,6 +125,11 @@ public class ScheduledFragment extends Fragment {
                 return false;
             }
 
+            /**
+             * The method which is called when the "Swipe" action happens
+             * @param viewHolder The viewHOlder which was swiped
+             * @param swipeDir THe direction of swipe
+             */
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 //Remove swiped item from list and notify the RecyclerView
