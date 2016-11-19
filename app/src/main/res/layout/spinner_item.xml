@@ -7,5 +7,5 @@
         android:layout_height="wrap_content"
         android:id="@+id/spinner_text"
         android:textColor="@android:color/white"
-        android:backgroundTint="@android:color/black"
+        android:background="#3498db"
         android:padding="8sp" />

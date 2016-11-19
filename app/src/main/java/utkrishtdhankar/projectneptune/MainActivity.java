@@ -131,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
                 // Setting the selected item's color to white
                 ((TextView) parentView.getChildAt(0)).setTextColor(Color.WHITE);
 
+                // Sending the corresponding filter details to the fragment activities
                 if(position != 0){
                     TaskContext taskContext = new TaskContext(contextsNames[position]);
                     long contextId = databaseHelper.getContextId(taskContext);
