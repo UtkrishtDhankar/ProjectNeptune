@@ -86,10 +86,10 @@ public class ContextInputFragment extends DialogFragment implements View.OnClick
 
     /**
      * Inflates this fragment
-     * @param inflater
-     * @param container
-     * @param savedInstanceState
-     * @return
+     * @param inflater The layout inflater used to make the popup
+     * @param container The container for the layout
+     * @param savedInstanceState The Bundle used to retrieve data during some resume actions(not used)
+     * @return The inflated view
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
