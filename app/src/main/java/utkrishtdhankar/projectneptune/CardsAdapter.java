@@ -42,7 +42,6 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.TaskCardView
         public CardView cardView;
 
         /**
-         * Constructor for this oldtask
          * Sets the different views to their values for the view that was passed in
          * @param view
          */
@@ -68,42 +67,66 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.TaskCardView
         this.dataset = newDataset;
     }
 
-    // When the Home fragment needs cards
+    /**
+     * When the Home fragment needs cards
+     * @param newDataset The array list of tasks to be inflated
+     * @param homefrag The calling fragment reference (used to get a hold of assets etc.)
+     */
     public CardsAdapter(ArrayList<Task> newDataset,AllTaskFragment homefrag) {
         callingFragment = "All Tasks";
         this.fragment = homefrag;
         this.dataset = newDataset;
     }
 
-    // When the Next fragment needs cards
+    /**
+     * When the Home fragment needs cards
+     * @param newDataset The array list of tasks to be inflated
+     * @param nextfrag The calling fragment reference (used to get a hold of assets etc.)
+     */
     public CardsAdapter(ArrayList<Task> newDataset,InboxFragment nextfrag) {
         callingFragment = "Inbox";
         this.fragment = nextfrag;
         this.dataset = newDataset;
     }
 
-    // When the Next fragment needs cards
+    /**
+     * When the Home fragment needs cards
+     * @param newDataset The array list of tasks to be inflated
+     * @param nextfrag The calling fragment reference (used to get a hold of assets etc.)
+     */
     public CardsAdapter(ArrayList<Task> newDataset,NextFragment nextfrag) {
         callingFragment = "Next";
         this.fragment = nextfrag;
         this.dataset = newDataset;
     }
 
-    // When the Waiting fragment needs cards
+    /**
+     * When the Home fragment needs cards
+     * @param newDataset The array list of tasks to be inflated
+     * @param nextfrag The calling fragment reference (used to get a hold of assets etc.)
+     */
     public CardsAdapter(ArrayList<Task> newDataset,WaitingFragment nextfrag) {
         callingFragment = "Waiting";
         this.fragment = nextfrag;
         this.dataset = newDataset;
     }
 
-    // When the Scheduled fragment needs cards
+    /**
+     * When the Home fragment needs cards
+     * @param newDataset The array list of tasks to be inflated
+     * @param nextfrag The calling fragment reference (used to get a hold of assets etc.)
+     */
     public CardsAdapter(ArrayList<Task> newDataset,ScheduledFragment nextfrag) {
         callingFragment = "Scheduled";
         this.fragment = nextfrag;
         this.dataset = newDataset;
     }
 
-    // When the Someday fragment needs cards
+    /**
+     * When the Home fragment needs cards
+     * @param newDataset The array list of tasks to be inflated
+     * @param nextfrag The calling fragment reference (used to get a hold of assets etc.)
+     */
     public CardsAdapter(ArrayList<Task> newDataset,SomedayFragment nextfrag) {
         callingFragment = "Someday";
         this.fragment = nextfrag;
@@ -113,9 +136,9 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.TaskCardView
     /**
      * Creates a new card and inflates it
      * Called by inflater
-     * @param parent
-     * @param viewType
-     * @return
+     * @param parent The parent view
+     * @param viewType The viewType (used when multiple card types are to be inflated)
+     * @return the viewHolder to be inflated
      */
     @Override
     public TaskCardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
