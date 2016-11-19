@@ -100,6 +100,9 @@ public class ContextsFragment extends Fragment {
         return baseLayoutView ;
     }
 
+    /**
+     * Reloads the context-filter-spinner items so that everything is in sync
+     */
     private void updateContextFilterSpinner() {
 
         // Fetching all contexts from table
