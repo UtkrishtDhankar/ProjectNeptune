@@ -57,8 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     /**
-     * Creates a new ToolBar and sets it as Action Bar
-     * Opens the Inbox Fragment
+     * Called when this activity is created
      * Creates the Navigation Drawer
      * @param savedInstanceState
      */
@@ -236,7 +235,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     /**
-     *
+     * Initializes the navigation bar
+     * and listens to item clicks
      */
     private void setUpNavigationView() {
 
@@ -357,7 +357,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      *
-     * @param view The view for the Floating Action Button
+     * @param view The view for the Context's floating Action Button
      */
     public void onContextFABPress(View view) {
         FragmentManager fragmentManager = getSupportFragmentManager();
