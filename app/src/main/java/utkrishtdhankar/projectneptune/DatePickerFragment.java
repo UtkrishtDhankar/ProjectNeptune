@@ -47,6 +47,11 @@ public class DatePickerFragment extends DialogFragment {
         return frag;
     }
 
+    /**
+     * Called when the dialog is created
+     * @param savedInstanceState Used to retrieve data items (not used)
+     * @return The date picker dialog
+     */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
