@@ -51,6 +51,11 @@ public class AllTaskFragment extends Fragment {
         return frag;
     }
 
+    /**
+     * Called when Input dialog needs to be opened to add new things
+     * rather than opening for edit
+     * @return
+     */
     public static AllTaskFragment newInstance() {
         AllTaskFragment frag = new AllTaskFragment();
         return frag;
@@ -120,6 +125,11 @@ public class AllTaskFragment extends Fragment {
                 return false;
             }
 
+            /**
+             * The method which is called when the "Swipe" action happens
+             * @param viewHolder The viewHOlder which was swiped
+             * @param swipeDir THe direction of swipe
+             */
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 //Remove swiped item from list and notify the RecyclerView
@@ -135,7 +145,7 @@ public class AllTaskFragment extends Fragment {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(allTasksRecyclerView);
 
-        //Show the context filtering in this fragment
+        // Show the context filtering in this fragment
         ((Spinner) getActivity().findViewById(R.id.toolbar_context_spinner)).setVisibility(View.VISIBLE);
 
         // Inflate the layout for this fragment
