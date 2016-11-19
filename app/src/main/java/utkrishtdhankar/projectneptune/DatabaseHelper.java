@@ -91,6 +91,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         addDefaultContexts();
     }
 
+    /**
+     * This adds default contexts for the app
+     * The app needs some default contexts to function well
+     */
     private void addDefaultContexts() {
         TaskContext homeContext = new TaskContext();
         homeContext.setName("Home");
@@ -124,7 +128,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     }
 
     /**
-     * Updates all the tasks in the database. Right now, this moves up scheduled tasks to next action tasks
+     * Updates all the tasks in the database.
+     * Right now, this moves up scheduled tasks to next action tasks, as no other statuses need updating.
      */
     public void updateAll() {
         Filter filter = new Filter();
@@ -289,6 +294,11 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         return task;
     }
 
+    /**
+     * This returns tasks filtered by the filter object. (See Filter for details)
+     * @param filter What things to filter by.
+     * @return A list of tasks filtered by filter
+     */
     public ArrayList<Task> getTasksByFilter(Filter filter) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -488,6 +498,12 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         db.close();
     }
 
+    /**
+     * Sets the ids for all the task's contexts. Basically, turns all of it's contexts Identifiable
+     * And returns a new task with said identifiable contexts
+     * @param task The task to set all the context's ids for
+     * @return A task that is a clone of the given parameter, only with Identifiable contexts
+     */
     private Task setIdsForContexts(Task task) {
         Task newTask = new Task(task.getName());
         newTask.changeStatus(task.getStatus());
