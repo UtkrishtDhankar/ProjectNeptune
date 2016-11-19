@@ -6,6 +6,9 @@ import android.graphics.Color;
  * Created by utkrishtdhankar on 11/11/16.
  */
 
+/**
+ * This represents a context in the GTD sense.
+ */
 public class TaskContext extends Identifiable {
 
     // The default color of a context that hasn't been assigned any colors
