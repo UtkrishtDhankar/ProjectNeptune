@@ -80,6 +80,17 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
         return frag;
     }
 
+    /**
+     * Called when the input fragment is opened for editing a card
+     * @param title The title of the calling fragment
+     * @param taskText The text of the task
+     * @param taskContext The context of the task
+     * @param taskStatusEncoded The Complete status of the task (including the special attribute)
+     * @param taskStatus The status of the task (without the special attribute)
+     * @param taskStatusSpecial The special attribute of the status of the task
+     * @param id THe id of the task (used in setting the oldTask's id)
+     * @return THe fragment to be inflated
+     */
     public static InputFragment newInstance(String title,
                                             String taskText,
                                             String taskContext,
@@ -105,10 +116,10 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
 
     /**
      * Inflates this fragment
-     * @param inflater
-     * @param container
-     * @param savedInstanceState
-     * @return
+     * @param inflater The layout inflater used to make the popup
+     * @param container The container for the layout
+     * @param savedInstanceState The Bundle used to retrieve data during some resume actions(not used)
+     * @return The inflated view
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -243,7 +254,7 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
     }
 
     /**
-     * Called when the user clicks the add button
+     * Called when the user clicks the add button in the input pop-up
      * @param view The view that this was a part of
      */
     @Override
