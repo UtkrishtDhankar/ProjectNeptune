@@ -227,7 +227,6 @@ public class ContextInputFragment extends DialogFragment implements View.OnClick
             databaseHelper.addContext(newContext);
         }
 
-
         //Reloading the fragment so that values from tables are updated
         Fragment fragment = new ContextsFragment();
         FragmentManager fragmentManager = getFragmentManager();

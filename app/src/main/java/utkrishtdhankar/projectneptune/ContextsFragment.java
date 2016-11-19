@@ -93,6 +93,8 @@ public class ContextsFragment extends Fragment {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(inboxRecyclerView);
 
+        updateContextFilterSpinner();
+
         //Remove the context filtering in this fragment
         ((Spinner) getActivity().findViewById(R.id.toolbar_context_spinner)).setVisibility(View.GONE);
 
@@ -103,7 +105,7 @@ public class ContextsFragment extends Fragment {
     /**
      * Reloads the context-filter-spinner items so that everything is in sync
      */
-    private void updateContextFilterSpinner() {
+    public void updateContextFilterSpinner() {
 
         // Fetching all contexts from table
         final ArrayList<TaskContext> contextsArray = databaseHelper.getAllContexts();
