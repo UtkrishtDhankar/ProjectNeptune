@@ -33,6 +33,12 @@ public class AllTaskFragment extends Fragment {
     private RecyclerView.Adapter recyclerViewAdapter;
     private RecyclerView.LayoutManager allTasksLayoutManager;
 
+    /**
+     *
+     * @param contextFilterSpec Holds the contexts name to be applied in filter
+     * @param contextId Holds the contexts id to be applied in filter
+     * @return Return the fragment to bew return
+     */
     public static AllTaskFragment newInstance(String contextFilterSpec, long contextId) {
         AllTaskFragment frag = new AllTaskFragment();
 

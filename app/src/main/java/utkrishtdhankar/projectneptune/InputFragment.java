@@ -151,9 +151,10 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
 
         // Fetching all contexts from table
         ArrayList<TaskContext> contextsArray = databaseHelper.getAllContexts();
-        String[] contextsNames= new String[contextsArray.size()];
-        for (int i = 0; i < contextsArray.size(); i++) {
-            contextsNames[i] = contextsArray.get(i).getName();
+        String[] contextsNames= new String[contextsArray.size() + 1];
+        contextsNames[0] = "";
+        for (int i = 1; i <= contextsArray.size(); i++) {
+            contextsNames[i] = contextsArray.get(i - 1).getName();
         }
 
         // populating the drop down menu
@@ -186,7 +187,6 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
             oldtask.changeStatus(TaskStatusHelper.decode(getArguments().getString("encodedStatus")));
             oldtask.setId(getArguments().getLong("taskId"));
             inboxEditText.setText(oldtask.getName());
-            //TODO make changes for presets here
             for(int i = 0; i < contextsNames.length; i++){
                 if(contextsNames[i].equals(getArguments().getString("oldContext"))){
                     contextDropDown.setSelection(i);
@@ -267,7 +267,10 @@ public class InputFragment extends DialogFragment implements View.OnClickListene
         // Add the context for the oldtask
         TaskContext taskContext = new TaskContext(newContextName);
 
-        newTask.addContext(taskContext);
+        if(!taskContext.getName().equals("")){
+            newTask.addContext(taskContext);
+        }
+
        // newTask.changeStatus(TaskStatusHelper.decode(newStatusName));
 
         if(openedForEdit == 1) {
