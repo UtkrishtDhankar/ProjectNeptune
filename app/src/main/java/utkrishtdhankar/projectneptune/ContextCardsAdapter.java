@@ -32,7 +32,6 @@ public class ContextCardsAdapter extends RecyclerView.Adapter<ContextCardsAdapte
         public CardView cardView;
 
         /**
-         * Constructor for this oldtask
          * Sets the different views to their values for the view that was passed in
          * @param view
          */
