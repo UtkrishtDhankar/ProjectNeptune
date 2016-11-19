@@ -8,11 +8,18 @@ import android.graphics.Color;
 
 public class TaskContext extends Identifiable {
 
+    // The default color of a context that hasn't been assigned any colors
+    // No context should ever have this color in the UI, but this is here as a placeholder
     private static final int defaultColor = Color.LTGRAY;
+
+    // The default name of a context
     private static final String defaultName = "context";
 
+    // The current name of the context
     private String name;
 
+    // The current color of the context as an rgba value. Please use the Color class when
+    // modifying this
     private int color;
 
     /**
