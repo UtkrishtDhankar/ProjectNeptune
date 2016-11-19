@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         activityTitles = getResources().getStringArray(R.array.nav_item_toolbar_titles);
 
         databaseHelper = new DatabaseHelper(getApplicationContext());
-        //databaseHelper.updateAll();
+        databaseHelper.updateAll();
 
 
 
