@@ -107,8 +107,6 @@ public class DatabaseHelper extends SQLiteOpenHelper{
      * Updates all the tasks in the database. Right now, this moves up scheduled tasks to next action tasks
      */
     public void updateAll() {
-        SQLiteDatabase db = getWritableDatabase();
-
         Filter filter = new Filter();
         filter.setTaskStatusName("Scheduled");
 
@@ -119,14 +117,17 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         for (Task task : tasks) {
             if (((Scheduled) task.getStatus()).getScheduledForDate().compareTo(Calendar.getInstance()) < 0) {
+                SQLiteDatabase db = getWritableDatabase();
+
                 ContentValues contentValues = new ContentValues();
                 contentValues.put(TASKS_KEY_STATUS, "Next");
 
-                db.update(TASKS_TABLE_NAME, contentValues, TASKS_KEY_ID + "=?", new String[]{Long.toString(task.getId())});
+                db.update(TASKS_TABLE_NAME, contentValues, TASKS_KEY_ID + "=?",
+                        new String[]{Long.toString(task.getId())});
+                
+                db.close();
             }
         }
-
-        db.close();
     }
 
     /**
